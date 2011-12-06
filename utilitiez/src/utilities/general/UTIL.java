@@ -4,32 +4,35 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -47,19 +50,20 @@ public abstract class UTIL {
     }
     public final static String EMAIL_REGEX = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
     /**
+     * 
      * Regular expression para validar cadenas que:
      * <UL>
      * <LI>Empiece con un caracter alfabético.
-     * <LI>Seguidos de 0..* caracteres alfabeticos y espacios.
+     * <LI>Seguidos de [0..*] caracteres alfabeticos y/o espacios.
      * <LI>Termine en un caracter alfabético.
      * </UL>
-     * Ejemplos válidos: "a", "a b", "a  B cd".
+     * Útil para validar Nombres y Apellidos
+     * Ejemplos válidos: "a", "jose luis", "a  B cd".
      */
     public final static String REGEX_ALFA_TEXT_WITH_WHITE =
             "^[a-zA-Z][a-zA-Z\\s]*[a-zA-Z]$|"
             + "^[a-zA-Z]+[a-zA-Z]*$|"
             + "^[a-zA-Z]$";
-    public final static Pattern email = Pattern.compile("");
     /**
      * [a-zA-Z]?
      */
@@ -96,14 +100,14 @@ public abstract class UTIL {
     /**
      * formato de salida del <code>double</code> -> #,###.00
      * Con separador de millares y COMA de separador decimal
+     * (formato no casteable a double/Double).
      */
     public final static DecimalFormat DECIMAL_FORMAT;
     /**
-     * formato de salida del <code>double</code> a un String casteable nuavamente
+     * formato de salida del <code>double</code> a un String casteable nuevamente
      * a double.
-     * Es decir que usa el punto (.) como separador decimal y sin separadores
-     * de millares
-     * Formato "########.##"
+     * El punto (.) como separador decimal y sin separadores de millares
+     * Formato "#######0.##"
      */
     public static DecimalFormat PRECIO_CON_PUNTO;
     /**
@@ -119,7 +123,7 @@ public abstract class UTIL {
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
         simbolos.setDecimalSeparator('.');
         PRECIO_CON_PUNTO = new DecimalFormat("#######0.00", simbolos);
-        DECIMAL_FORMAT = new DecimalFormat("#,###.000");
+        DECIMAL_FORMAT = new DecimalFormat("#,##0.00");
         DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
         yyyy_MM_dd = new SimpleDateFormat("yyyy/MM/dd");
         TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
@@ -198,7 +202,6 @@ public abstract class UTIL {
      */
     public static JLabel setImageAsIconLabel(JLabel label, File imageFile)
             throws IOException {
-        controlSizeFile(imageFile, MAX_IMAGEN_FILE_SIZE);
         BufferedImage bufferedImage = ImageIO.read(imageFile);
         int labelWidth = label.getWidth();
         int labelHeight = label.getHeight();
@@ -239,10 +242,7 @@ public abstract class UTIL {
      * @return el archivo de la imagen que fue creado en el disco
      * @throws IOException
      */
-    public static File imageToFile(byte[] img, String extension)
-            throws IOException {
-//      Toolkit.getDefaultToolkit().createImage(img);
-//        java.awt.image.BufferedImage src = new java.awt.image.BufferedImage(0, 0, 0);
+    public static File imageToFile(byte[] img, String extension) throws IOException {
         if (extension == null || extension.length() < 1) {
             extension = "png";
         }
@@ -279,9 +279,9 @@ public abstract class UTIL {
     /**
      * Validador de CUIL/CUIT
      * @param cuil .. formato del String ########### (11)
-     * @throws Exception1 si la length != 11.
-     * @throws Exception2 si los 2 1ros dígitos no corresponden a ningún tipo.
-     * @throws Exception3 si el dígito identificador (el último) no se corresponde al cálculo.
+     * @throws IllegalArgumentException si la length != 11.
+     * Si los 2 1ros dígitos no corresponden a ningún tipo.
+     * Si el dígito identificador (el último) no se corresponde al cálculo.
      * @throws NumberFormatException if can not be castable to a Long type.
      */
     public static void VALIDAR_CUIL(String cuil) throws NumberFormatException {
@@ -317,14 +317,12 @@ public abstract class UTIL {
         return (DefaultTableModel) jtable.getModel();
     }
 
-    public static JTable getDefaultTableModel(JTable tabla, String[] columnsName) {
+    public static JTable getDefaultTableModel(JTable tabla, String[] columnNames) {
         DefaultTableModel dtm = new DefaultTableModelImpl();
-        if (tabla.getModel() != null) {
-            dtm = (DefaultTableModel) tabla.getModel();
-        }
-        for (String string : columnsName) {
+        for (String string : columnNames) {
             dtm.addColumn(string);
         }
+        tabla.setModel(dtm);
         tabla.getTableHeader().setReorderingAllowed(false);
         return tabla;
     }
@@ -528,6 +526,24 @@ public abstract class UTIL {
     }
 
     /**
+     * Set all fields related to time (like HOUR_OF_DAY, MINUTE, SECOND, MILLISECND)
+     * to 0.
+     * This allow compare Dates, disregarding fields related to time.
+     * NOTE: beware with the TIME_ZONE!
+     * @param fecha
+     * @return a {@code Date}
+     */
+    public static Date getDateYYYYMMDD(Date fecha) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(fecha);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
+    /**
      * Devuelte un Date modificada según los <code>dias</code>
      * @param fecha Date base sobre el cual se va trabajar. If <code>fecha</code> is <code>null</code> will return null Date
      * @param dias cantidad de días por adicionar o restar a <code>fecha</code>
@@ -586,7 +602,7 @@ public abstract class UTIL {
     /**
      * Controla que no se pueda tipear mas de un "."
      * @param cadena
-     * @return <code>true</code> if 0 '.' has been found.
+     * @return <code>true</code> if none '.' has been found.
      * If <code>cadena</code> is null or 1 > length return <code>false</code>
      */
     public static boolean SOLO_UN_PUNTO(String cadena) {
@@ -608,14 +624,12 @@ public abstract class UTIL {
     }
 
     /**
-     * Ctrla que sea un caracter numérico el apretado
-     * @param KeyEvent evt!!
-     * @return true si es un caracter numérico [1234567890], otherwise will return false.
+     * Ctrla que sea un caracter numérico el apretado, sinó el evento es consumido
+     * @param evt 
      */
     public static void soloNumeros(KeyEvent evt) {
-        int k = evt.getKeyChar();
-        if (k < 48 || k > 57) {
-            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
         }
     }
 
@@ -628,10 +642,11 @@ public abstract class UTIL {
         if (SOLO_UN_PUNTO(cadena)) {
             int k = e.getKeyChar();
             if ((k < 48 || k > 57) && (k != 46)) {
-                e.setKeyChar((char) KeyEvent.VK_CLEAR);
+//                e.setKeyChar((char) KeyEvent.VK_CLEAR);
+                e.consume();
             }
         } else {
-            e.setKeyChar((char) KeyEvent.VK_CLEAR);
+            e.consume();
         }
     }
 
@@ -762,19 +777,16 @@ public abstract class UTIL {
     }
 
     /**
-     * remueve todos los items y carga la List de objetos en el comboBox
-     * @param comboBox JComboBox donde se van a cargar los Objectos
-     * @param objectList Si la List está vacía o es null se carga un String Item "Vacio"
-     * @param elegible Si es true, se agrega un Item "Elegir" en el index 0; sino
-     * solo se cargar los objetos
+     * Remueve todos los items y carga la List de objetos en el comboBox.
+     * @param comboBox JComboBox donde se van a cargar los Objectos.
+     * @param objectList Si la List está vacía o es null se carga un String Item
+     * "&lt;Vacio&gt;".
+     * @param elegible Si es true, se agrega un Item "&lt;Elegir&gt;" en el
+     * index 0; sino solo se cargar los objetos.
      */
     public static void loadComboBox(JComboBox comboBox, List objectList, boolean elegible) {
-        if (comboBox == null) {
-            throw new IllegalArgumentException("El Objecto comboBox que intentas cargar es NULL!!! (NullPointerException) guampa!!");
-        }
-
         comboBox.removeAllItems();
-        if (objectList != null && objectList.size() > 0) {
+        if (objectList != null && !objectList.isEmpty()) {
             //si se permite que NO se elija ningún elemento del combobox
             if (elegible) {
                 comboBox.addItem("<Elegir>");
@@ -791,46 +803,42 @@ public abstract class UTIL {
 
     /**
      * Personaliza la carga de datos en un JComboBox, según una List y bla bla...
-     * @param comboBox
-     * @param objectList collection la cual se va cargar
-     * @param message1erItem mensaje del 1er item del combo, dejar <code>null</code> si no hay preferencia
-     * @param itemWhenIsEmpy item que se va cargar cuando el combo esté vacio
+     * @param comboBox ...
+     * @param objectList <code>List</code> la cual se va cargar
+     * @param firstItem mensaje del 1er item del combo, dejar <code>null</code> si no hay preferencia
+     * @param itemWhenIsEmpty item que se va cargar cuando el <tt>objectList == null or empty</tt>.
+     * @throws IllegalArgumentException if objectList == null or empty AND itemWhemIsEmpy == null.
+     * @see #loadComboBox(javax.swing.JComboBox, java.util.List, java.lang.String)
      */
-    public static void loadComboBox(JComboBox comboBox, List objectList, String message1erItem, String itemWhenIsEmpy) {
-        if (itemWhenIsEmpy == null) {
-            loadComboBox(comboBox, objectList, message1erItem);
-        } else {
-            comboBox.removeAllItems();
-            if (objectList != null && objectList.size() > 0) {
-
-                if (message1erItem != null && message1erItem.length() > 0) {
-                    comboBox.addItem(message1erItem);
-                }
-
-                for (Object object : objectList) {
-                    comboBox.addItem(object);
-                }
-            } else {
+    public static void loadComboBox(JComboBox comboBox, List objectList, String firstItem, String itemWhenIsEmpty) {
+        if (objectList == null || objectList.isEmpty()) {
+            if (itemWhenIsEmpty != null) {
+                comboBox.removeAllItems();
                 //si la lista a cargar está vacía o es NULL
-                comboBox.addItem(itemWhenIsEmpy);
+                comboBox.addItem(itemWhenIsEmpty);
+            } else {
+                throw new IllegalArgumentException("parameter itemWhenIsEmpty can't be NULL if objectList is empty or NULL.");
             }
+        } else {
+            loadComboBox(comboBox, objectList, firstItem);
         }
     }
 
     /**
-     * Personaliza la carga de datos en un JComboBox, según una List y bla bla...
-     * Si no hay elementos para cargar al comboBox, retor
+     * Remueve todos los items, carga en el comboBox todos los objectos en objectList.
+     * Si no hay elementos para cargar (<code>objectList == null && empty</code>) message1stItem no se agrega.
      * @param comboBox
      * @param objectList collection la cual se va cargar
-     * @param message1erItem mensaje del 1er item del combo, dejar <code>null</code> si no hay preferencia
+     * @param firstItem 1er item del combo, puede ser  <code>null</code> y solo se carga la lista.
+     * @see #loadComboBox(javax.swing.JComboBox, java.util.List, boolean)
      */
-    public static void loadComboBox(JComboBox comboBox, List objectList, String message1erItem) {
-        comboBox.removeAllItems();
-        if (objectList != null && objectList.size() > 0) {
-            if (message1erItem != null && message1erItem.length() > 0) {
-                comboBox.addItem(message1erItem);
+    public static void loadComboBox(JComboBox comboBox, List objectList, String firstItem) {
+        loadComboBox(comboBox, objectList, false);
+        if (objectList != null && !objectList.isEmpty()) {
+            comboBox.removeAllItems();
+            if (firstItem != null) {
+                comboBox.addItem(firstItem);
             }
-
             for (Object object : objectList) {
                 comboBox.addItem(object);
             }
@@ -838,6 +846,57 @@ public abstract class UTIL {
             //si la lista a cargar está vacía o es NULL
             comboBox.addItem("<Vacio>");
         }
+    }
+
+    /**
+     * Order a List based on the property indicated.
+     * This method use the Reflection API to performance the work ( qué loco no!?).
+     * @param lista List to be ordered.
+     * @param propiedad represent the getter signature from the property that the objects in the List must has.
+     * <br>EXAMPLE:
+     * <br>if == <code>"name"</code>  ==> <b>getName</b>.
+     * <br>if == <code>"lastNAmE"</code>  ==> <b>getLastNAmE</b>.
+     * @param ascending if the List be ordered ASC, if not then will be DESC.
+     */
+    public static void order(List lista, final String propiedad, final boolean ascending) {
+        Collections.sort(lista, new Comparator() {
+
+            @Override
+            public int compare(Object obj1, Object obj2) {
+                try {
+                    Class clase = obj1.getClass();
+                    String getter = "get" + Character.toUpperCase(propiedad.charAt(0)) + propiedad.substring(1);
+                    Method getterMethod = clase.getMethod(getter);
+
+                    Object value = getterMethod.invoke(obj1);
+                    Object value2 = getterMethod.invoke(obj2);
+
+                    if (value instanceof Comparable && value2 instanceof Comparable) {
+                        Comparable comparableValue = (Comparable) value;
+                        Comparable comparableValue2 = (Comparable) value2;
+                        if (ascending) {
+                            return comparableValue.compareTo(comparableValue2);
+                        } else {
+                            if (comparableValue.compareTo(comparableValue2) == 1) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    } else {
+                        if (value.equals(value2)) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return 0;
+            }
+        });
     }
 
     /**
@@ -868,7 +927,10 @@ public abstract class UTIL {
      * @return El porcentaje (%) del monto, being <code>0 >= monto</conde> or  0 >= <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static Double getPorcentaje(double monto, double porcentaje) {
-        if (monto <= 0 || porcentaje <= 0) {
+        if (porcentaje < 0) {
+            throw new IllegalArgumentException("Parameter \"porcentaje\" can not be negative.");
+        }
+        if (monto <= 0) {
             return 0.0;
         }
         return (porcentaje * (monto / 100));
@@ -908,7 +970,7 @@ public abstract class UTIL {
      * Settea un alineamiento horizontal en las celdas de la tabla, para todas
      * las celdas que sean del tipo de class especificado.
      * @param jTable1 tabla a la cual se le va aplicar.
-     * @param aClass class a cual afectará el alineamiento.
+     * @param columnClass class a cual afectará el alineamiento.
      * @param alignment  One of the following constants
      *           defined in <code>SwingConstants</code>:
      *           <code>LEFT</code>,
@@ -920,10 +982,10 @@ public abstract class UTIL {
      * @see SwingConstants
      * @see JLabel#getHorizontalAlignment
      */
-    public static void setHorizonalAlignment(JTable jTable1, Class<String> aClass, int alignment) {
+    public static void setHorizonalAlignment(JTable jTable1, Class columnClass, int alignment) {
         DefaultTableCellRenderer defaultTableCellRender = new DefaultTableCellRenderer();
         defaultTableCellRender.setHorizontalAlignment(alignment);
-        jTable1.setDefaultRenderer(String.class, defaultTableCellRender);
+        jTable1.setDefaultRenderer(columnClass, defaultTableCellRender);
     }
 
     /**
@@ -937,6 +999,9 @@ public abstract class UTIL {
          * value will be used (<code>Object.class</code>).
          */
         private Class[] columnTypes = null;
+        /**
+         * Contain the indexes of columns which can be editable
+         */
         private int[] editableColumns = null;
 
         /**
@@ -1001,20 +1066,30 @@ public abstract class UTIL {
     /**
      * Valida si es un email
      * @param email String to validate
-     * @return return <code>true</code> si es una dirección de email
+     * @return return <code>true</code> if is a valid email address
      */
     public static boolean VALIDAR_EMAIL(String email) {
-        return UTIL.email.matcher(email).find();
+        return Pattern.compile(EMAIL_REGEX).matcher(email).matches();
     }
 
+    /**
+     * REGEX.. asi nomas
+     * @param regex
+     * @param stringToEvaluate
+     * @return  
+     * @throws PatternSyntaxException
+     * @see <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">
+     * http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html</a>
+     */
     public static boolean VALIDAR_REGEX(String regex, String stringToEvaluate) {
-        return Pattern.compile(regex).matcher(stringToEvaluate).find();
+        return Pattern.compile(regex).matcher(stringToEvaluate).matches();
     }
 
-    public static synchronized DecimalFormat setPRECIO_CON_PUNTO(String format) {
+    public static synchronized DecimalFormat setPRECIO_CON_PUNTO(String format, RoundingMode roundingMode) {
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
         simbolos.setDecimalSeparator('.');
         PRECIO_CON_PUNTO = new DecimalFormat(format, simbolos);
+        PRECIO_CON_PUNTO.setRoundingMode(roundingMode);
         return PRECIO_CON_PUNTO;
     }
 
@@ -1026,5 +1101,31 @@ public abstract class UTIL {
         fileOutputStream.close();
         System.out.println("TRACE: File created at:" + file.getAbsolutePath()
                 + ", size:" + file.length());
+    }
+
+    /**
+     * Calcula la edad según {@code dateOfBith}
+     * @param dateOfBirth no puede ser posterior a HOY
+     * @return edad {@code >= 0}
+     */
+    public static int getAge(Date dateOfBirth) {
+        Calendar today = Calendar.getInstance();
+        Calendar birthDate = Calendar.getInstance();
+        int age = 0;
+        birthDate.setTime(dateOfBirth);
+        if (birthDate.after(today)) {
+            throw new IllegalArgumentException("Can't be born in the future");
+        }
+        age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+        // If birth date is > todays date (after 2 days adjustment of leap year) then decrement age one year   
+        if ((birthDate.get(Calendar.DAY_OF_YEAR) - today.get(Calendar.DAY_OF_YEAR) > 3)
+                || (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH))) {
+            age--;
+
+        } else if ((birthDate.get(Calendar.MONTH) == today.get(Calendar.MONTH))
+                && (birthDate.get(Calendar.DAY_OF_MONTH) > today.get(Calendar.DAY_OF_MONTH))) {
+            age--;
+        }
+        return age;
     }
 }
