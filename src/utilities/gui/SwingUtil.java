@@ -1,31 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package utilities.gui;
 
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 
 /**
- * Contiene todo tipo de controles y validaciones para GUI y sus posibles
- * componentes.
- * @author FiruzzZ
+ *
+ * @author Administrador
  */
-public class EventsManager {
+public class SwingUtil {
 
-    private static EventsManager eventsManager;
-
-    private EventsManager() {
-    }
-
-    public static EventsManager getInstance() {
-        if (eventsManager == null) {
-            eventsManager = new EventsManager();
-        }
-        
-        return eventsManager;
+    /**
+     * Sets selected all the text in the TextComponent.
+     * @param textComponent 
+     */
+    public static void setSelectedAll(JTextComponent textComponent) {
+        textComponent.setSelectionStart(0);
+        textComponent.setSelectionEnd(textComponent.getText().length());
     }
 
     /**
@@ -34,13 +26,15 @@ public class EventsManager {
      * If not > {@link java.awt.event.InputEvent#consume()}
      * @param jTextField Instance of {@link JTextField}
      * @param evt Must be a instance of {@link KeyListener#keyTyped(java.awt.event.KeyEvent)}
-     * @param maxLenght maximun lenght 
+     * @param maxLength a positive value 
      */
-    public static void checkInputDigit(JTextField jTextField, KeyEvent evt, int maxLenght) {
+    public static void checkInputDigit(JTextField jTextField, KeyEvent evt, Integer maxLength) {
         if (!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
-        } else if (maxLenght >= jTextField.getText().length()) {
-            evt.consume();
+        } else if (maxLength != null && maxLength > 0) {
+            if (maxLength < jTextField.getText().length()) {
+                evt.consume();
+            }
         }
     }
 
@@ -53,5 +47,8 @@ public class EventsManager {
         if (!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
         }
+    }
+
+    private SwingUtil() {
     }
 }

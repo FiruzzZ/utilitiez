@@ -28,7 +28,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -37,6 +39,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -118,6 +121,7 @@ public abstract class UTIL {
      * Tamaño máximo de las imagenes que se puede guardar: 1.048.576 bytes
      */
     public final static int MAX_IMAGEN_FILE_SIZE = 1048576; // en bytes (1Mb/1024Kb/...)
+    public static final Map<Integer, String> MESES = new HashMap<Integer, String>(12);
 
     static {
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
@@ -128,6 +132,18 @@ public abstract class UTIL {
         yyyy_MM_dd = new SimpleDateFormat("yyyy/MM/dd");
         TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
         TIMESTAMP_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        MESES.put(0, "Enero");
+        MESES.put(1, "Febrero");
+        MESES.put(2, "Marzo");
+        MESES.put(3, "Abril");
+        MESES.put(4, "Mayo");
+        MESES.put(5, "Junio");
+        MESES.put(6, "Julio");
+        MESES.put(7, "Agosto");
+        MESES.put(8, "Septiembre");
+        MESES.put(9, "Octubre");
+        MESES.put(10, "Noviembre");
+        MESES.put(11, "Diciembre");
     }
 
     public static SimpleDateFormat instanceOfDATE_FORMAT() {
@@ -600,27 +616,21 @@ public abstract class UTIL {
     }
 
     /**
-     * Controla que no se pueda tipear mas de un "."
-     * @param cadena
-     * @return <code>true</code> if none '.' has been found.
-     * If <code>cadena</code> is null or 1 > length return <code>false</code>
+     * Cuenta la cantidad de puntos (caracter '.') tiene la cadena
+     * @param cadena String to analize, can not be <code>null</code>
+     * @param candidate 
+     * @return la cantidad de veces que se encontró al candidato
      */
-    public static boolean SOLO_UN_PUNTO(String cadena) {
-
-        if (cadena == null || cadena.length() < 1) {
-            return false;
-        }
-        System.out.println("cadena: " + cadena);
+    public static int countChacarter(String cadena, char candidate) {
         int cantDePuntos = 0;
-        for (int i = 0; i < cadena.length(); i++) {
-            if (cadena.charAt(i) == '.') {
-                cantDePuntos++;
-            }
-            if (cantDePuntos > 0) {
-                return false;
+        if (cadena.length() > 0) {
+            for (int i = 0; i < cadena.length(); i++) {
+                if (cadena.charAt(i) == candidate) {
+                    cantDePuntos++;
+                }
             }
         }
-        return true;
+        return cantDePuntos;
     }
 
     /**
@@ -633,21 +643,33 @@ public abstract class UTIL {
         }
     }
 
-    public static void solo_numeros_y_un_punto(String cadena, KeyEvent e) {
+    /**
+     * Controla que la tecla presionada sea un caracter numérico o un PUNTO '.' 
+     * y que este no aparezca en la cadena (si este ya aparece en la cadena, el 
+     * evento se consume al igual que si fuera no fuera un numérico).
+     * @param cadena
+     * @param e 
+     */
+    public static void solo_numeros_y_un_punto(final String cadena, KeyEvent e) {
         // si es != de '.'
         if ((int) e.getKeyChar() != 46) {
             soloNumeros(e);
-
-        } else // ctrl si ya se ha tipeado un '.'
-        if (SOLO_UN_PUNTO(cadena)) {
-            int k = e.getKeyChar();
-            if ((k < 48 || k > 57) && (k != 46)) {
-//                e.setKeyChar((char) KeyEvent.VK_CLEAR);
-                e.consume();
-            }
-        } else {
+        } else if (countChacarter(cadena, '.') > 0) {
             e.consume();
         }
+    }
+
+    /**
+     * Se obtiene el String del JTextField
+     * @param evt The KeyEvent must come from a {@link JTextField}
+     * @throws ClassCastException if the source of the event doesn't come from a
+     * JTextField.
+     * @see #solo_numeros_y_un_punto(java.lang.String, java.awt.event.KeyEvent) 
+     */
+    public static void solo_numeros_y_un_punto(KeyEvent evt) {
+        JTextField tf = (JTextField) evt.getSource();
+        String cadena = tf.getText();
+        solo_numeros_y_un_punto(cadena, evt);
     }
 
     /**
@@ -923,7 +945,7 @@ public abstract class UTIL {
     /**
      * Devuelte el % del monto
      * @param monto sobre el cual se calcula el %
-     * @param porcentaje
+     * @param porcentaje debe ser >=0
      * @return El porcentaje (%) del monto, being <code>0 >= monto</conde> or  0 >= <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static Double getPorcentaje(double monto, double porcentaje) {
