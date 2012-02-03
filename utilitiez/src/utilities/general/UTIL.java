@@ -673,6 +673,44 @@ public abstract class UTIL {
     }
 
     /**
+     * Parse a Double formatted String like <code>DecimalFormat("#,##0.00")</code> 
+     * to a Double:
+     * <br> 1234    parse to<t>   1234.00
+     * <br>1.234    parse to<t>   1234.00
+     * <br>12.34    parse to<t>     12.34
+     * <br>123.4    parse to<t>    123.40
+     * <br>123.456  parse to<t> 123456.00
+     * <br>1234.56  parse to<t>   1234.56
+     * <br>------------------------------
+     * <br> 12.345,6   parse to<t>  12345.60
+     * <br>123.456,    parse to<t> 123456.00
+     * <br>123.456,7   parse to<t> 123456.70
+     * <br>1.234.567   parse to<t>1234567.00
+     * @param s a String formated like <code>DecimalFormat("#,##0.00")</code> 
+     * @return 
+     */
+    public static Double parseToDouble(String s) {
+        String string = s;
+        if (string.contains(",")) {
+            string = string.replaceAll("\\.", "");
+            string = string.replaceAll(",", ".");
+        } else {
+            int countChacarter = UTIL.countChacarter(string, '.');
+            for (int i = 1; i < countChacarter; i++) {
+                string = string.replaceFirst("\\.", "");
+            }
+            int indexOf = string.indexOf(".");
+            if (indexOf > -1) {
+                int length = string.substring(indexOf + 1).length();
+                if (length > 2) {
+                    string = string.replaceFirst("\\.", "");
+                }
+            }
+        }
+        return Double.valueOf(string);
+    }
+
+    /**
      * Devuelve un String del estado (int o short)
      * @param estado 1 = Activo, 2= Baja, 3= Suspendido
      * @return
