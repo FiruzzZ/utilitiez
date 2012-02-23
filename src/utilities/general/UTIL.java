@@ -53,15 +53,11 @@ public abstract class UTIL {
     }
     public final static String EMAIL_REGEX = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
     /**
-     * 
-     * Regular expression para validar cadenas que:
-     * <UL>
-     * <LI>Empiece con un caracter alfabético.
-     * <LI>Seguidos de [0..*] caracteres alfabeticos y/o espacios.
-     * <LI>Termine en un caracter alfabético.
-     * </UL>
-     * Útil para validar Nombres y Apellidos
-     * Ejemplos válidos: "a", "jose luis", "a  B cd".
+     *
+     * Regular expression para validar cadenas que: <UL> <LI>Empiece con un
+     * caracter alfabético. <LI>Seguidos de [0..*] caracteres alfabeticos y/o
+     * espacios. <LI>Termine en un caracter alfabético. </UL> Útil para validar
+     * Nombres y Apellidos Ejemplos válidos: "a", "jose luis", "a B cd".
      */
     public final static String REGEX_ALFA_TEXT_WITH_WHITE =
             "^[a-zA-Z][a-zA-Z\\s]*[a-zA-Z]$|"
@@ -101,20 +97,21 @@ public abstract class UTIL {
      */
     public final static SimpleDateFormat TIMESTAMP_FORMAT;
     /**
-     * formato de salida del <code>double</code> -> #,###.00
-     * Con separador de millares y COMA de separador decimal
-     * (formato no casteable a double/Double).
+     * formato de salida del
+     * <code>double</code> -> #,###.00 Con separador de millares y COMA de
+     * separador decimal (formato no casteable a double/Double).
      */
     public final static DecimalFormat DECIMAL_FORMAT;
     /**
-     * formato de salida del <code>double</code> a un String casteable nuevamente
-     * a double.
-     * El punto (.) como separador decimal y sin separadores de millares
-     * Formato "#######0.##"
+     * formato de salida del
+     * <code>double</code> a un String casteable nuevamente a double. El punto
+     * (.) como separador decimal y sin separadores de millares Formato
+     * "#######0.##"
      */
     public static DecimalFormat PRECIO_CON_PUNTO;
     /**
-     * Extensiones de imagenes permitidas: "jpeg", "jpg", "gif", "tiff", "tif", "png", "bmp"
+     * Extensiones de imagenes permitidas: "jpeg", "jpg", "gif", "tiff", "tif",
+     * "png", "bmp"
      */
     public final static String[] IMAGEN_EXTENSION = {"jpeg", "jpg", "gif", "tiff", "tif", "png", "bmp"};
     /**
@@ -156,6 +153,7 @@ public abstract class UTIL {
 
     /**
      * Returns the contents of the file in a byte array
+     *
      * @param file File this method should read
      * @return byte[] Returns a byte[] array of the contents of the file
      * @throws IOException
@@ -209,12 +207,17 @@ public abstract class UTIL {
     }
 
     /**
-     * Ajusta la imagen al size de la jLabel, también deja <code>null</code> el texto de la label
+     * Ajusta la imagen al size de la jLabel, también deja
+     * <code>null</code> el texto de la label
+     *
      * @param label
-     * @param imageFile File de una imagen, la cual se va ajustar al tamaño de la jLabel.
+     * @param imageFile File de una imagen, la cual se va ajustar al tamaño de
+     * la jLabel.
      * @return el jLabel con la imagen ajustada..
-     * @exception  java.io.IOException si no puede leer el <code>imageFile</code>
-     * @exception Exception si el tamaño del archivo supera el configurado permitido (default is Integer.MAX_VALUE).
+     * @exception java.io.IOException si no puede leer el
+     * <code>imageFile</code>
+     * @exception Exception si el tamaño del archivo supera el configurado
+     * permitido (default is Integer.MAX_VALUE).
      */
     public static JLabel setImageAsIconLabel(JLabel label, File imageFile)
             throws IOException {
@@ -253,8 +256,10 @@ public abstract class UTIL {
 
     /**
      * Transforma una IMAGEN de tipo bytea (postgre) a un java.io.File
+     *
      * @param img tipo de dato almacenado en la DB (debe ser una imagen)
-     * @param extension la extensión de la imagen. if == null, se le asigna "png"
+     * @param extension la extensión de la imagen. if == null, se le asigna
+     * "png"
      * @return el archivo de la imagen que fue creado en el disco
      * @throws IOException
      */
@@ -277,6 +282,7 @@ public abstract class UTIL {
 
     /**
      * Return true si la extesión es tiff/tif/gif/jpg/jpeg/png/bmp
+     *
      * @param imageFile
      * @return si la extesión del archivo es de algún tipo de imagen.
      */
@@ -294,10 +300,11 @@ public abstract class UTIL {
 
     /**
      * Validador de CUIL/CUIT
+     *
      * @param cuil .. formato del String ########### (11)
-     * @throws IllegalArgumentException si la length != 11.
-     * Si los 2 1ros dígitos no corresponden a ningún tipo.
-     * Si el dígito identificador (el último) no se corresponde al cálculo.
+     * @throws IllegalArgumentException si la length != 11. Si los 2 1ros
+     * dígitos no corresponden a ningún tipo. Si el dígito identificador (el
+     * último) no se corresponde al cálculo.
      * @throws NumberFormatException if can not be castable to a Long type.
      */
     public static void VALIDAR_CUIL(String cuil) throws NumberFormatException {
@@ -345,7 +352,9 @@ public abstract class UTIL {
 
     /**
      * Personaliza una DefaulTableModel
-     * @param tabla en la cual se insertará el modelo, if this is null, a new one will be initialized
+     *
+     * @param tabla en la cual se insertará el modelo, if this is null, a new
+     * one will be initialized
      * @param columnNames Nombre de las HeaderColumns
      * @param columnWidths Ancho de columnas
      * @param columnClassType Tipo de datos que va contener cada columna
@@ -464,8 +473,11 @@ public abstract class UTIL {
 
     /**
      * Devuelve un dtm con los nombres de las columnas
-     * @param dtm if == null a new instance of a PRIVATE implementation of will be created.
-     * @param columnNames los nombres de las respectivas columns que va tener la tabla.
+     *
+     * @param dtm if == null a new instance of a PRIVATE implementation of will
+     * be created.
+     * @param columnNames los nombres de las respectivas columns que va tener la
+     * tabla.
      * @return a DefaultTableModel with column names setted.
      * @exception NullPointerException if columnNames is null.
      */
@@ -501,11 +513,13 @@ public abstract class UTIL {
     }
 
     /**
-     * Crea un java.util.Date con los parámetros de fecha mandados y
-     * TimeZone a GTM-3 (no toma del SO ni nada).
+     * Crea un java.util.Date con los parámetros de fecha mandados y TimeZone a
+     * GTM-3 (no toma del SO ni nada).
+     *
      * @param year el año del Date
      * @param month 0=enero and so on...
-     * @param day if == NULL.. will be setted to 1, si == -1 al último día de <b>month</b>
+     * @param day if == NULL.. will be setted to 1, si == -1 al último día de
+     * <b>month</b>
      * @return java.util.Date inicializado con la fecha.
      * @throws Exception si month < 0 || month > 11
      */
@@ -524,8 +538,10 @@ public abstract class UTIL {
     }
 
     /**
-     * Personaliza una fecha según los parámetros. <code>fecha</code> no debe ser
+     * Personaliza una fecha según los parámetros.
+     * <code>fecha</code> no debe ser
      * <code>null</code>.
+     *
      * @param fecha un java.util.Date como punto de referencia inicial
      * @param year años por adicionar o restar
      * @param month meses por adicionar o restar
@@ -542,10 +558,10 @@ public abstract class UTIL {
     }
 
     /**
-     * Set all fields related to time (like HOUR_OF_DAY, MINUTE, SECOND, MILLISECND)
-     * to 0.
-     * This allow compare Dates, disregarding fields related to time.
-     * NOTE: beware with the TIME_ZONE!
+     * Set all fields related to time (like HOUR_OF_DAY, MINUTE, SECOND,
+     * MILLISECND) to 0. This allow compare Dates, disregarding fields related
+     * to time. NOTE: beware with the TIME_ZONE!
+     *
      * @param fecha
      * @return a {@code Date}
      */
@@ -560,9 +576,14 @@ public abstract class UTIL {
     }
 
     /**
-     * Devuelte un Date modificada según los <code>dias</code>
-     * @param fecha Date base sobre el cual se va trabajar. If <code>fecha</code> is <code>null</code> will return null Date
-     * @param dias cantidad de días por adicionar o restar a <code>fecha</code>
+     * Devuelte un Date modificada según los
+     * <code>dias</code>
+     *
+     * @param fecha Date base sobre el cual se va trabajar. If
+     * <code>fecha</code> is
+     * <code>null</code> will return null Date
+     * @param dias cantidad de días por adicionar o restar a
+     * <code>fecha</code>
      * @return customized Date!!!...
      */
     public static Date customDateByDays(java.util.Date fecha, int dias) {
@@ -579,8 +600,9 @@ public abstract class UTIL {
 
     /**
      * Borra las imagenes temporales creadas por reportes e informes
-     * @param pathName si es == a "777".. va buscar todos los archivos img.IMG_EXTENSION
-     * en /reportes/
+     *
+     * @param pathName si es == a "777".. va buscar todos los archivos
+     * img.IMG_EXTENSION en /reportes/
      */
     public static void borrarFile(String pathName) {
         File f = null;
@@ -617,8 +639,10 @@ public abstract class UTIL {
 
     /**
      * Cuenta la cantidad de puntos (caracter '.') tiene la cadena
-     * @param cadena String to analize, can not be <code>null</code>
-     * @param candidate 
+     *
+     * @param cadena String to analize, can not be
+     * <code>null</code>
+     * @param candidate
      * @return la cantidad de veces que se encontró al candidato
      */
     public static int countChacarter(String cadena, char candidate) {
@@ -634,8 +658,10 @@ public abstract class UTIL {
     }
 
     /**
-     * Ctrla que sea un caracter numérico el apretado, sinó el evento es consumido
-     * @param evt 
+     * Ctrla que sea un caracter numérico el apretado, sinó el evento es
+     * consumido
+     *
+     * @param evt
      */
     public static void soloNumeros(KeyEvent evt) {
         if (!Character.isDigit(evt.getKeyChar())) {
@@ -644,11 +670,12 @@ public abstract class UTIL {
     }
 
     /**
-     * Controla que la tecla presionada sea un caracter numérico o un PUNTO '.' 
-     * y que este no aparezca en la cadena (si este ya aparece en la cadena, el 
+     * Controla que la tecla presionada sea un caracter numérico o un PUNTO '.'
+     * y que este no aparezca en la cadena (si este ya aparece en la cadena, el
      * evento se consume al igual que si fuera no fuera un numérico).
+     *
      * @param cadena
-     * @param e 
+     * @param e
      */
     public static void solo_numeros_y_un_punto(final String cadena, KeyEvent e) {
         // si es != de '.'
@@ -661,10 +688,11 @@ public abstract class UTIL {
 
     /**
      * Se obtiene el String del JTextField
+     *
      * @param evt The KeyEvent must come from a {@link JTextField}
      * @throws ClassCastException if the source of the event doesn't come from a
      * JTextField.
-     * @see #solo_numeros_y_un_punto(java.lang.String, java.awt.event.KeyEvent) 
+     * @see #solo_numeros_y_un_punto(java.lang.String, java.awt.event.KeyEvent)
      */
     public static void solo_numeros_y_un_punto(KeyEvent evt) {
         JTextField tf = (JTextField) evt.getSource();
@@ -673,21 +701,17 @@ public abstract class UTIL {
     }
 
     /**
-     * Parse a Double formatted String like <code>DecimalFormat("#,##0.00")</code> 
-     * to a Double:
-     * <br> 1234    parse to<t>   1234.00
-     * <br>1.234    parse to<t>   1234.00
-     * <br>12.34    parse to<t>     12.34
-     * <br>123.4    parse to<t>    123.40
-     * <br>123.456  parse to<t> 123456.00
-     * <br>1234.56  parse to<t>   1234.56
-     * <br>------------------------------
-     * <br> 12.345,6   parse to<t>  12345.60
-     * <br>123.456,    parse to<t> 123456.00
-     * <br>123.456,7   parse to<t> 123456.70
-     * <br>1.234.567   parse to<t>1234567.00
-     * @param s a String formated like <code>DecimalFormat("#,##0.00")</code> 
-     * @return 
+     * Parse a Double formatted String like
+     * <code>DecimalFormat("#,##0.00")</code> to a Double: <br> 1234 parse to<t>
+     * 1234.00 <br>1.234 parse to<t> 1234.00 <br>12.34 parse to<t> 12.34
+     * <br>123.4 parse to<t> 123.40 <br>123.456 parse to<t> 123456.00
+     * <br>1234.56 parse to<t> 1234.56 <br>------------------------------ <br>
+     * 12.345,6 parse to<t> 12345.60 <br>123.456, parse to<t> 123456.00
+     * <br>123.456,7 parse to<t> 123456.70 <br>1.234.567 parse to<t>1234567.00
+     *
+     * @param s a String formated like
+     * <code>DecimalFormat("#,##0.00")</code>
+     * @return
      */
     public static Double parseToDouble(String s) {
         String string = s;
@@ -712,6 +736,7 @@ public abstract class UTIL {
 
     /**
      * Devuelve un String del estado (int o short)
+     *
      * @param estado 1 = Activo, 2= Baja, 3= Suspendido
      * @return
      */
@@ -745,6 +770,7 @@ public abstract class UTIL {
 
     /**
      * Pasa el caracter a mayuscula y retorna.
+     *
      * @param letra a mayusculizar.
      * @return el character mayusculizado.
      */
@@ -753,9 +779,9 @@ public abstract class UTIL {
     }
 
     /**
-     * Remueve de la ColumnModel las columnas que se le indique,
-     * deja de ser visible para el usuario pero sigue siendo accesible desde el
-     * TableModel
+     * Remueve de la ColumnModel las columnas que se le indique, deja de ser
+     * visible para el usuario pero sigue siendo accesible desde el TableModel
+     *
      * @param jTable tabla de la cual se desea sacar las columnas
      * @param columnsIndex columnas a quitar de la vista del usuario
      */
@@ -768,9 +794,10 @@ public abstract class UTIL {
     }
 
     /**
-     * Remueve de la ColumnModel la columna que se le indique,
-     * deja de ser visible para el usuario pero sigue siendo accesible desde el
-     * TableModel (DefaultTableModel)
+     * Remueve de la ColumnModel la columna que se le indique, deja de ser
+     * visible para el usuario pero sigue siendo accesible desde el TableModel
+     * (DefaultTableModel)
+     *
      * @param jTable tabla de la cual se desea sacar la columna
      * @param columnIndex número de la columna a quitar de la vista del usuario
      */
@@ -781,14 +808,19 @@ public abstract class UTIL {
     }
 
     /**
-     * Setea como selected al item del comboBox que coincida con el <code>candidato</code>
-     * @param combo if is null or combo<code>.getItemCount() </code> is less than 1, no selectedItem
-     * @param candidato if this is <code>null</code>, no habrá selectedItem
-     * @return an index of the selectedItem, or <code>-1</code> if
-     * 1 > combo.getItemCount() || if <code>candidato</code> does not match any item
+     * Setea como selected al item del comboBox que coincida con el
+     * <code>candidato</code>
+     *
+     * @param combo if is null or combo<code>.getItemCount() </code> is less
+     * than 1, no selectedItem
+     * @param candidato if this is
+     * <code>null</code>, no habrá selectedItem
+     * @return an index of the selectedItem, or
+     * <code>-1</code> if 1 > combo.getItemCount() || if
+     * <code>candidato</code> does not match any item
      */
     public static int setSelectedItem(JComboBox combo, String candidato) {
-        if (candidato == null || candidato.length() < 1 || combo == null) {
+        if (candidato == null) {
             return -1;
         }
 
@@ -805,8 +837,10 @@ public abstract class UTIL {
     }
 
     /**
-     * Setea como selected al item del comboBox que coincida con el <tt>candidato</tt>.
-     * <p>Este método utiliza {@code equals} para la comparación
+     * Setea como selected al item del comboBox que coincida con el
+     * <code>candidato</code>. <p>Este método utiliza {@code equals} para la
+     * comparación
+     *
      * @param combo El cual podría contener el item {@code candidato}
      * @param candidato Can not be null.
      * @return an index of the selectedItem, or -1 if 1 > combo.getItemCount()
@@ -837,7 +871,33 @@ public abstract class UTIL {
     }
 
     /**
+     *
+     * @param comboBox
+     * @param objectList
+     * @param elegible
+     * @param itemWhenIsEmpty se agrega como 1er item del combo si la lista está
+     * vacía o es null
+     * @throws IllegalArgumentException if
+     * <code>objectList.isEmpty() || objectList == null</code> and
+     * <code>itemWhenIsEmpty == null</code>
+     * @see #loadComboBox(javax.swing.JComboBox, java.util.List, boolean)
+     */
+    public static void loadComboBox(JComboBox comboBox, List objectList, boolean elegible, String itemWhenIsEmpty) {
+        if (itemWhenIsEmpty == null) {
+            throw new IllegalArgumentException("parameter itemWhenIsEmpty can not be null");
+        }
+        if (objectList == null || objectList.isEmpty()) {
+            comboBox.removeAllItems();
+            //si la lista a cargar está vacía o es NULL
+            comboBox.addItem(itemWhenIsEmpty);
+        } else {
+            loadComboBox(comboBox, objectList, elegible);
+        }
+    }
+
+    /**
      * Remueve todos los items y carga la List de objetos en el comboBox.
+     *
      * @param comboBox JComboBox donde se van a cargar los Objectos.
      * @param objectList Si la List está vacía o es null se carga un String Item
      * "&lt;Vacio&gt;".
@@ -862,13 +922,20 @@ public abstract class UTIL {
     }
 
     /**
-     * Personaliza la carga de datos en un JComboBox, según una List y bla bla...
+     * Personaliza la carga de datos en un JComboBox, según una List y bla
+     * bla...
+     *
      * @param comboBox ...
-     * @param objectList <code>List</code> la cual se va cargar
-     * @param firstItem mensaje del 1er item del combo, dejar <code>null</code> si no hay preferencia
-     * @param itemWhenIsEmpty item que se va cargar cuando el <tt>objectList == null or empty</tt>.
-     * @throws IllegalArgumentException if objectList == null or empty AND itemWhemIsEmpy == null.
-     * @see #loadComboBox(javax.swing.JComboBox, java.util.List, java.lang.String)
+     * @param objectList
+     * <code>List</code> la cual se va cargar
+     * @param firstItem mensaje del 1er item del combo, dejar
+     * <code>null</code> si no hay preferencia
+     * @param itemWhenIsEmpty item que se va cargar cuando el <tt>objectList ==
+     * null or empty</tt>.
+     * @throws IllegalArgumentException if objectList == null or empty AND
+     * itemWhemIsEmpy == null.
+     * @see #loadComboBox(javax.swing.JComboBox, java.util.List,
+     * java.lang.String)
      */
     public static void loadComboBox(JComboBox comboBox, List objectList, String firstItem, String itemWhenIsEmpty) {
         if (objectList == null || objectList.isEmpty()) {
@@ -885,19 +952,22 @@ public abstract class UTIL {
     }
 
     /**
-     * Remueve todos los items, carga en el comboBox todos los objectos en objectList.
-     * Si no hay elementos para cargar (<code>objectList == null && empty</code>) message1stItem no se agrega.
+     * Remueve todos los items, carga en el comboBox todos los objectos en
+     * objectList. Si no hay elementos para cargar (
+     * <code>objectList == null && empty</code>) message1stItem no se agrega.
+     *
      * @param comboBox
      * @param objectList collection la cual se va cargar
-     * @param firstItem 1er item del combo, puede ser  <code>null</code> y solo se carga la lista.
+     * @param message1stItem 1er item del combo, puede ser
+     * <code>null</code> y solo se carga la lista.
      * @see #loadComboBox(javax.swing.JComboBox, java.util.List, boolean)
      */
-    public static void loadComboBox(JComboBox comboBox, List objectList, String firstItem) {
+    public static void loadComboBox(JComboBox comboBox, List objectList, String message1stItem) {
         loadComboBox(comboBox, objectList, false);
         if (objectList != null && !objectList.isEmpty()) {
             comboBox.removeAllItems();
-            if (firstItem != null) {
-                comboBox.addItem(firstItem);
+            if (message1stItem != null) {
+                comboBox.addItem(message1stItem);
             }
             for (Object object : objectList) {
                 comboBox.addItem(object);
@@ -909,13 +979,14 @@ public abstract class UTIL {
     }
 
     /**
-     * Order a List based on the property indicated.
-     * This method use the Reflection API to performance the work ( qué loco no!?).
+     * Order a List based on the property indicated. This method use the
+     * Reflection API to performance the work ( qué loco no!?).
+     *
      * @param lista List to be ordered.
-     * @param propiedad represent the getter signature from the property that the objects in the List must has.
-     * <br>EXAMPLE:
-     * <br>if == <code>"name"</code>  ==> <b>getName</b>.
-     * <br>if == <code>"lastNAmE"</code>  ==> <b>getLastNAmE</b>.
+     * @param propiedad represent the getter signature from the property that
+     * the objects in the List must has. <br>EXAMPLE: <br>if ==
+     * <code>"name"</code> ==> <b>getName</b>. <br>if ==
+     * <code>"lastNAmE"</code> ==> <b>getLastNAmE</b>.
      * @param ascending if the List be ordered ASC, if not then will be DESC.
      */
     public static void order(List lista, final String propiedad, final boolean ascending) {
@@ -926,6 +997,7 @@ public abstract class UTIL {
                 try {
                     Class clase = obj1.getClass();
                     String getter = "get" + Character.toUpperCase(propiedad.charAt(0)) + propiedad.substring(1);
+                    @SuppressWarnings("unchecked")
                     Method getterMethod = clase.getMethod(getter);
 
                     Object value = getterMethod.invoke(obj1);
@@ -960,10 +1032,15 @@ public abstract class UTIL {
     }
 
     /**
-     * Agrega "0" a la <code>cadena</code> hasta que esta tenga la longitudMaxima
-     * @param cadena If == <code>null</code> will do nothing!
-     * @param longitudMaxima agrega "0" hasta que <code>cadena</code> tenga la longitud deseada
-     * @return <code>cadena<code> overclocking..
+     * Agrega "0" a la
+     * <code>cadena</code> hasta que esta tenga la longitudMaxima
+     *
+     * @param cadena If ==
+     * <code>null</code> will do nothing!
+     * @param longitudMaxima agrega "0" hasta que
+     * <code>cadena</code> tenga la longitud deseada
+     * @return
+     * <code>cadena<code> overclocking..
      */
     public static String AGREGAR_CEROS(String cadena, int longitudMaxima) {
         if (cadena == null) {
@@ -982,9 +1059,12 @@ public abstract class UTIL {
 
     /**
      * Devuelte el % del monto
+     *
      * @param monto sobre el cual se calcula el %
      * @param porcentaje debe ser >=0
-     * @return El porcentaje (%) del monto, being <code>0 >= monto</conde> or  0 >= <code>porcentaje</code>, otherwise will return 0.0!
+     * @return El porcentaje (%) del monto, being
+     * <code>0 >= monto</conde> or  0 >=
+     * <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static Double getPorcentaje(double monto, double porcentaje) {
         if (porcentaje < 0) {
@@ -998,6 +1078,7 @@ public abstract class UTIL {
 
     /**
      * Obtiene la TableModel (DefaultTableModel) y elimina todas las filas
+     *
      * @param table
      * @see #limpiarDtm(javax.swing.table.DefaultTableModel)
      */
@@ -1012,10 +1093,14 @@ public abstract class UTIL {
     }
 
     /**
-     * Devuelve el Objeto en la celda de la fila selecciada y la columna indicada
-     * @param jTable De la cual se va obtener el DefaultTableModel y la selectedRow.
+     * Devuelve el Objeto en la celda de la fila selecciada y la columna
+     * indicada
+     *
+     * @param jTable De la cual se va obtener el DefaultTableModel y la
+     * selectedRow.
      * @param indexColumn La columna de la que se solicita el Object
-     * @return the value Object at the specified cell, or <code>null</code> if no row is selected
+     * @return the value Object at the specified cell, or
+     * <code>null</code> if no row is selected
      */
     public static Object getSelectedValue(JTable jTable, int indexColumn) {
         if (jTable.getSelectedRow() != -1) {
@@ -1029,15 +1114,16 @@ public abstract class UTIL {
     /**
      * Settea un alineamiento horizontal en las celdas de la tabla, para todas
      * las celdas que sean del tipo de class especificado.
+     *
      * @param jTable1 tabla a la cual se le va aplicar.
      * @param columnClass class a cual afectará el alineamiento.
-     * @param alignment  One of the following constants
-     *           defined in <code>SwingConstants</code>:
-     *           <code>LEFT</code>,
-     *           <code>CENTER</code> (the default for image-only labels),
-     *           <code>RIGHT</code>,
-     *           <code>LEADING</code> (the default for text-only labels) or
-     *           <code>TRAILING</code>.
+     * @param alignment One of the following constants defined in
+     * <code>SwingConstants</code>:
+     * <code>LEFT</code>,
+     * <code>CENTER</code> (the default for image-only labels),
+     * <code>RIGHT</code>,
+     * <code>LEADING</code> (the default for text-only labels) or
+     * <code>TRAILING</code>.
      *
      * @see SwingConstants
      * @see JLabel#getHorizontalAlignment
@@ -1049,14 +1135,14 @@ public abstract class UTIL {
     }
 
     /**
-     * Implementación de DefaultTableModel
-     * By default editableColumns = false
+     * Implementación de DefaultTableModel By default editableColumns = false
      */
     private static class DefaultTableModelImpl extends DefaultTableModel {
 
         /**
-         * This property can be null or contain nulls values, in both case a default
-         * value will be used (<code>Object.class</code>).
+         * This property can be null or contain nulls values, in both case a
+         * default value will be used (
+         * <code>Object.class</code>).
          */
         private Class[] columnTypes = null;
         /**
@@ -1074,7 +1160,9 @@ public abstract class UTIL {
         /**
          * Este constructor permite especificar a que class pertenecen los datos
          * que se van a insertar en cada columna
-         * @param columnTypes tipo de objeto que contendrá cada columna, the array values can be null
+         *
+         * @param columnTypes tipo de objeto que contendrá cada columna, the
+         * array values can be null
          */
         public DefaultTableModelImpl(Class[] columnTypes) {
             this.columnTypes = columnTypes;
@@ -1083,9 +1171,11 @@ public abstract class UTIL {
         /**
          * Este constructor permite especificar a que class pertenecen los datos
          * que se van a insertar en cada columna y cuales será editables
-         * @param columnTypes tipo de objecto que contendrá cada columna, the array values can be null
-         * @param editableColumns debe contenedor los números (index de las columnas) que se
-         * desea que puedan ser editables.
+         *
+         * @param columnTypes tipo de objecto que contendrá cada columna, the
+         * array values can be null
+         * @param editableColumns debe contenedor los números (index de las
+         * columnas) que se desea que puedan ser editables.
          */
         public DefaultTableModelImpl(Class[] columnTypes, int[] editableColumns) {
             this.columnTypes = columnTypes;
@@ -1125,8 +1215,10 @@ public abstract class UTIL {
 
     /**
      * Valida si es un email
+     *
      * @param email String to validate
-     * @return return <code>true</code> if is a valid email address
+     * @return return
+     * <code>true</code> if is a valid email address
      */
     public static boolean VALIDAR_EMAIL(String email) {
         return Pattern.compile(EMAIL_REGEX).matcher(email).matches();
@@ -1134,11 +1226,13 @@ public abstract class UTIL {
 
     /**
      * REGEX.. asi nomas
+     *
      * @param regex
      * @param stringToEvaluate
-     * @return  
+     * @return
      * @throws PatternSyntaxException
-     * @see <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">
+     * @see <a
+     * href="http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">
      * http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html</a>
      */
     public static boolean VALIDAR_REGEX(String regex, String stringToEvaluate) {
@@ -1165,6 +1259,7 @@ public abstract class UTIL {
 
     /**
      * Calcula la edad según {@code dateOfBith}
+     *
      * @param dateOfBirth no puede ser posterior a HOY
      * @return edad {@code >= 0}
      */

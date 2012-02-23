@@ -3,6 +3,7 @@ package utilities.swing.components;
 /**
  * Clase diseñada para envolver entidades y hacerlas visibles en un {@code JComboBox}
  * sobreescribiendo el método {@link Object#toString()}.
+ *
  * @param <T> Entidad a la cual se wrappea.
  * @author FiruzzZ
  */
@@ -13,16 +14,16 @@ public final class ComboBoxWrapper<T> {
     private final String text;
 
     /**
-     * 
+     *
      * @param id
      * @param text
-     * @param entity 
+     * @param entity
      */
     public ComboBoxWrapper(T entity, Integer id, String text) {
-        if(id == null) {
+        if (id == null) {
             throw new IllegalArgumentException("parameter id can not be null");
         }
-        if(text == null) {
+        if (text == null) {
             throw new IllegalArgumentException("parameter text can not be null");
         }
         this.entity = entity;
@@ -64,11 +65,9 @@ public final class ComboBoxWrapper<T> {
         return hash;
     }
 
-    
     @Override
     public String toString() {
-        return text ;
+        return text;
     }
-    
 
 }
