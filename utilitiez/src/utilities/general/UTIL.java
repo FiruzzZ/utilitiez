@@ -255,6 +255,32 @@ public abstract class UTIL {
     }
 
     /**
+     * Compara los Dates (YEAR, MONTH, DAY) ignorando los campos relacionados al
+     * TIME (HOUR, MINUTE, SECOND...)
+     *
+     * @param d1
+     * @param d2
+     * @return 0 = si son iguales, a positive if
+     * <code>d1</code> is after or a negative if is before d2
+     */
+    public static int compararIgnorandoTimeFields(Date d1, Date d2) {
+        if(d1 == null || d2 == null) {
+            throw new IllegalArgumentException("d1=" +  d1 + "\td2=" + d2);
+        }
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(d1);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(d2);
+        if (c1.get(Calendar.YEAR) != c2.get(Calendar.YEAR)) {
+            return c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
+        }
+        if (c1.get(Calendar.MONTH) != c2.get(Calendar.MONTH)) {
+            return c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH);
+        }
+        return c1.get(Calendar.DAY_OF_MONTH) - c2.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
      * Transforma una IMAGEN de tipo bytea (postgre) a un java.io.File
      *
      * @param img tipo de dato almacenado en la DB (debe ser una imagen)
@@ -307,12 +333,12 @@ public abstract class UTIL {
      * último) no se corresponde al cálculo.
      * @throws NumberFormatException if can not be castable to a Long type.
      */
-    public static void VALIDAR_CUIL(String cuil) throws NumberFormatException {
+    public static void VALIDAR_CUIL(String cuil) throws IllegalArgumentException, NumberFormatException {
         String c = cuil.trim();
         try {
             Long.valueOf(cuil);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("La CUIT/CUIL no es válida (ingrese solo números)");
+            throw new NumberFormatException("La CUIT/CUIL no es válida (ingrese solo números)");
         }
         if (c.length() != 11) {
             throw new IllegalArgumentException("Longitud de la CUIT/CUIL no es correcta (" + c.length() + ")");
@@ -1087,9 +1113,7 @@ public abstract class UTIL {
     }
 
     public static void limpiarDtm(DefaultTableModel dtm) {
-        for (int i = dtm.getRowCount() - 1; i > -1; i--) {
-            dtm.removeRow(i);
-        }
+        dtm.setRowCount(0);
     }
 
     /**
