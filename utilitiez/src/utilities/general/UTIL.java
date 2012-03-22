@@ -264,8 +264,8 @@ public abstract class UTIL {
      * <code>d1</code> is after or a negative if is before d2
      */
     public static int compararIgnorandoTimeFields(Date d1, Date d2) {
-        if(d1 == null || d2 == null) {
-            throw new IllegalArgumentException("d1=" +  d1 + "\td2=" + d2);
+        if (d1 == null || d2 == null) {
+            throw new IllegalArgumentException("d1=" + d1 + "\td2=" + d2);
         }
         Calendar c1 = Calendar.getInstance();
         c1.setTime(d1);
@@ -820,6 +820,18 @@ public abstract class UTIL {
     }
 
     /**
+     * Remueve de la ColumnModel las columnas que se le indique, deja de ser
+     * visible para el usuario pero sigue siendo accesible desde el TableModel
+     *
+     * @param jTable tabla de la cual se desea sacar las columnas
+     * @param columnName nombre de la columna (a.k.a. Header column and
+     * identifier)
+     */
+    public static void hideColumnTable(JTable jTable, String columnName) {
+        jTable.getColumnModel().removeColumn(jTable.getColumn(columnName));
+    }
+
+    /**
      * Remueve de la ColumnModel la columna que se le indique, deja de ser
      * visible para el usuario pero sigue siendo accesible desde el TableModel
      * (DefaultTableModel)
@@ -829,8 +841,6 @@ public abstract class UTIL {
      */
     public static void hideColumnTable(JTable jTable, int columnIndex) {
         hideColumnsTable(jTable, new int[]{columnIndex});
-//      jTable.getColumnModel().removeColumn(jTable.getColumnModel()
-//                                                      .getColumn(columnIndex));
     }
 
     /**
@@ -1132,6 +1142,16 @@ public abstract class UTIL {
                     jTable.getSelectedRow(), indexColumn);
         } else {
             return null;
+        }
+    }
+
+    public static void removeSelectedRows(JTable table) {
+        int[] selectedRows = table.getSelectedRows();
+        if (selectedRows.length > 0) {
+            DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+            for (int i = selectedRows.length - 1; i >= 0; i++) {
+                dtm.removeRow(selectedRows[i]);
+            }
         }
     }
 
