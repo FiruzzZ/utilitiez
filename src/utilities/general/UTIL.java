@@ -118,7 +118,6 @@ public abstract class UTIL {
      * Tamaño máximo de las imagenes que se puede guardar: 1.048.576 bytes
      */
     public final static int MAX_IMAGEN_FILE_SIZE = 1048576; // en bytes (1Mb/1024Kb/...)
-    public static final Map<Integer, String> MESES = new HashMap<Integer, String>(12);
 
     static {
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
@@ -129,18 +128,6 @@ public abstract class UTIL {
         yyyy_MM_dd = new SimpleDateFormat("yyyy/MM/dd");
         TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
         TIMESTAMP_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        MESES.put(0, "Enero");
-        MESES.put(1, "Febrero");
-        MESES.put(2, "Marzo");
-        MESES.put(3, "Abril");
-        MESES.put(4, "Mayo");
-        MESES.put(5, "Junio");
-        MESES.put(6, "Julio");
-        MESES.put(7, "Agosto");
-        MESES.put(8, "Septiembre");
-        MESES.put(9, "Octubre");
-        MESES.put(10, "Noviembre");
-        MESES.put(11, "Diciembre");
     }
 
     public static SimpleDateFormat instanceOfDATE_FORMAT() {
@@ -1068,7 +1055,7 @@ public abstract class UTIL {
     }
 
     /**
-     * Agrega "0" a la
+     * Agrega "0" a la DERECHA de
      * <code>cadena</code> hasta que esta tenga la longitudMaxima
      *
      * @param cadena If ==

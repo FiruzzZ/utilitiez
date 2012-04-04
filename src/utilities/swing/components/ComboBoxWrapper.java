@@ -15,9 +15,9 @@ public final class ComboBoxWrapper<T> {
 
     /**
      *
-     * @param id
-     * @param text
      * @param entity
+     * @param id unique instance identifier of the class (Primary Key or Unique constraint)
+     * @param text
      */
     public ComboBoxWrapper(T entity, Integer id, String text) {
         if (id == null) {
