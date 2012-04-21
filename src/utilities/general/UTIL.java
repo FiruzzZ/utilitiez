@@ -333,9 +333,9 @@ public abstract class UTIL {
         //ctrl de los 1ros 2 dígitos...//
         String x = c.substring(0, 2);
         int xx = Integer.parseInt(x);
-        if ((xx != 20) && (xx != 23) && (xx != 24) && (xx != 27) && (xx != 30) && (xx != 33) && (xx != 34)) {
+        if ((xx != 20) && (xx != 23) && (xx != 24) && (xx != 27) && (xx != 28) && (xx != 30) && (xx != 33) && (xx != 34)) {
             throw new IllegalArgumentException("Los primeros 2 dígitos de la CUIT/CUIL no corresponden a ningún tipo."
-                    + "\nHombres: 20, 23 o 24; Mujeres: 27; Empresas: 30, 33, 34");
+                    + "\nHombres: 20, 23, 24; Mujeres: 27, 28; Empresas: 30, 33, 34");
         }
         //ctrl del verificador...//
         int digito, suma = 0;
@@ -1159,7 +1159,7 @@ public abstract class UTIL {
      * @see SwingConstants
      * @see JLabel#getHorizontalAlignment
      */
-    public static void setHorizonalAlignment(JTable jTable1, Class columnClass, int alignment) {
+    public static void setHorizonalAlignment(JTable jTable1, Class<?> columnClass, int alignment) {
         DefaultTableCellRenderer defaultTableCellRender = new DefaultTableCellRenderer();
         defaultTableCellRender.setHorizontalAlignment(alignment);
         jTable1.setDefaultRenderer(columnClass, defaultTableCellRender);
