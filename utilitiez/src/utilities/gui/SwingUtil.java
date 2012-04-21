@@ -32,7 +32,7 @@ public class SwingUtil {
         if (!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
         } else if (maxLength != null && maxLength > 0) {
-            if (maxLength < jTextField.getText().length()) {
+            if (maxLength <= jTextField.getText().length()) {
                 evt.consume();
             }
         }
