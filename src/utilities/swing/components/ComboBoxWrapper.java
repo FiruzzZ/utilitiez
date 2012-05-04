@@ -4,7 +4,7 @@ package utilities.swing.components;
  * Clase diseñada para envolver entidades y hacerlas visibles en un {@code JComboBox}
  * sobreescribiendo el método {@link Object#toString()}.
  *
- * @param <T> Entidad a la cual se wrappea.
+ * @param <T> Class to wrap.
  * @author FiruzzZ
  */
 public final class ComboBoxWrapper<T> {
@@ -15,9 +15,12 @@ public final class ComboBoxWrapper<T> {
 
     /**
      *
-     * @param entity
-     * @param id unique instance identifier of the class (Primary Key or Unique constraint)
-     * @param text
+     * @param entity instance of the object to wrap, can be
+     * <code>null</code>
+     * @param id unique instance identifier of the class (Primary Key or Unique
+     * constraint)
+     * @param text String used as
+     * <code>return</code> in the overrided method {@link #toString()}
      */
     public ComboBoxWrapper(T entity, Integer id, String text) {
         if (id == null) {
@@ -51,8 +54,11 @@ public final class ComboBoxWrapper<T> {
         if (getClass() != obj.getClass()) {
             return false;
         }
+        @SuppressWarnings("unchecked")
         final ComboBoxWrapper<T> other = (ComboBoxWrapper<T>) obj;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+        if (this.getEntity() != null && other.getEntity() != null) {
+            return this.getEntity().equals(other.getEntity());
+        } else if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -69,5 +75,4 @@ public final class ComboBoxWrapper<T> {
     public String toString() {
         return text;
     }
-
 }
