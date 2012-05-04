@@ -22,16 +22,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.imageio.ImageIO;
@@ -799,6 +792,7 @@ public abstract class UTIL {
      * @param columnsIndex columnas a quitar de la vista del usuario
      */
     public static void hideColumnsTable(JTable jTable, int[] columnsIndex) {
+        Arrays.sort(columnsIndex);
         for (int i = 0; i < columnsIndex.length; i++) {
             // se le va restando i al index real indicado, porque estos se van desplazando
             // a medida que se van eliminando las columnas
@@ -862,7 +856,8 @@ public abstract class UTIL {
     /**
      * Setea como selected al item del comboBox que coincida con el
      * <code>candidato</code>. <p>Este método utiliza {@code equals} para la
-     * comparación
+     * comparación, SO THE CLASS MUST OVERRIDE {@link Object#equals(java.lang.Object)
+     * }
      *
      * @param combo El cual podría contener el item {@code candidato}
      * @param candidato Can not be null.
@@ -879,7 +874,17 @@ public abstract class UTIL {
         if (combo.getItemCount() < 1) {
             return -1;
         }
-
+        try {
+            Class<?> declaringClass = candidato.getClass().getMethod("equals", Object.class).getDeclaringClass();
+            if (!declaringClass.equals(candidato.getClass())) {
+                Logger.getLogger(UTIL.class.getName()).log(Level.SEVERE, null,
+                        "La Clase " + candidato.getClass() + " must override the method equals(Object o)");
+            }
+        } catch (NoSuchMethodException ex) {
+            throw new RuntimeException(ex.getMessage(), ex.getCause());
+        } catch (SecurityException ex) {
+            throw new RuntimeException(ex.getMessage(), ex.getCause());
+        }
         boolean encontrado = false;
         int index = 0;
         while (index < combo.getItemCount() && !encontrado) {
@@ -1132,14 +1137,23 @@ public abstract class UTIL {
         }
     }
 
-    public static void removeSelectedRows(JTable table) {
-        int[] selectedRows = table.getSelectedRows();
+    /**
+     * Elimina las filas del modelo de la tabla, desde la última hasta la 1ra
+     * seleccionada.
+     *
+     * @param jTable ...
+     * @return cantidad de filas removidas
+     * @see DefaultTableModel#removeRow(int)
+     */
+    public static int removeSelectedRows(JTable jTable) {
+        int[] selectedRows = jTable.getSelectedRows();
         if (selectedRows.length > 0) {
-            DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+            DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
             for (int i = selectedRows.length - 1; i >= 0; i++) {
                 dtm.removeRow(selectedRows[i]);
             }
         }
+        return selectedRows.length;
     }
 
     /**
