@@ -1149,7 +1149,7 @@ public abstract class UTIL {
         int[] selectedRows = jTable.getSelectedRows();
         if (selectedRows.length > 0) {
             DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
-            for (int i = selectedRows.length - 1; i >= 0; i++) {
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
                 dtm.removeRow(selectedRows[i]);
             }
         }
