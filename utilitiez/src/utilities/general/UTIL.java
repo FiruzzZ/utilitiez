@@ -208,7 +208,8 @@ public abstract class UTIL {
         AffineTransform trans = AffineTransform.getScaleInstance(
                 (double) labelWidth / bufferedImage.getWidth(), (double) labelHeight / bufferedImage.getHeight());
 
-        Graphics2D g = (Graphics2D) label.getGraphics();
+        Graphics2D g;
+//        g = (Graphics2D) label.getGraphics();
 //        g.drawRenderedImage(src, trans);
 //        jLabel.setIcon(new ImageIcon(src)); // <-- no resizea la img en la label
         //----------------------------
@@ -1007,7 +1008,7 @@ public abstract class UTIL {
     }
 
     /**
-     * Order a List based on the property indicated. This method use the
+     * Sort a List based on the property indicated. This method use the
      * Reflection API to performance the work ( qué loco no!?).
      *
      * @param lista List to be ordered.
