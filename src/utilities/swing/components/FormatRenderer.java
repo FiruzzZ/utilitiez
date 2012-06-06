@@ -50,7 +50,7 @@ public class FormatRenderer extends DefaultTableCellRenderer {
      *
      * @return
      */
-    public static TableCellRenderer getDateRenderer() {
+    public static FormatRenderer getDateRenderer() {
         return new FormatRenderer(DateFormat.getDateInstance());
     }
 
