@@ -254,11 +254,11 @@ public abstract class UTIL {
         c2.setTime(d2);
         if (c1.get(Calendar.YEAR) != c2.get(Calendar.YEAR)) {
             return c1.get(Calendar.YEAR) - c2.get(Calendar.YEAR);
-        }
-        if (c1.get(Calendar.MONTH) != c2.get(Calendar.MONTH)) {
+        } else if (c1.get(Calendar.MONTH) != c2.get(Calendar.MONTH)) {
             return c1.get(Calendar.MONTH) - c2.get(Calendar.MONTH);
+        } else {
+            return c1.get(Calendar.DAY_OF_MONTH) - c2.get(Calendar.DAY_OF_MONTH);
         }
-        return c1.get(Calendar.DAY_OF_MONTH) - c2.get(Calendar.DAY_OF_MONTH);
     }
 
     /**
@@ -530,10 +530,9 @@ public abstract class UTIL {
      * @return java.util.Date inicializado con la fecha.
      * @throws Exception si month < 0 || month > 11
      */
-    public static Date customDate(int year, int month, Integer day)
-            throws Exception {
+    public static Date customDate(int year, int month, Integer day) {
         if (month < 0 || month > 11) {
-            throw new Exception("Mes (month) no válido, must be >= 0 AND <= 11");
+            throw new IllegalArgumentException("Mes (month) no válido, must be >= 0 AND <= 11");
         }
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone(TIME_ZONE));
         if (day == null) {
@@ -851,7 +850,7 @@ public abstract class UTIL {
             }
             index++;
         }
-        return index;
+        return encontrado ? index : -1;
     }
 
     /**
@@ -878,7 +877,7 @@ public abstract class UTIL {
         try {
             Class<?> declaringClass = candidato.getClass().getMethod("equals", Object.class).getDeclaringClass();
             if (!declaringClass.equals(candidato.getClass())) {
-                Logger.getLogger(UTIL.class.getName()).log(Level.SEVERE, null,
+                Logger.getLogger(UTIL.class.getName()).log(Level.WARNING,
                         "La Clase " + candidato.getClass() + " must override the method equals(Object o)");
             }
         } catch (NoSuchMethodException ex) {
