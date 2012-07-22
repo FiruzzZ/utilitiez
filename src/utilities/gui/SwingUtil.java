@@ -1,7 +1,9 @@
 package utilities.gui;
 
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
@@ -19,6 +21,27 @@ public class SwingUtil {
     public static void setSelectedAll(JTextComponent textComponent) {
         textComponent.setSelectionStart(0);
         textComponent.setSelectionEnd(textComponent.getText().length());
+    }
+
+    public static KeyListener getLettersInput(final boolean allowWhiteSpace) {
+        KeyListener l = new KeyAdapter() {
+
+            private final boolean allows = allowWhiteSpace;
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (!Character.isLetter(e.getKeyChar())) {
+                    if (allows) {
+                        if (!Character.isSpaceChar(e.getKeyChar())) {
+                            e.consume();
+                        }
+                    } else {
+                        e.consume();
+                    }
+                }
+            }
+        };
+        return l;
     }
 
     /**
