@@ -7,7 +7,7 @@ package utilities.swing.components;
  * @param <T> Class to wrap.
  * @author FiruzzZ
  */
-public final class ComboBoxWrapper<T> {
+public final class ComboBoxWrapper<T> implements Comparable<ComboBoxWrapper<T>> {
 
     private final T entity;
     private final Integer id;
@@ -46,6 +46,11 @@ public final class ComboBoxWrapper<T> {
         return id;
     }
 
+    /**
+     * Ojo piojo con este, no es un equal standar!
+     * @param obj
+     * @return 
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -74,5 +79,10 @@ public final class ComboBoxWrapper<T> {
     @Override
     public String toString() {
         return text;
+    }
+
+    @Override
+    public int compareTo(ComboBoxWrapper<T> o) {
+        return this.getText().compareTo(o.getText());
     }
 }
