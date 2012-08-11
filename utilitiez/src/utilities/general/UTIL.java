@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -193,8 +194,7 @@ public abstract class UTIL {
      * @param imageFile File de una imagen, la cual se va ajustar al tamaño de
      * la jLabel.
      * @return el jLabel con la imagen ajustada..
-     * @exception java.io.IOException si no puede leer el
-     * <code>imageFile</code>
+     * @exception java.io.IOException si no puede leer el <code>imageFile</code>
      * @exception Exception si el tamaño del archivo supera el configurado
      * permitido (default is Integer.MAX_VALUE).
      */
@@ -240,8 +240,8 @@ public abstract class UTIL {
      *
      * @param d1
      * @param d2
-     * @return 0 = si son iguales, a positive if
-     * <code>d1</code> is after or a negative if is before d2
+     * @return 0 = si son iguales, a positive if <code>d1</code> is after or a
+     * negative if is before d2
      */
     public static int compararIgnorandoTimeFields(Date d1, Date d2) {
         if (d1 == null || d2 == null) {
@@ -585,10 +585,8 @@ public abstract class UTIL {
      * <code>dias</code>
      *
      * @param fecha Date base sobre el cual se va trabajar. If
-     * <code>fecha</code> is
-     * <code>null</code> will return null Date
-     * @param dias cantidad de días por adicionar o restar a
-     * <code>fecha</code>
+     * <code>fecha</code> is <code>null</code> will return null Date
+     * @param dias cantidad de días por adicionar o restar a <code>fecha</code>
      * @return customized Date!!!...
      */
     public static Date customDateByDays(java.util.Date fecha, int dias) {
@@ -645,8 +643,7 @@ public abstract class UTIL {
     /**
      * Cuenta la cantidad de puntos (caracter '.') tiene la cadena
      *
-     * @param cadena String to analize, can not be
-     * <code>null</code>
+     * @param cadena String to analize, can not be <code>null</code>
      * @param candidate
      * @return la cantidad de veces que se encontró al candidato
      */
@@ -714,8 +711,7 @@ public abstract class UTIL {
      * 12.345,6 parse to<t> 12345.60 <br>123.456, parse to<t> 123456.00
      * <br>123.456,7 parse to<t> 123456.70 <br>1.234.567 parse to<t>1234567.00
      *
-     * @param s a String formated like
-     * <code>DecimalFormat("#,##0.00")</code>
+     * @param s a String formated like <code>DecimalFormat("#,##0.00")</code>
      * @return
      */
     public static Double parseToDouble(String s) {
@@ -829,11 +825,9 @@ public abstract class UTIL {
      *
      * @param combo if is null or combo<code>.getItemCount() </code> is less
      * than 1, no selectedItem
-     * @param candidato if this is
-     * <code>null</code>, no habrá selectedItem
-     * @return an index of the selectedItem, or
-     * <code>-1</code> if 1 > combo.getItemCount() || if
-     * <code>candidato</code> does not match any item
+     * @param candidato if this is <code>null</code>, no habrá selectedItem
+     * @return an index of the selectedItem, or <code>-1</code> if 1 >
+     * combo.getItemCount() || if <code>candidato</code> does not match any item
      */
     public static int setSelectedItem(JComboBox combo, String candidato) {
         if (candidato == null) {
@@ -953,10 +947,9 @@ public abstract class UTIL {
      * bla...
      *
      * @param comboBox ...
-     * @param objectList
-     * <code>List</code> la cual se va cargar
-     * @param firstItem mensaje del 1er item del combo, dejar
-     * <code>null</code> si no hay preferencia
+     * @param objectList <code>List</code> la cual se va cargar
+     * @param firstItem mensaje del 1er item del combo, dejar <code>null</code>
+     * si no hay preferencia
      * @param itemWhenIsEmpty item que se va cargar cuando el <tt>objectList ==
      * null or empty</tt>.
      * @throws IllegalArgumentException if objectList == null or empty AND
@@ -985,8 +978,8 @@ public abstract class UTIL {
      *
      * @param comboBox
      * @param objectList collection la cual se va cargar
-     * @param message1stItem 1er item del combo, puede ser
-     * <code>null</code> y solo se carga la lista.
+     * @param message1stItem 1er item del combo, puede ser <code>null</code> y
+     * solo se carga la lista.
      * @see #loadComboBox(javax.swing.JComboBox, java.util.List, boolean)
      */
     public static void loadComboBox(JComboBox comboBox, List objectList, String message1stItem) {
@@ -1012,13 +1005,12 @@ public abstract class UTIL {
      * @param lista List to be ordered.
      * @param propiedad represent the getter signature from the property that
      * the objects in the List must has. <br>EXAMPLE: <br>if ==
-     * <code>"name"</code> ==> <b>getName</b>. <br>if ==
-     * <code>"lastNAmE"</code> ==> <b>getLastNAmE</b>.
+     * <code>"name"</code> ==> <b>getName</b>. <br>if == <code>"lastNAmE"</code>
+     * ==> <b>getLastNAmE</b>.
      * @param ascending if the List be ordered ASC, if not then will be DESC.
      */
     public static void order(List lista, final String propiedad, final boolean ascending) {
         Collections.sort(lista, new Comparator() {
-
             @Override
             public int compare(Object obj1, Object obj2) {
                 try {
@@ -1062,12 +1054,10 @@ public abstract class UTIL {
      * Agrega "0" a la DERECHA de
      * <code>cadena</code> hasta que esta tenga la longitudMaxima
      *
-     * @param cadena If ==
-     * <code>null</code> will do nothing!
-     * @param longitudMaxima agrega "0" hasta que
-     * <code>cadena</code> tenga la longitud deseada
-     * @return
-     * <code>cadena<code> overclocking..
+     * @param cadena If == <code>null</code> will do nothing!
+     * @param longitudMaxima agrega "0" hasta que <code>cadena</code> tenga la
+     * longitud deseada
+     * @return      <code>cadena<code> overclocking..
      */
     public static String AGREGAR_CEROS(String cadena, int longitudMaxima) {
         if (cadena == null) {
@@ -1089,8 +1079,7 @@ public abstract class UTIL {
      *
      * @param monto sobre el cual se calcula el %
      * @param porcentaje debe ser >=0
-     * @return El porcentaje (%) del monto, being
-     * <code>0 >= monto</conde> or  0 >=
+     * @return El porcentaje (%) del monto, being      <code>0 >= monto</conde> or  0 >=
      * <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static Double getPorcentaje(double monto, double porcentaje) {
@@ -1101,6 +1090,29 @@ public abstract class UTIL {
             return 0.0;
         }
         return (porcentaje * (monto / 100));
+    }
+
+    /**
+     * Devuelte el % del monto
+     *
+     * @param monto sobre el cual se calcula el %
+     * @param porcentaje debe ser >=0
+     * @return El porcentaje (%) del monto, being      <code>0 >= monto</conde> or  0 >=
+     * <code>porcentaje</code>, otherwise will return 0.0!
+     */
+    public static BigDecimal getPorcentaje(BigDecimal monto, BigDecimal porcentaje) {
+        if (porcentaje.intValue() < 0) {
+            throw new IllegalArgumentException("Parameter \"porcentaje\" can not be negative.");
+        }
+        if (monto.intValue() <= 0) {
+            return BigDecimal.ZERO;
+        }
+        try {
+            return porcentaje.multiply(monto.divide(new BigDecimal("100"))).setScale(2, RoundingMode.HALF_EVEN);
+        } catch (ArithmeticException e) {
+            Logger.getLogger(UTIL.class.getSimpleName()).log(Level.INFO, "Error trying to apply RoudingMode.HALF_EVEN (with scale = 2) on getPorcentaje({0}, {1})", new Object[]{monto, porcentaje});
+            return porcentaje.multiply(monto.divide(new BigDecimal("100")));
+        }
     }
 
     /**
@@ -1124,8 +1136,8 @@ public abstract class UTIL {
      * @param jTable De la cual se va obtener el DefaultTableModel y la
      * selectedRow.
      * @param indexColumn La columna de la que se solicita el Object
-     * @return the value Object at the specified cell, or
-     * <code>null</code> if no row is selected
+     * @return the value Object at the specified cell, or <code>null</code> if
+     * no row is selected
      */
     public static Object getSelectedValue(JTable jTable, int indexColumn) {
         if (jTable.getSelectedRow() != -1) {
@@ -1162,12 +1174,9 @@ public abstract class UTIL {
      * @param jTable1 tabla a la cual se le va aplicar.
      * @param columnClass class a cual afectará el alineamiento.
      * @param alignment One of the following constants defined in
-     * <code>SwingConstants</code>:
-     * <code>LEFT</code>,
-     * <code>CENTER</code> (the default for image-only labels),
-     * <code>RIGHT</code>,
-     * <code>LEADING</code> (the default for text-only labels) or
-     * <code>TRAILING</code>.
+     * <code>SwingConstants</code>: <code>LEFT</code>, <code>CENTER</code> (the
+     * default for image-only labels), <code>RIGHT</code>, <code>LEADING</code>
+     * (the default for text-only labels) or <code>TRAILING</code>.
      *
      * @see SwingConstants
      * @see JLabel#getHorizontalAlignment
@@ -1261,8 +1270,7 @@ public abstract class UTIL {
      * Valida si es un email
      *
      * @param email String to validate
-     * @return return
-     * <code>true</code> if is a valid email address
+     * @return return <code>true</code> if is a valid email address
      */
     public static boolean VALIDAR_EMAIL(String email) {
         return Pattern.compile(EMAIL_REGEX).matcher(email).matches();
