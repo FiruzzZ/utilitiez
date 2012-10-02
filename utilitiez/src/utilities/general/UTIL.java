@@ -1104,7 +1104,7 @@ public abstract class UTIL {
         if (porcentaje.intValue() < 0) {
             throw new IllegalArgumentException("Parameter \"porcentaje\" can not be negative.");
         }
-        if (monto.intValue() <= 0) {
+        if (monto.compareTo(BigDecimal.ZERO) == -1) {
             return BigDecimal.ZERO;
         }
         try {

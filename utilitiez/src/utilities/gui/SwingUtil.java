@@ -5,11 +5,21 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.text.JTextComponent;
 
 /**
@@ -51,6 +61,30 @@ public class SwingUtil {
                     } else {
                         e.consume();
                     }
+                }
+            }
+        };
+        return l;
+    }
+
+    /**
+     * Return a {@code KeyListener}, which inputs typed are validated by the
+     * RegEx ({@link KeyListener#keyTyped(java.awt.event.KeyEvent) })
+     *
+     * @param regEx \s[a-zA-Z0-9]{3,5}
+     * @return an instance of this implementation
+     * @see Character#isLetter(char)
+     * @see Character#isSpaceChar(char)
+     */
+    public static KeyListener getKeyTypedListener(final String regEx) {
+        KeyListener l = new KeyAdapter() {
+            private final Pattern compile = Pattern.compile(regEx);
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                Matcher matcher = compile.matcher(String.valueOf(e.getKeyChar()));
+                if (!matcher.matches()) {
+                    e.consume();
                 }
             }
         };
@@ -152,8 +186,8 @@ public class SwingUtil {
      */
     public static void setComponentsEnabled(Component[] components, boolean enable, boolean applyDefaultsExceptionComponents, Class<? extends Component>... exceptionsComponents) {
         for (Component component : components) {
-            if (component instanceof JPanel) {
-                JPanel subPanel = (JPanel) component;
+            if (component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport) {
+                JComponent subPanel = (JComponent) component;
                 setComponentsEnabled(subPanel.getComponents(), enable, applyDefaultsExceptionComponents, exceptionsComponents);
             } else {
                 setEnableDependingOfType(component, enable, applyDefaultsExceptionComponents, exceptionsComponents);
@@ -167,7 +201,7 @@ public class SwingUtil {
                 || (component instanceof JLabel)
                 || (component instanceof JSeparator))) {
             return;
-        } else {
+        } else if (exceptionsComponents != null) {
             for (Class<? extends Component> exceptionType : exceptionsComponents) {
                 if (component.getClass().equals(exceptionType.getClass())) {
                     return;
@@ -175,6 +209,39 @@ public class SwingUtil {
             }
         }
         component.setEnabled(enable);
+    }
+
+    /**
+     * Resetea algunos componentes: <br> {@link JTextComponent#setText(java.lang.String)
+     * } == null <br> {@link JCheckBox#setSelected(boolean) } == false <br> {@link JComboBox#setSelectedIndex(int)
+     * } == 0 <br> AND using reflection to set from JCalendar >
+     * JDaceChooser.setDate(null)
+     *
+     * @param components
+     */
+    public static void resetJComponets(Component[] components) {
+        for (Component component : components) {
+            if (component instanceof JTextComponent) {
+                JTextComponent c = (JTextComponent) component;
+                c.setText(null);
+            } else if (component instanceof JCheckBox) {
+                JCheckBox c = (JCheckBox) component;
+                c.setSelected(false);
+            } else if (component instanceof JComboBox) {
+                JComboBox c = (JComboBox) component;
+                c.setSelectedIndex(0);
+            } else if (component.getClass().getSimpleName().equalsIgnoreCase("JDateChooser")) {
+                try {
+                    Object c = component;
+                    c.getClass().getMethod("setDate", Date.class).invoke(c, new Object[]{null});
+                } catch (Exception ex) {
+                    Logger.getLogger(SwingUtil.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (component instanceof JComponent) {
+                JComponent subPanel = (JComponent) component;
+                resetJComponets(subPanel.getComponents());
+            }
+        }
     }
 
     private SwingUtil() {
