@@ -372,16 +372,12 @@ public abstract class UTIL {
             String[] columnNames, int[] columnWidths, Class[] columnClassType,
             int[] editableColumns) {
 
-        if ((columnNames.length != columnWidths.length)) {
-            throw new IllegalArgumentException("los Array no tiene la misma cantidad de elementos"
-                    + " (Names length = " + columnNames.length + ""
-                    + " y Widthslength = " + columnWidths.length + ")");
-        } else {
-            if (columnClassType != null && (columnNames.length != columnClassType.length)) {
-                throw new IllegalArgumentException("los Array no tiene la misma cantidad de "
-                        + "elementos (column Names = " + columnNames.length
-                        + " y ClassType = " + columnClassType.length + ")");
-            }
+        if (columnWidths != null && columnNames.length < columnWidths.length) {
+            throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
+                    + " que columnNames = " + columnNames.length);
+        } else if (columnClassType != null && (columnNames.length < columnClassType.length)) {
+            throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
+                    + " que columnClassType = " + columnClassType.length);
         }
         if (editableColumns != null) {
             for (int i : editableColumns) {
@@ -392,16 +388,7 @@ public abstract class UTIL {
             }
         }
 
-        DefaultTableModel dtm;
-        if (columnClassType != null && editableColumns != null) {
-            dtm = new DefaultTableModelImpl(columnClassType, editableColumns);
-        } else if (columnClassType != null) {
-            dtm = new DefaultTableModelImpl(columnClassType);
-        } else if (editableColumns != null) {
-            dtm = new DefaultTableModelImpl(editableColumns);
-        } else {
-            dtm = new DefaultTableModelImpl();
-        }
+        DefaultTableModel dtm = new DefaultTableModelImpl(columnClassType, editableColumns);
         for (String string : columnNames) {
             dtm.addColumn(string);
         }
@@ -411,8 +398,10 @@ public abstract class UTIL {
             tabla.setModel(dtm);
         }
 
-        for (int i = 0; i < dtm.getColumnCount(); i++) {
-            tabla.getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
+        if (columnWidths != null) {
+            for (int i = 0; i < columnWidths.length; i++) {
+                tabla.getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
+            }
         }
         tabla.getTableHeader().setReorderingAllowed(false);
         return tabla;
@@ -420,57 +409,11 @@ public abstract class UTIL {
 
     public static JTable getDefaultTableModel(
             JTable tabla, String[] columnNames, int[] columnWidths, Class[] columnClassType) {
-
-        if (columnNames.length < columnWidths.length) {
-            throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
-                    + " que columnNames = " + columnNames.length);
-        } else if (columnClassType != null && (columnNames.length < columnClassType.length)) {
-            throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
-                    + " que columnClassType = " + columnClassType.length);
-        }
-
-        DefaultTableModel dtm;
-//        if (columnClassType != null) {
-            dtm = new DefaultTableModelImpl(columnClassType);
-//        } else {
-//        dtm = new DefaultTableModelImpl();
-//        }
-        for (String string : columnNames) {
-            dtm.addColumn(string);
-        }
-        if (tabla == null) {
-            tabla = new JTable(dtm);
-        } else {
-            tabla.setModel(dtm);
-        }
-
-        for (int i = 0; i < columnWidths.length; i++) {
-            tabla.getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
-        }
-        tabla.getTableHeader().setReorderingAllowed(false);
-        return tabla;
+        return getDefaultTableModel(tabla, columnNames, columnWidths, columnClassType, null);
     }
 
     public static JTable getDefaultTableModel(JTable tabla, String[] columnNames, int[] columnWidths) {
-
-        if (columnNames.length != columnWidths.length) {
-            throw new IllegalArgumentException("los columns Names y Widths no tiene la misma cantidad de elementos (length !=)");
-        }
-        DefaultTableModel dtm = new DefaultTableModelImpl();
-        for (String string : columnNames) {
-            dtm.addColumn(string);
-        }
-        if (tabla == null) {
-            tabla = new JTable(dtm);
-        } else {
-            tabla.setModel(dtm);
-        }
-
-        for (int i = 0; i < dtm.getColumnCount(); i++) {
-            tabla.getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
-        }
-        tabla.getTableHeader().setReorderingAllowed(false);
-        return tabla;
+        return getDefaultTableModel(tabla, columnNames, columnWidths, null, null);
     }
 
     /**
@@ -1253,7 +1196,7 @@ public abstract class UTIL {
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            if (columnTypes != null && columnTypes[columnIndex] != null) {
+            if (columnTypes != null && columnTypes.length > columnIndex && columnTypes[columnIndex] != null) {
                 return columnTypes[columnIndex];
             } else {
                 //If the property is not null nor either the specified column
