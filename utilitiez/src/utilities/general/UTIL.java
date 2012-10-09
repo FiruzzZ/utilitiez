@@ -421,24 +421,20 @@ public abstract class UTIL {
     public static JTable getDefaultTableModel(
             JTable tabla, String[] columnNames, int[] columnWidths, Class[] columnClassType) {
 
-        if ((columnNames.length != columnWidths.length)) {
-            throw new IllegalArgumentException("los Array no tiene la misma cantidad de elementos"
-                    + " (Names length = " + columnNames.length + ""
-                    + " y Widthslength = " + columnWidths.length + ")");
-        } else {
-            if (columnClassType != null && (columnNames.length != columnClassType.length)) {
-                throw new IllegalArgumentException("los Array no tiene la misma cantidad de "
-                        + "elementos (column Names = " + columnNames.length
-                        + " y ClassType = " + columnClassType.length + ")");
-            }
+        if (columnNames.length < columnWidths.length) {
+            throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
+                    + " que columnNames = " + columnNames.length);
+        } else if (columnClassType != null && (columnNames.length < columnClassType.length)) {
+            throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
+                    + " que columnClassType = " + columnClassType.length);
         }
 
         DefaultTableModel dtm;
-        if (columnClassType != null) {
+//        if (columnClassType != null) {
             dtm = new DefaultTableModelImpl(columnClassType);
-        } else {
-            dtm = new DefaultTableModelImpl();
-        }
+//        } else {
+//        dtm = new DefaultTableModelImpl();
+//        }
         for (String string : columnNames) {
             dtm.addColumn(string);
         }
@@ -448,7 +444,7 @@ public abstract class UTIL {
             tabla.setModel(dtm);
         }
 
-        for (int i = 0; i < dtm.getColumnCount(); i++) {
+        for (int i = 0; i < columnWidths.length; i++) {
             tabla.getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
         }
         tabla.getTableHeader().setReorderingAllowed(false);
