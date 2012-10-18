@@ -1,6 +1,7 @@
 package utilities.gui;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -172,9 +173,10 @@ public class SwingUtil {
     }
 
     /**
-     * Settea la propiedad Enabled de los componentes (y sus sub-componentes,
-     * buclea en los JPanels). Se pueden especificar que tipo de componentes que
-     * serán setteados y cuales no.
+     * Settea {@link Component#enabled} de los componentes en el
+     * {@link Container} (y sus sub {@link Container} que puedan haber, buclea
+     * recursivo). Se pueden especificar que tipo de componentes serán excluidos
+     * de este proceso ({@code exceptionsComponents})
      *
      * @param components
      * @param enable used to set {@link Component#setEnabled(boolean)}

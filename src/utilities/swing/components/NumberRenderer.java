@@ -17,6 +17,13 @@ public class NumberRenderer extends FormatRenderer {
         setHorizontalAlignment(SwingConstants.RIGHT);
     }
 
+    public static NumberRenderer getCurrencyRenderer(int fractionDigits) {
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        nf.setMinimumFractionDigits(fractionDigits);
+        nf.setMaximumFractionDigits(fractionDigits);
+        return new NumberRenderer(nf);
+    }
+
     /**
      * Use the default currency formatter for the default locale
      *
