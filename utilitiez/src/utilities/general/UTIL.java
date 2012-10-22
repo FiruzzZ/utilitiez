@@ -656,14 +656,13 @@ public abstract class UTIL {
     public static Double parseToDouble(String s) {
         String string = s;
         if (string.contains(",")) {
-            string = string.replaceAll("\\.", "");
-            string = string.replaceAll(",", ".");
+            string = string.replaceAll("\\.", "").replaceAll(",", ".");
         } else {
             int countChacarter = UTIL.countChacarter(string, '.');
             for (int i = 1; i < countChacarter; i++) {
                 string = string.replaceFirst("\\.", "");
             }
-            int indexOf = string.indexOf(".");
+            int indexOf = string.indexOf('.');
             if (indexOf > -1) {
                 int length = string.substring(indexOf + 1).length();
                 if (length > 2) {
