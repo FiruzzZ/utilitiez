@@ -231,7 +231,7 @@ public class SwingUtil {
                 c.setSelected(false);
             } else if (component instanceof JComboBox) {
                 JComboBox c = (JComboBox) component;
-                c.setSelectedIndex(0);
+                c.setSelectedIndex(c.getItemCount() > 0 ? 0 : -1);
             } else if (component.getClass().getSimpleName().equalsIgnoreCase("JDateChooser")) {
                 try {
                     Object c = component;
