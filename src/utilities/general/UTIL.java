@@ -235,6 +235,23 @@ public abstract class UTIL {
     }
 
     /**
+     * Settea todos los campos relacionados al "tiempo" (HOUR, MINUTE, SECOND,
+     * MILLISECOND) to ZERO
+     *
+     * @param d instance of Date
+     * @return
+     */
+    public static Date clearTimeFields(Date d) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
+    /**
      * Compara los Dates (YEAR, MONTH, DAY) ignorando los campos relacionados al
      * TIME (HOUR, MINUTE, SECOND...)
      *
