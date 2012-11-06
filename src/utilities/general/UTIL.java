@@ -137,7 +137,6 @@ public abstract class UTIL {
      * @param file File this method should read
      * @return byte[] Returns a byte[] array of the contents of the file
      * @throws IOException
-     * @throws Exception
      */
     public static byte[] getBytesFromFile(File file) throws IOException {
         BufferedInputStream is = new BufferedInputStream(new FileInputStream(file));
@@ -195,8 +194,6 @@ public abstract class UTIL {
      * la jLabel.
      * @return el jLabel con la imagen ajustada..
      * @exception java.io.IOException si no puede leer el <code>imageFile</code>
-     * @exception Exception si el tamaño del archivo supera el configurado
-     * permitido (default is Integer.MAX_VALUE).
      */
     public static JLabel setImageAsIconLabel(JLabel label, File imageFile)
             throws IOException {
@@ -389,12 +386,14 @@ public abstract class UTIL {
             String[] columnNames, int[] columnWidths, Class[] columnClassType,
             int[] editableColumns) {
 
-        if (columnWidths != null && columnNames.length < columnWidths.length) {
-            throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
-                    + " que columnNames = " + columnNames.length);
-        } else if (columnClassType != null && (columnNames.length < columnClassType.length)) {
-            throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
-                    + " que columnClassType = " + columnClassType.length);
+        if (columnWidths != null) {
+            if (columnNames.length < columnWidths.length) {
+                throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
+                        + " que columnNames = " + columnNames.length);
+            } else if (columnClassType != null && (columnNames.length < columnClassType.length)) {
+                throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
+                        + " que columnClassType = " + columnClassType.length);
+            }
         }
         if (editableColumns != null) {
             for (int i : editableColumns) {
@@ -564,7 +563,7 @@ public abstract class UTIL {
      * img.IMG_EXTENSION en /reportes/
      */
     public static void borrarFile(String pathName) {
-        File f = null;
+        File f;
         if (pathName != null && pathName.length() > 0) {
             if (pathName.equals("777")) {
                 for (String string : IMAGEN_EXTENSION) {
@@ -593,7 +592,6 @@ public abstract class UTIL {
         } else {
             f = new File("./reportes/img.png");
         }
-
     }
 
     /**
