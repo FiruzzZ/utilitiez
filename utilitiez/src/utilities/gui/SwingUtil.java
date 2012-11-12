@@ -1,12 +1,16 @@
 package utilities.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
+import utilities.general.UTIL;
 
 /**
  *
@@ -244,6 +250,45 @@ public class SwingUtil {
                 resetJComponets(subPanel.getComponents());
             }
         }
+    }
+
+    /**
+     * On focusGained does: <p>{@link UTIL#parseToDouble(java.lang.String)} and
+     * {@link #setSelectedAll(javax.swing.text.JTextComponent)} <br>On focusLost
+     * does: <p> format the text with
+     * {@code df = new DecimalFormat("#,##0.00")}. if
+     * {@link DecimalFormat#format(java.lang.Object)} fails, the backGround is
+     * setted to {@link Color#RED} otherwise sets(keeps) the default color.
+     *
+     * @return
+     */
+    public static FocusListener getCurrencyFormatterFocusListener() {
+        FocusListener fl = new FocusListener() {
+            final DecimalFormat df = new DecimalFormat("#,##0.00");
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                JTextField t = (JTextField) e.getSource();
+                if (!t.getText().trim().isEmpty()) {
+                    t.setText(UTIL.parseToDouble(t.getText()).toString());
+                }
+                setSelectedAll(t);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                JTextField t = (JTextField) e.getSource();
+                try {
+                    if (!t.getText().trim().isEmpty()) {
+                        t.setText(df.format(new BigDecimal(t.getText())));
+                    }
+                    t.setBackground(UIManager.getColor("TextField.background"));
+                } catch (Exception ex) {
+                    t.setBackground(Color.RED);
+                }
+            }
+        };
+        return fl;
     }
 
     private SwingUtil() {
