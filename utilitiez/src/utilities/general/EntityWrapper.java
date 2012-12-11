@@ -1,29 +1,29 @@
-package utilities.swing.components;
+package utilities.general;
 
 import java.io.Serializable;
 
 /**
- * Clase diseñada para envolver entidades y hacerlas visibles en un {@code JComboBox}
- * sobreescribiendo el método {@link Object#toString()}.
- * 
- * @param <T> Entidad a la cual se wrappea.
+ *
+ * @param <T> Entity to be wrapped
  * @param <K> Id/Key (Primary Key or Unique) of the entity wrapped.
  * @author FiruzzZ
+ * @version 1
+ * @since loooooong time ago
  */
-public class ComboBoxWrapperKey<T, K extends Number> implements Serializable {
+public class EntityWrapper<T, K> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1111111111111111119L;
     private final T entity;
     private final K id;
     private final String text;
 
     /**
-     * 
+     *
      * @param entity to be wrapped
      * @param id (Primary Key or Unique) of the entity wrapped.
      * @param text a front-end description of the object wrapped.
      */
-    public ComboBoxWrapperKey(T entity, K id, String text) {
+    public EntityWrapper(T entity, K id, String text) {
         if (id == null) {
             throw new IllegalArgumentException("parameter id can not be null");
         }
@@ -60,7 +60,7 @@ public class ComboBoxWrapperKey<T, K extends Number> implements Serializable {
             return false;
         }
         @SuppressWarnings("unchecked")
-        final ComboBoxWrapperKey<T, K> other = (ComboBoxWrapperKey<T, K>) obj;
+        final EntityWrapper<T, K> other = (EntityWrapper<T, K>) obj;
         if (this.entity != other.entity && (this.entity == null || !this.entity.equals(other.entity))) {
             return false;
         }

@@ -23,9 +23,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.JTextComponent;
 import utilities.general.UTIL;
 
@@ -84,18 +87,18 @@ public class SwingUtil {
      * @see Character#isSpaceChar(char)
      */
     public static KeyListener getKeyTypedListener(final String regEx) {
-        KeyListener l = new KeyAdapter() {
+        return new KeyAdapter() {
             private final Pattern compile = Pattern.compile(regEx);
 
             @Override
             public void keyTyped(KeyEvent e) {
-                Matcher matcher = compile.matcher(String.valueOf(e.getKeyChar()));
+                JTextField tf = (JTextField) e.getSource();
+                Matcher matcher = compile.matcher(tf.getText() + String.valueOf(e.getKeyChar()));
                 if (!matcher.matches()) {
                     e.consume();
                 }
             }
         };
-        return l;
     }
 
     /**
@@ -222,8 +225,10 @@ public class SwingUtil {
     /**
      * Resetea algunos componentes: <br> {@link JTextComponent#setText(java.lang.String)
      * } == null <br> {@link JCheckBox#setSelected(boolean) } == false <br> {@link JComboBox#setSelectedIndex(int)
-     * } == 0 <br> AND using reflection to set from JCalendar >
-     * JDaceChooser.setDate(null)
+     * } == 0 <br> {@link JTable} and
+     * {@link JTable#getModel() } {@code instance of} {@link DefaultTableModel}
+     * do {@link DefaultTableModel#setRowCount(int) } to zero <br> AND using
+     * reflection to set from JCalendar > JDaceChooser.setDate(null)
      *
      * @param components
      */
@@ -244,6 +249,12 @@ public class SwingUtil {
                     c.getClass().getMethod("setDate", Date.class).invoke(c, new Object[]{null});
                 } catch (Exception ex) {
                     Logger.getLogger(SwingUtil.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (component instanceof JTable) {
+                JTable c = (JTable) component;
+                if (c.getModel() instanceof DefaultTableModel) {
+                    DefaultTableModel dtm = (DefaultTableModel) c.getModel();
+                    dtm.setRowCount(0);
                 }
             } else if (component instanceof JComponent) {
                 JComponent subPanel = (JComponent) component;
