@@ -493,6 +493,8 @@ public abstract class UTIL {
             c.set(year, month, 1);
         } else if (day == -1) {
             c.set(year, month + 1, -1);
+        } else {
+            c.set(year, month , day);
         }
         return c.getTime();
     }
