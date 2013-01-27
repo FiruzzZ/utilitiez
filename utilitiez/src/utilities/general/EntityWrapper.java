@@ -10,11 +10,11 @@ import java.io.Serializable;
  * @version 1
  * @since loooooong time ago
  */
-public class EntityWrapper<T, K> implements Serializable {
+public class EntityWrapper<T> {
 
     private static final long serialVersionUID = 1111111111111111119L;
     private final T entity;
-    private final K id;
+    private final Serializable id;
     private final String text;
 
     /**
@@ -23,7 +23,7 @@ public class EntityWrapper<T, K> implements Serializable {
      * @param id (Primary Key or Unique) of the entity wrapped.
      * @param text a front-end description of the object wrapped.
      */
-    public EntityWrapper(T entity, K id, String text) {
+    public EntityWrapper(T entity, Serializable id, String text) {
         if (id == null) {
             throw new IllegalArgumentException("parameter id can not be null");
         }
@@ -39,7 +39,7 @@ public class EntityWrapper<T, K> implements Serializable {
         return entity;
     }
 
-    public K getId() {
+    public Serializable getId() {
         return id;
     }
 
@@ -60,7 +60,7 @@ public class EntityWrapper<T, K> implements Serializable {
             return false;
         }
         @SuppressWarnings("unchecked")
-        final EntityWrapper<T, K> other = (EntityWrapper<T, K>) obj;
+        final EntityWrapper<T> other = (EntityWrapper<T>) obj;
         if (this.entity != other.entity && (this.entity == null || !this.entity.equals(other.entity))) {
             return false;
         }
