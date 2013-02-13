@@ -2,6 +2,7 @@ package utilities.swing.components;
 
 import java.text.Format;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
@@ -32,6 +33,7 @@ public class FormatRenderer extends DefaultTableCellRenderer {
                 value = formatter.format(value);
             }
         } catch (IllegalArgumentException e) {
+            //deja si formatear el objeto de la celda
         }
         super.setValue(value);
     }
@@ -61,5 +63,9 @@ public class FormatRenderer extends DefaultTableCellRenderer {
      */
     public static FormatRenderer getTimeRenderer() {
         return new FormatRenderer(DateFormat.getTimeInstance());
+    }
+    
+    public static FormatRenderer getDateRenderer(String format) {
+        return new FormatRenderer(new SimpleDateFormat(format));
     }
 }
