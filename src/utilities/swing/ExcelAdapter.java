@@ -22,7 +22,8 @@ public class ExcelAdapter implements ActionListener {
     /**
      * The Excel Adapter is constructed with a JTable on which it enables
      * Copy-Paste and acts as a Clipboard listener.
-     * @param jTable 
+     *
+     * @param jTable
      */
     public ExcelAdapter(JTable jTable) {
         jTable1 = jTable;
@@ -39,6 +40,8 @@ public class ExcelAdapter implements ActionListener {
 
     /**
      * Public Accessor methods for the Table on which this adapter acts.
+     *
+     * @return
      */
     public JTable getJTable() {
         return jTable1;
@@ -55,14 +58,17 @@ public class ExcelAdapter implements ActionListener {
      * then copy action cannot be performed. Paste is done by aligning the upper
      * left corner of the selection with the 1st element in the current
      * selection of the JTable.
+     *
+     * @param e
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().compareTo("Copy") == 0) {
-            StringBuffer sbf = new StringBuffer();
             // Check to ensure we have selected only a contiguous block of
             // cells
             int numcols = jTable1.getSelectedColumnCount();
             int numrows = jTable1.getSelectedRowCount();
+            StringBuilder sbf = new StringBuilder(numcols * 5 + numrows * 5);
             int[] rowsselected = jTable1.getSelectedRows();
             int[] colsselected = jTable1.getSelectedColumns();
             if (!((numrows - 1 == rowsselected[rowsselected.length - 1] - rowsselected[0]
