@@ -494,7 +494,7 @@ public abstract class UTIL {
         } else if (day == -1) {
             c.set(year, month + 1, -1);
         } else {
-            c.set(year, month , day);
+            c.set(year, month, day);
         }
         return c.getTime();
     }
@@ -1104,8 +1104,9 @@ public abstract class UTIL {
     }
 
     /**
-     * Elimina las filas del modelo de la tabla, desde la última hasta la 1ra
-     * seleccionada.
+     * Elimina las filas del modelo seleccionadas desde la tabla (usando
+     * {@link JTable#convertRowIndexToModel(int)}, por si la tabla is
+     * sorted/filtered).
      *
      * @param jTable ...
      * @return cantidad de filas removidas
@@ -1115,8 +1116,10 @@ public abstract class UTIL {
         int[] selectedRows = jTable.getSelectedRows();
         if (selectedRows.length > 0) {
             DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
-            for (int i = selectedRows.length - 1; i >= 0; i--) {
-                dtm.removeRow(selectedRows[i]);
+            //Empezando desde la última hasta la 1ra, sino se corren las filas a medida que se va eliminando
+            for (int index = selectedRows.length - 1; index >= 0; index--) {
+                int modelRowIndex = jTable.convertRowIndexToModel(selectedRows[index]);
+                dtm.removeRow(modelRowIndex);
             }
         }
         return selectedRows.length;

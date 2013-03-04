@@ -38,6 +38,20 @@ import utilities.general.UTIL;
  */
 public class SwingUtil {
 
+    private static SwingUtil singleton = new SwingUtil();
+
+    private SwingUtil() {
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
+
+    public static SwingUtil getInstance() {
+        return singleton;
+    }
+
     /**
      * Sets selected all the text in the TextComponent.
      *
@@ -75,6 +89,39 @@ public class SwingUtil {
             }
         };
         return l;
+    }
+
+    public void getCharacterCountListener(final JTextComponent t, final JLabel l, final int limit) {
+        KeyFocusListener kfl = new KeyFocusListener() {
+            private final int limitt = limit;
+
+            private synchronized void counter() {
+                int length = t.getText().length();
+                l.setText(length + "/" + limitt);
+                if (length > limitt) {
+                    t.setBackground(Color.RED);
+                } else {
+                    t.setBackground(null);
+                }
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                counter();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                counter();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                counter();
+            }
+        };
+        t.addFocusListener(kfl);
+        t.addKeyListener(kfl);
     }
 
     /**
@@ -302,6 +349,26 @@ public class SwingUtil {
         return fl;
     }
 
-    private SwingUtil() {
+    private class KeyFocusListener implements KeyListener, FocusListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
+
+        @Override
+        public void focusGained(FocusEvent e) {
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+        }
     }
 }
