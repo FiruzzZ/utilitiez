@@ -42,6 +42,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public abstract class UTIL {
 
+    private static final Logger LOG = Logger.getLogger(UTIL.class.getName());
+
     private UTIL() {
     }
     public final static String EMAIL_REGEX = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
@@ -386,20 +388,26 @@ public abstract class UTIL {
             String[] columnNames, int[] columnWidths, Class[] columnClassType,
             int[] editableColumns) {
 
+        if (columnNames == null) {
+            throw new IllegalArgumentException();
+        }
         if (columnWidths != null) {
             if (columnNames.length < columnWidths.length) {
                 throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
                         + " que columnNames = " + columnNames.length);
-            } else if (columnClassType != null && (columnNames.length < columnClassType.length)) {
-                throw new IllegalArgumentException("el array columnWidths tiene mas elementos (" + columnWidths.length + ")"
-                        + " que columnClassType = " + columnClassType.length);
+            } else if (columnNames.length > columnWidths.length) {
+                LOG.info("columnNames.length(" + columnNames.length + ") <> columnWidths(" + columnWidths.length + "):\n" + Arrays.toString(columnNames) + "\n" + Arrays.toString(columnWidths));
             }
+        }
+        if (columnClassType != null && (columnNames.length < columnClassType.length)) {
+            throw new IllegalArgumentException("el array columnClassType tiene mas elementos (" + columnClassType.length + ")"
+                    + " que columnClassType = " + columnClassType.length);
         }
         if (editableColumns != null) {
             for (int i : editableColumns) {
                 if (i < 0 || i > (columnNames.length - 1)) {
                     throw new IndexOutOfBoundsException("El array editableColumns[]"
-                            + " contiene un indice número de columna no válido: index = " + i);
+                            + " contiene un índice de columna no válido: index = " + i);
                 }
             }
         }
