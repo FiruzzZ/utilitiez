@@ -153,18 +153,17 @@ public class SwingUtil {
      * longitud de caracteres ingresados no supere el limite. If not >
      * {@link java.awt.event.InputEvent#consume()}
      *
-     * @param jTextField Instance of {@link JTextField}
-     * @param evt Must be a instance of
-     * {@link KeyListener#keyTyped(java.awt.event.KeyEvent)}
+     * @param keyTypedEvent Must be a instance of
+     * {@link KeyListener#keyTyped(java.awt.event.KeyEvent)} and
+     * {@link KeyEvent#getSource()} must be <code>instanceof</code>
+     * {@link JTextField}
      * @param maxLength a positive value
      */
-    public static void checkInputDigit(JTextField jTextField, KeyEvent evt, int maxLength) {
-        if (!Character.isDigit(evt.getKeyChar())) {
-            evt.consume();
-        } else {
-            if (maxLength <= jTextField.getText().length()) {
-                evt.consume();
-            }
+    public static void checkInputDigit(KeyEvent keyTypedEvent, int maxLength) {
+        JTextField jTextField = (JTextField) keyTypedEvent.getSource();
+        checkInputDigit(keyTypedEvent);
+        if (maxLength <= jTextField.getText().length()) {
+            keyTypedEvent.consume();
         }
     }
 
@@ -203,7 +202,7 @@ public class SwingUtil {
             }
         } else {
             if (maxLenght != null) {
-                checkInputDigit(tf, keyTypedEvent, maxLenght);
+                checkInputDigit(keyTypedEvent, maxLenght);
             } else {
                 checkInputDigit(keyTypedEvent);
             }
