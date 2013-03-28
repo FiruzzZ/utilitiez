@@ -1111,6 +1111,16 @@ public abstract class UTIL {
         }
     }
 
+    public static Object getSelectedValueFromModel(JTable jTable, int indexColumn) {
+        if (jTable.getSelectedRow() != -1) {
+            return ((DefaultTableModel) jTable.getModel()).getValueAt(
+                    jTable.convertRowIndexToModel(jTable.getSelectedRow()),
+                    jTable.convertColumnIndexToModel(indexColumn));
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Elimina las filas del modelo seleccionadas desde la tabla (usando
      * {@link JTable#convertRowIndexToModel(int)}, por si la tabla is
