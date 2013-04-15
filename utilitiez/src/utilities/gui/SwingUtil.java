@@ -258,7 +258,8 @@ public class SwingUtil {
                 || (component instanceof JLabel)
                 || (component instanceof JSeparator))) {
             return;
-        } else if (exceptionsComponents != null) {
+        }
+        if (exceptionsComponents != null) {
             for (Class<? extends Component> exceptionType : exceptionsComponents) {
                 if (component.getClass().equals(exceptionType.getClass())) {
                     return;
