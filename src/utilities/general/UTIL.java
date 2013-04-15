@@ -1098,24 +1098,23 @@ public abstract class UTIL {
      *
      * @param jTable De la cual se va obtener el DefaultTableModel y la
      * selectedRow.
-     * @param indexColumn La columna de la que se solicita el Object
+     * @param modelColumnIndex La columna de la que se solicita el Object
      * @return the value Object at the specified cell, or <code>null</code> if
      * no row is selected
      */
-    public static Object getSelectedValue(JTable jTable, int indexColumn) {
+    public static Object getSelectedValue(JTable jTable, int modelColumnIndex) {
         if (jTable.getSelectedRow() != -1) {
             return ((DefaultTableModel) jTable.getModel()).getValueAt(
-                    jTable.getSelectedRow(), indexColumn);
+                    jTable.getSelectedRow(), modelColumnIndex);
         } else {
             return null;
         }
     }
 
-    public static Object getSelectedValueFromModel(JTable jTable, int indexColumn) {
+    public static Object getSelectedValueFromModel(JTable jTable, int modelColumnIndex) {
         if (jTable.getSelectedRow() != -1) {
             return ((DefaultTableModel) jTable.getModel()).getValueAt(
-                    jTable.convertRowIndexToModel(jTable.getSelectedRow()),
-                    jTable.convertColumnIndexToModel(indexColumn));
+                    jTable.convertRowIndexToModel(jTable.getSelectedRow()), modelColumnIndex);
         } else {
             return null;
         }
