@@ -42,6 +42,10 @@ public class NumberRenderer extends FormatRenderer {
         return new NumberRenderer(NumberFormat.getIntegerInstance());
     }
 
+    public static NumberRenderer getNumberRenderer() {
+        return new NumberRenderer(NumberFormat.getNumberInstance());
+    }
+
     /**
      * Use the default percent formatter for the default locale
      *

@@ -328,7 +328,7 @@ public class SwingUtil {
             public void focusGained(FocusEvent e) {
                 JTextField t = (JTextField) e.getSource();
                 if (!t.getText().trim().isEmpty()) {
-                    t.setText(UTIL.parseToDouble(t.getText()).toString());
+                    t.setText(BigDecimal.valueOf(UTIL.parseToDouble(t.getText())).toString());
                 }
                 setSelectedAll(t);
             }
