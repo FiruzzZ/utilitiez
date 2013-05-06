@@ -27,11 +27,11 @@ public abstract class RowColorRender extends DefaultTableCellRenderer {
     /**
      *
      * @param value the value for the cell of the <b>Model</b>!!
-     * @param row row index of model
+     * @param rowIndexModel row index of model
      * @param column column index of model
      * @return this value will be used to set {@link #fg}
      */
-    public abstract Color condicion(Object value, int row, int column);
+    public abstract Color condicionByRow(int rowIndexModel);
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -41,9 +41,9 @@ public abstract class RowColorRender extends DefaultTableCellRenderer {
             /**
              * to prevent porquerías (sorting or filtering)
              */
-            int columnIndexToModel = table.convertColumnIndexToModel(column);
+//            int columnIndexToModel = table.convertColumnIndexToModel(column);
             int rowIndexToModel = table.convertRowIndexToModel(row);
-            fg = condicion(value, rowIndexToModel, columnIndexToModel);
+            fg = condicionByRow(rowIndexToModel);
         }
         comp.setForeground(fg);
         return comp;
