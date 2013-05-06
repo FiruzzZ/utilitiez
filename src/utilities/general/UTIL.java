@@ -1113,8 +1113,9 @@ public abstract class UTIL {
 
     public static Object getSelectedValueFromModel(JTable jTable, int modelColumnIndex) {
         if (jTable.getSelectedRow() != -1) {
+            int modelRoxIndex = jTable.convertRowIndexToModel(jTable.getSelectedRow());
             return ((DefaultTableModel) jTable.getModel()).getValueAt(
-                    jTable.convertRowIndexToModel(jTable.getSelectedRow()), modelColumnIndex);
+                    modelRoxIndex, modelColumnIndex);
         } else {
             return null;
         }
