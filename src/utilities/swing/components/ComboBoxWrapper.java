@@ -1,8 +1,8 @@
 package utilities.swing.components;
 
 /**
- * Clase diseñada para envolver entidades y hacerlas visibles en un {@code JComboBox}
- * sobreescribiendo el método {@link Object#toString()}.
+ * Clase diseñada para envolver entidades y hacerlas visibles en un
+ * {@code JComboBox} sobreescribiendo el método {@link Object#toString()}.
  *
  * @param <T> Class to wrap.
  * @author FiruzzZ
@@ -15,12 +15,11 @@ public final class ComboBoxWrapper<T> implements Comparable<ComboBoxWrapper<T>> 
 
     /**
      *
-     * @param entity instance of the object to wrap, can be
-     * <code>null</code>
+     * @param entity instance of the object to wrap, can be <code>null</code>
      * @param id unique instance identifier of the class (Primary Key or Unique
      * constraint)
-     * @param text String used as
-     * <code>return</code> in the overrided method {@link #toString()}
+     * @param text String used as <code>return</code> in the overrided method
+     * {@link #toString()}
      */
     public ComboBoxWrapper(T entity, Integer id, String text) {
         if (id == null) {
@@ -48,8 +47,9 @@ public final class ComboBoxWrapper<T> implements Comparable<ComboBoxWrapper<T>> 
 
     /**
      * Ojo piojo con este, no es un equal standar!
+     *
      * @param obj
-     * @return 
+     * @return
      */
     @Override
     public boolean equals(Object obj) {
@@ -63,7 +63,7 @@ public final class ComboBoxWrapper<T> implements Comparable<ComboBoxWrapper<T>> 
         final ComboBoxWrapper<T> other = (ComboBoxWrapper<T>) obj;
         if (this.getEntity() != null && other.getEntity() != null) {
             return this.getEntity().equals(other.getEntity());
-        } else if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
         return true;

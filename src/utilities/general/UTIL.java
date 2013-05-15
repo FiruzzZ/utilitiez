@@ -340,12 +340,12 @@ public abstract class UTIL {
             throw new IllegalArgumentException("Longitud de la CUIT/CUIL no es correcta (" + c.length() + ")");
         }
         //ctrl de los 1ros 2 dígitos...//
-        String x = c.substring(0, 2);
-        int xx = Integer.parseInt(x);
-        if ((xx != 20) && (xx != 23) && (xx != 24) && (xx != 27) && (xx != 28) && (xx != 30) && (xx != 33) && (xx != 34)) {
-            throw new IllegalArgumentException("Los primeros 2 dígitos de la CUIT/CUIL no corresponden a ningún tipo."
-                    + "\nHombres: 20, 23, 24; Mujeres: 27, 28; Empresas: 30, 33, 34");
-        }
+//        String x = c.substring(0, 2);
+//        int xx = Integer.parseInt(x);
+//        if ((xx != 20) && (xx != 23) && (xx != 24) && (xx != 27) && (xx != 28) && (xx != 30) && (xx != 33) && (xx != 34)) {
+//            throw new IllegalArgumentException("Los primeros 2 dígitos de la CUIT/CUIL no corresponden a ningún tipo."
+//                    + "\nHombres: 20, 23, 24; Mujeres: 27, 28; Empresas: 30, 33, 34");
+//        }
         //ctrl del verificador...//
         int digito, suma = 0;
         int[] codigo = {5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
@@ -353,8 +353,13 @@ public abstract class UTIL {
             digito = Integer.parseInt(cuil.substring(index, index + 1));
             suma += digito * codigo[index];
         }
-        if (Integer.parseInt(cuil.substring(10, 11)) != (11 - (suma % 11))) {
-            throw new IllegalArgumentException("El dígito verificador de la CUIT/CUIL no es correcto");
+        int xxx = (suma % 11);
+        xxx = 11 - xxx;
+        if (xxx == 11) {
+            xxx = 0;
+        }
+        if (Integer.parseInt(cuil.substring(10)) != xxx) {
+            throw new IllegalArgumentException("El dígito verificador de la CUIT/CUIL no es correcto (" + Integer.parseInt(cuil.substring(10)) + " > " + xxx);
         }
     }
 
