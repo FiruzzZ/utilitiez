@@ -277,6 +277,23 @@ public abstract class UTIL {
     }
 
     /**
+     * Ej: 01/01/2009 - 30/01/2009 = 0
+     * <br> 12/05/2013 - 01/12/2012= 5
+     * Day of month got no influence.
+     * @param date1
+     * @param date2
+     * @return cantidad de meses entre las fechas
+     */
+    public static int getMonthsDifference(Date date1, Date date2) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date1);
+        int m1 = c.get(Calendar.YEAR) * 12 + c.get(Calendar.MONTH);
+        c.setTime(date2);
+        int m2 = c.get(Calendar.YEAR) * 12 + c.get(Calendar.MONTH);
+        return m1 - m2;
+    }
+
+    /**
      * Transforma una IMAGEN de tipo bytea (postgre) a un java.io.File
      *
      * @param img tipo de dato almacenado en la DB (debe ser una imagen)
@@ -559,8 +576,8 @@ public abstract class UTIL {
      * @param dias cantidad de días por adicionar o restar a <code>fecha</code>
      * @return customized Date!!!...
      */
-    public static Date customDateByDays(java.util.Date fecha, int dias) {
-        Calendar c = Calendar.getInstance(TimeZone.getTimeZone(TIME_ZONE));
+    public static Date customDateByDays(Date fecha, int dias) {
+        Calendar c = Calendar.getInstance();
         c.setTime(fecha);
         c.add(Calendar.DAY_OF_MONTH, dias);
         return c.getTime();
