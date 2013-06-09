@@ -8,6 +8,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -19,7 +21,9 @@ import java.util.regex.Pattern;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -27,6 +31,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.JTextComponent;
@@ -370,5 +375,27 @@ public class SwingUtil {
         @Override
         public void focusLost(FocusEvent e) {
         }
+    }
+
+    public static File showSaveDialogFileChooser(Component parent, String description, File fileDir, String fileExtension) throws IOException {
+        JFileChooser fileChooser = new JFileChooser();
+        File file = null;
+        if (fileExtension != null) {
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(description, fileExtension);
+            fileChooser.setFileFilter(filter);
+            fileChooser.addChoosableFileFilter(filter);
+        }
+        fileChooser.setCurrentDirectory(fileDir);
+        int stateFileChoosed = fileChooser.showSaveDialog(parent);
+        if (stateFileChoosed == JFileChooser.APPROVE_OPTION) {
+            file = fileChooser.getSelectedFile();
+            if (fileExtension != null && !file.getName().endsWith("." + fileExtension)) {
+                file = new File(file.getPath() + "." + fileExtension);
+            }
+            if (file.exists() && JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(parent, "Ya existe el archivo " + file.getName() + ", ¿Desea reemplazarlo?", null, JOptionPane.YES_NO_OPTION)) {
+                return null;
+            }
+        }
+        return file;
     }
 }

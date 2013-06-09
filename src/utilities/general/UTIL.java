@@ -277,9 +277,8 @@ public abstract class UTIL {
     }
 
     /**
-     * Ej: 01/01/2009 - 30/01/2009 = 0
-     * <br> 12/05/2013 - 01/12/2012= 5
-     * Day of month got no influence.
+     * Ej: 01/01/2009 - 30/01/2009 = 0 <br> 12/05/2013 - 01/12/2012= 5
+     *
      * @param date1
      * @param date2
      * @return cantidad de meses entre las fechas
@@ -863,17 +862,16 @@ public abstract class UTIL {
         } catch (SecurityException ex) {
             throw new RuntimeException(ex.getMessage(), ex.getCause());
         }
-        boolean encontrado = false;
         int index = 0;
-        while (index < combo.getItemCount() && !encontrado) {
+        while (index < combo.getItemCount()) {
             if ((combo.getItemAt(index)).equals(candidato)) {
                 combo.setSelectedIndex(index);
-                encontrado = true;
+                return index;
             } else {
                 index++;
             }
         }
-        return encontrado ? index : -1;
+        return -1;
     }
 
     /**
@@ -1316,12 +1314,11 @@ public abstract class UTIL {
     public static int getAge(Date dateOfBirth) {
         Calendar today = Calendar.getInstance();
         Calendar birthDate = Calendar.getInstance();
-        int age = 0;
         birthDate.setTime(dateOfBirth);
         if (birthDate.after(today)) {
             throw new IllegalArgumentException("Can't be born in the future");
         }
-        age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+        int age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
         // If birth date is > todays date (after 2 days adjustment of leap year) then decrement age one year   
         if ((birthDate.get(Calendar.DAY_OF_YEAR) - today.get(Calendar.DAY_OF_YEAR) > 3)
                 || (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH))) {
