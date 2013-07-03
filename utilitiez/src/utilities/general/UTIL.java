@@ -26,7 +26,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -35,6 +34,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import utilities.swing.components.ComboBoxWrapper;
 
 /**
  *
@@ -45,6 +45,17 @@ public abstract class UTIL {
     private static final Logger LOG = Logger.getLogger(UTIL.class.getName());
 
     private UTIL() {
+    }
+
+    public static String removeEscapesChars(String text) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+        String query = text;
+        query = query.replaceAll("\\\\", "");
+        query = query.replaceAll("'", "");
+        query = query.replaceAll("\"", "");
+        return query;
     }
     public final static String EMAIL_REGEX = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
     /**
@@ -347,13 +358,13 @@ public abstract class UTIL {
      */
     public static void VALIDAR_CUIL(String cuil) throws IllegalArgumentException, NumberFormatException {
         String c = cuil.trim();
+        if (c.length() != 11) {
+            throw new IllegalArgumentException("Longitud de la CUIT/CUIL no es correcta (" + c.length() + ")");
+        }
         try {
             Long.valueOf(cuil);
         } catch (NumberFormatException e) {
             throw new NumberFormatException("La CUIT/CUIL no es válida (ingrese solo números)");
-        }
-        if (c.length() != 11) {
-            throw new IllegalArgumentException("Longitud de la CUIT/CUIL no es correcta (" + c.length() + ")");
         }
         //ctrl de los 1ros 2 dígitos...//
 //        String x = c.substring(0, 2);
@@ -855,7 +866,8 @@ public abstract class UTIL {
             Class<?> declaringClass = candidato.getClass().getMethod("equals", Object.class).getDeclaringClass();
             if (!declaringClass.equals(candidato.getClass())) {
                 Logger.getLogger(UTIL.class.getName()).log(Level.WARNING,
-                        "La Clase " + candidato.getClass() + " must override the method equals(Object o)");
+                        "The " + candidato.getClass() + " must override the method equals(Object o)");
+                return -1;
             }
         } catch (NoSuchMethodException ex) {
             throw new RuntimeException(ex.getMessage(), ex.getCause());
@@ -864,7 +876,13 @@ public abstract class UTIL {
         }
         int index = 0;
         while (index < combo.getItemCount()) {
-            if ((combo.getItemAt(index)).equals(candidato)) {
+            Object object = combo.getItemAt(index);
+            if (combo.getItemAt(index) instanceof ComboBoxWrapper) {
+                object = ((ComboBoxWrapper) object).getEntity();
+            } else if (combo.getItemAt(index) instanceof EntityWrapper) {
+                object = ((EntityWrapper) object).getEntity();
+            }
+            if (object.equals(candidato)) {
                 combo.setSelectedIndex(index);
                 return index;
             } else {

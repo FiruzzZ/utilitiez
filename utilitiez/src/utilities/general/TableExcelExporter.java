@@ -59,7 +59,10 @@ public class TableExcelExporter {
      */
     public TableExcelExporter(File file, JTable table) {
         if (table.getRowCount() < 1) {
-            throw new IllegalArgumentException("no rows");
+            throw new IllegalArgumentException("Tabla no contiene fila para ser exportadas");
+        }
+        if(file == null) {
+            throw new IllegalArgumentException("Archivo de destino de exportación no válido");
         }
         this.table = table;
         this.file = file;

@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  *
  * @param <T> Entity to be wrapped
- * @param <K> Id/Key (Primary Key or Unique) of the entity wrapped.
  * @author FiruzzZ
  * @version 1
  * @since loooooong time ago
