@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -33,7 +32,6 @@ import javax.swing.JViewport;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.text.JTextComponent;
 import utilities.general.UTIL;
 
@@ -232,6 +230,18 @@ public class SwingUtil {
         return occurrences;
     }
 
+    public static void setJTextsEditable(Component[] components, boolean editable) {
+        for (Component component : components) {
+            if (component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport) {
+                JComponent subPanel = (JComponent) component;
+                setJTextsEditable(subPanel.getComponents(), editable);
+            } else if (component instanceof JTextComponent) {
+                JTextComponent text = (JTextComponent) component;
+                text.setEditable(editable);
+            }
+        }
+    }
+
     /**
      * Settea {@link Component#enabled} de los componentes en el
      * {@link Container} (y sus sub {@link Container} que puedan haber, buclea
@@ -375,6 +385,22 @@ public class SwingUtil {
         @Override
         public void focusLost(FocusEvent e) {
         }
+    }
+
+    public static File showImageFileDialogChooser() {
+        File file = null;
+        JFileChooser filec = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Imagenes", UTIL.IMAGEN_EXTENSION);
+        filec.setFileFilter(filter);
+        filec.addChoosableFileFilter(filter);
+        int val = filec.showOpenDialog(null);
+        if (val == JFileChooser.APPROVE_OPTION) {
+            file = filec.getSelectedFile();
+            if (!UTIL.isImagenExtension(file)) {
+                file = null;
+            }
+        }
+        return file;
     }
 
     public static File showSaveDialogFileChooser(Component parent, String description, File fileDir, String fileExtension) throws IOException {

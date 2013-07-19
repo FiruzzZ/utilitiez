@@ -3,6 +3,8 @@ package utilities.swing.components;
 /**
  * Clase diseñada para envolver entidades y hacerlas visibles en un
  * {@code JComboBox} sobreescribiendo el método {@link Object#toString()}.
+ * <br>La implementación de {@link Comparable} es por el atributo {@link #text} así los combos pueden
+ * ser ordenados alfabéticamente
  *
  * @param <T> Class to wrap.
  * @author FiruzzZ
