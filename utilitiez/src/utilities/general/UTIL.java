@@ -303,6 +303,20 @@ public abstract class UTIL {
         return m1 - m2;
     }
 
+    public static File imageToFile(byte[] img, String pathFile, String extension) throws IOException {
+        File file = File.createTempFile(pathFile, "."+ (extension == null ? "png" : extension.replaceAll("\\.", "")));
+//        File file = new File("./tempImg" + new Date().getTime() + "." + extension);
+        file.createNewFile();
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(img);
+        OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
+        int data;
+        while ((data = byteArrayInputStream.read()) != -1) {
+            outputStream.write(data);
+        }
+        outputStream.close();
+        return file;
+    }
+
     /**
      * Transforma una IMAGEN de tipo bytea (postgre) a un java.io.File
      *
@@ -313,20 +327,7 @@ public abstract class UTIL {
      * @throws IOException
      */
     public static File imageToFile(byte[] img, String extension) throws IOException {
-        if (extension == null || extension.length() < 1) {
-            extension = "png";
-        }
-
-        File file = new File("./reportes/img." + extension);
-        file.createNewFile();
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(img);
-        OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
-        int data;
-        while ((data = byteArrayInputStream.read()) != -1) {
-            outputStream.write(data);
-        }
-        outputStream.close();
-        return file;
+        return imageToFile(img, "temp", extension);
     }
 
     /**
