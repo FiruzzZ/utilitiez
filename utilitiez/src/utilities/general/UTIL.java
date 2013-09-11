@@ -65,8 +65,8 @@ public abstract class UTIL {
      * espacios. <LI>Termine en un caracter alfabético. </UL> Útil para validar
      * Nombres y Apellidos Ejemplos válidos: "a", "jose luis", "a B cd".
      */
-    public final static String REGEX_ALFA_TEXT_WITH_WHITE =
-            "^[a-zA-Z][a-zA-Z\\s]*[a-zA-Z]$|"
+    public final static String REGEX_ALFA_TEXT_WITH_WHITE
+            = "^[a-zA-Z][a-zA-Z\\s]*[a-zA-Z]$|"
             + "^[a-zA-Z]+[a-zA-Z]*$|"
             + "^[a-zA-Z]$";
     /**
@@ -103,16 +103,15 @@ public abstract class UTIL {
      */
     public final static SimpleDateFormat TIMESTAMP_FORMAT;
     /**
-     * formato de salida del
-     * <code>double</code> -> #,###.00 Con separador de millares y COMA de
-     * separador decimal (formato no casteable a double/Double).
+     * formato de salida del <code>double</code> -> #,###.00 Con separador de
+     * millares y COMA de separador decimal (formato no casteable a
+     * double/Double).
      */
     public final static DecimalFormat DECIMAL_FORMAT;
     /**
-     * formato de salida del
-     * <code>double</code> a un String casteable nuevamente a double. El punto
-     * (.) como separador decimal y sin separadores de millares Formato
-     * "#######0.##"
+     * formato de salida del <code>double</code> a un String casteable
+     * nuevamente a double. El punto (.) como separador decimal y sin
+     * separadores de millares Formato "#######0.##"
      */
     public static DecimalFormat PRECIO_CON_PUNTO;
     /**
@@ -199,8 +198,8 @@ public abstract class UTIL {
     }
 
     /**
-     * Ajusta la imagen al size de la jLabel, también deja
-     * <code>null</code> el texto de la label
+     * Ajusta la imagen al size de la jLabel, también deja <code>null</code> el
+     * texto de la label
      *
      * @param label
      * @param imageFile File de una imagen, la cual se va ajustar al tamaño de
@@ -304,7 +303,7 @@ public abstract class UTIL {
     }
 
     public static File imageToFile(byte[] img, String pathFile, String extension) throws IOException {
-        File file = File.createTempFile(pathFile, "."+ (extension == null ? "png" : extension.replaceAll("\\.", "")));
+        File file = File.createTempFile(pathFile, "." + (extension == null ? "png" : extension.replaceAll("\\.", "")));
 //        File file = new File("./tempImg" + new Date().getTime() + "." + extension);
         file.createNewFile();
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(img);
@@ -541,9 +540,8 @@ public abstract class UTIL {
     }
 
     /**
-     * Personaliza una fecha según los parámetros.
-     * <code>fecha</code> no debe ser
-     * <code>null</code>.
+     * Personaliza una fecha según los parámetros. <code>fecha</code> no debe
+     * ser <code>null</code>.
      *
      * @param fecha un java.util.Date como punto de referencia inicial
      * @param year años por adicionar o restar
@@ -579,8 +577,7 @@ public abstract class UTIL {
     }
 
     /**
-     * Devuelte un Date modificada según los
-     * <code>dias</code>
+     * Devuelte un Date modificada según los <code>dias</code>
      *
      * @param fecha Date base sobre el cual se va trabajar. If
      * <code>fecha</code> is <code>null</code> will return null Date
@@ -844,8 +841,10 @@ public abstract class UTIL {
 
     /**
      * Setea como selected al item del comboBox que coincida con el
-     * <code>candidato</code>. <p>Este método utiliza {@code equals} para la
-     * comparación, SO THE CLASS MUST OVERRIDE {@link Object#equals(java.lang.Object)
+     * <code>candidato</code>.
+     * <p>
+     * Este método utiliza {@code equals} para la comparación, SO THE CLASS MUST
+     * OVERRIDE {@link Object#equals(java.lang.Object)
      * }
      *
      * @param combo El cual podría contener el item {@code candidato}
@@ -886,9 +885,8 @@ public abstract class UTIL {
             if (object.equals(candidato)) {
                 combo.setSelectedIndex(index);
                 return index;
-            } else {
-                index++;
             }
+            index++;
         }
         return -1;
     }
@@ -1053,8 +1051,8 @@ public abstract class UTIL {
     }
 
     /**
-     * Agrega "0" a la DERECHA de
-     * <code>cadena</code> hasta que esta tenga la longitudMaxima
+     * Agrega "0" a la DERECHA de <code>cadena</code> hasta que esta tenga la
+     * longitudMaxima
      *
      * @param cadena If == <code>null</code> will do nothing!
      * @param longitudMaxima agrega "0" hasta que <code>cadena</code> tenga la
@@ -1209,8 +1207,7 @@ public abstract class UTIL {
 
         /**
          * This property can be null or contain nulls values, in both case a
-         * default value will be used (
-         * <code>Object.class</code>).
+         * default value will be used ( <code>Object.class</code>).
          */
         private Class[] columnTypes = null;
         /**
