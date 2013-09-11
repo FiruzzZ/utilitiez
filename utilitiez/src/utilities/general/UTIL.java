@@ -865,7 +865,7 @@ public abstract class UTIL {
         }
         try {
             Class<?> declaringClass = candidato.getClass().getMethod("equals", Object.class).getDeclaringClass();
-            if (!declaringClass.equals(candidato.getClass())) {
+            if (!declaringClass.equals(candidato.getClass()) && !candidato.getClass().isEnum()) {
                 Logger.getLogger(UTIL.class.getName()).log(Level.WARNING,
                         "The " + candidato.getClass() + " must override the method equals(Object o)");
                 return -1;
