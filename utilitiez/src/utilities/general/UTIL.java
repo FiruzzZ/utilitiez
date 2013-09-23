@@ -433,7 +433,7 @@ public abstract class UTIL {
         }
         if (columnClassType != null && (columnNames.length < columnClassType.length)) {
             throw new IllegalArgumentException("el array columnClassType tiene mas elementos (" + columnClassType.length + ")"
-                    + " que columnClassType = " + columnClassType.length);
+                    + " que columnNames (" + columnNames.length + "):\n" + Arrays.toString(columnNames));
         }
         if (editableColumns != null) {
             for (int i : editableColumns) {
