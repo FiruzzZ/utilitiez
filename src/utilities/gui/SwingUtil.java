@@ -3,6 +3,7 @@ package utilities.gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -29,6 +30,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -41,7 +43,41 @@ import utilities.general.UTIL;
  */
 public class SwingUtil {
 
-    private static SwingUtil singleton = new SwingUtil();
+    private static final SwingUtil singleton = new SwingUtil();
+    private static FocusListener selectAllFocus;
+
+    public static void addSelectAllOnFocusGainedListener(Component[] components) {
+        for (Component component : components) {
+            if (component instanceof JPanel) {
+                JPanel subPanel = (JPanel) component;
+                addSelectAllOnFocusGainedListener(subPanel.getComponents());
+            } else if (component instanceof JTextComponent) {
+                addSelectAllOnFocusGainedListener((JTextComponent) component);
+            }
+        }
+    }
+
+    public static void addSelectAllOnFocusGainedListener(JTextComponent tf) {
+        tf.addFocusListener(getSelectAllFocus());
+    }
+
+    private static FocusListener getSelectAllFocus() {
+        if (selectAllFocus == null) {
+            selectAllFocus = new FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    final JTextComponent t = (JTextComponent) e.getSource();
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            t.selectAll();
+                        }
+                    });
+                }
+            };
+        }
+        return selectAllFocus;
+    }
 
     private SwingUtil() {
     }
@@ -151,6 +187,33 @@ public class SwingUtil {
         };
     }
 
+    public static void addDigitsInputListener(JTextField textField, final boolean allowPeriod, final Integer maxLenght) {
+        textField.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                checkInputDigit(e, allowPeriod, maxLenght);
+            }
+
+        });
+
+    }
+
+    public static void addDigitsInputListener(JTextField textField, Integer maxLenght) {
+        addDigitsInputListener(textField, false, maxLenght);
+
+    }
+
+    /**
+     *
+     * @param textField
+     * @see #checkInputDigit(java.awt.event.KeyEvent, boolean,
+     * java.lang.Integer)
+     */
+    public static void addDigitsInputListener(JTextField textField) {
+        addDigitsInputListener(textField, false, null);
+    }
+
     /**
      * Verifica que el caracter que se intenta ingresar es un dígido y que la
      * longitud de caracteres ingresados no supere el limite. If not >
@@ -196,16 +259,27 @@ public class SwingUtil {
         checkInputDigit(keyTypedEvent, allowOnePeriod, null);
     }
 
-    public static void checkInputDigit(KeyEvent keyTypedEvent, boolean allowOnePeriod, Integer maxLenght) {
+    /**
+     * Se obtiene el String del JTextField que disparó el evento y controla que
+     * la tecla presionada sea un caracter numérico o un PUNTO "."
+     * ({@link KeyEvent#VK_PERIOD}).
+     *
+     * @param keyTypedEvent The KeyEvent must come from a {@link JTextField}
+     * @param allowOnePeriod if allow one period as a valid input key.
+     * @param maxLength limiate
+     * @throws ClassCastException if the source of the event doesn't come from a
+     * JTextField.
+     */
+    public static void checkInputDigit(KeyEvent keyTypedEvent, boolean allowOnePeriod, Integer maxLength) {
         JTextField tf = (JTextField) keyTypedEvent.getSource();
         String cadena = tf.getText();
-        if (allowOnePeriod && ((int) keyTypedEvent.getKeyChar()) == 46) {
-            if (countCharOccurrences(cadena, '.') > 0) {
+        if (allowOnePeriod && ((int) keyTypedEvent.getKeyChar()) == KeyEvent.VK_PERIOD) {
+            if (cadena.contains(".")) {
                 keyTypedEvent.consume();
             }
         } else {
-            if (maxLenght != null) {
-                checkInputDigit(keyTypedEvent, maxLenght);
+            if (maxLength != null) {
+                checkInputDigit(keyTypedEvent, maxLength);
             } else {
                 checkInputDigit(keyTypedEvent);
             }
@@ -326,10 +400,13 @@ public class SwingUtil {
     }
 
     /**
-     * On focusGained does: <p>{@link UTIL#parseToDouble(java.lang.String)} and
+     * On focusGained does:
+     * <p>
+     * {@link UTIL#parseToDouble(java.lang.String)} and
      * {@link #setSelectedAll(javax.swing.text.JTextComponent)} <br>On focusLost
-     * does: <p> format the text with
-     * {@code df = new DecimalFormat("#,##0.00")}. if
+     * does:
+     * <p>
+     * format the text with {@code df = new DecimalFormat("#,##0.00")}. if
      * {@link DecimalFormat#format(java.lang.Object)} fails, the backGround is
      * setted to {@link Color#RED} otherwise sets(keeps) the default color.
      *
