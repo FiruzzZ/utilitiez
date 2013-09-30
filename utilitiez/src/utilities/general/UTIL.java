@@ -302,6 +302,18 @@ public abstract class UTIL {
         return m1 - m2;
     }
 
+    /**
+     * Doesn't work on dates wihth different daylight saving
+     * @param from
+     * @param to
+     * @return 
+     */
+    public static int getDaysBetween(Date from, Date to) {
+        long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+        //using BigDecimal to avoid Android's problem rounding 1.99 days
+        return BigDecimal.valueOf((to.getTime() - from.getTime()) / DAY_IN_MILLIS).setScale(0, RoundingMode.DOWN).intValue();
+    }
+
     public static File imageToFile(byte[] img, String pathFile, String extension) throws IOException {
         File file = File.createTempFile(pathFile, "." + (extension == null ? "png" : extension.replaceAll("\\.", "")));
 //        File file = new File("./tempImg" + new Date().getTime() + "." + extension);
