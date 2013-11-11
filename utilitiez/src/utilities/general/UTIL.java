@@ -57,7 +57,7 @@ public abstract class UTIL {
         query = query.replaceAll("\"", "");
         return query;
     }
-    public final static String EMAIL_REGEX = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+    public final static String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     /**
      *
      * Regular expression para validar cadenas que: <UL> <LI>Empiece con un
@@ -304,9 +304,10 @@ public abstract class UTIL {
 
     /**
      * Doesn't work on dates wihth different daylight saving
+     *
      * @param from
      * @param to
-     * @return 
+     * @return
      */
     public static int getDaysBetween(Date from, Date to) {
         long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
@@ -586,6 +587,16 @@ public abstract class UTIL {
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
+    }
+
+    /**
+     *
+     * @param date cannot be null
+     * @return return an integer representative of a period (yyyyMM), where MM
+     * >=1 and &gt=12
+     */
+    public static Integer getPeriodo(Date date) {
+        return Integer.valueOf(new SimpleDateFormat("yyyyMM").format(date));
     }
 
     /**
