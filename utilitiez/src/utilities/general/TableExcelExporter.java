@@ -118,7 +118,7 @@ public class TableExcelExporter {
     }
 
     private void addData() {
-        for (int rowIdx = 1; rowIdx < table.getRowCount() - 1; rowIdx++) {
+        for (int rowIdx = 0; rowIdx < table.getRowCount(); rowIdx++) {
             HSSFRow row = sheet.createRow(rowIdx);
             for (int columnIdx = 0; columnIdx < table.getColumnCount(); columnIdx++) {
                 if (columnIdxToSkip.contains(columnIdx)) {
