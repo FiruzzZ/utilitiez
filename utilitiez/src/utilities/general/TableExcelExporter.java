@@ -28,7 +28,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
- *
+ * Export the data from a JTAble (not from the tableModel) to a File
  * @author FiruzzZ
  * @version 1
  * @since 01/06/2013 (ma o meno)
@@ -66,8 +66,8 @@ public class TableExcelExporter {
         }
         this.table = table;
         this.file = file;
-        columnIdxToSkip = new ArrayList<Integer>();
-        cellStylePerColumn = new HashMap<Integer, CellStyle>();
+        columnIdxToSkip = new ArrayList<>();
+        cellStylePerColumn = new HashMap<>();
         workBook = new HSSFWorkbook();
         sheet = workBook.createSheet();
     }
