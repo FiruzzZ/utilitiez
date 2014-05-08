@@ -11,7 +11,7 @@ import java.util.Vector;
 @SuppressWarnings("UseOfObsoleteCollectionType")
 public class DateColumnSorter implements Comparator<Vector<Object>> {
 
-    private int colIndex;
+    private final int colIndex;
 
     /**
      * 

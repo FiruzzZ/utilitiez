@@ -1,12 +1,13 @@
 package utilities.general;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
  * @param <T> Entity to be wrapped
  * @author FiruzzZ
- * @version 1
+ * @version 1.5
  * @since loooooong time ago
  */
 public class EntityWrapper<T> {
@@ -18,20 +19,14 @@ public class EntityWrapper<T> {
 
     /**
      *
-     * @param entity to be wrapped
+     * @param entity to be wrapped, can be null.
      * @param id (Primary Key or Unique) of the entity wrapped.
      * @param text a front-end description of the object wrapped.
      */
     public EntityWrapper(T entity, Serializable id, String text) {
-        if (id == null) {
-            throw new IllegalArgumentException("parameter id can not be null");
-        }
-        if (text == null) {
-            throw new IllegalArgumentException(text);
-        }
         this.entity = entity;
-        this.id = id;
-        this.text = text;
+        this.id = Objects.requireNonNull(id, "parameter id can not be null");
+        this.text = Objects.requireNonNull(text, "parameter text can not be null");
     }
 
     public T getEntity() {
@@ -50,6 +45,12 @@ public class EntityWrapper<T> {
         return serialVersionUID;
     }
 
+    /**
+     * Ojo piojo con este, no es un equal standar!
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -60,7 +61,9 @@ public class EntityWrapper<T> {
         }
         @SuppressWarnings("unchecked")
         final EntityWrapper<T> other = (EntityWrapper<T>) obj;
-        if (this.entity != other.entity && (this.entity == null || !this.entity.equals(other.entity))) {
+        if (this.getEntity() != null && other.getEntity() != null) {
+            return this.getEntity().equals(other.getEntity());
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
         return true;
