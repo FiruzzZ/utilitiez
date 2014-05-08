@@ -187,6 +187,13 @@ public class SwingUtil {
         };
     }
 
+    /**
+     * 
+     * @param textField
+     * @param allowPeriod
+     * @param maxLenght numbers of digits (the count also include the period)
+     * @see #checkInputDigit(java.awt.event.KeyEvent, boolean, java.lang.Integer) 
+     */
     public static void addDigitsInputListener(JTextField textField, final boolean allowPeriod, final Integer maxLenght) {
         textField.addKeyListener(new KeyAdapter() {
 
