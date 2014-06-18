@@ -834,16 +834,15 @@ public abstract class UTIL {
             return -1;
         }
 
-        boolean encontrado = false;
         int index = 0;
-        while (index < combo.getItemCount() && !encontrado) {
+        while (index < combo.getItemCount()) {
             if ((combo.getItemAt(index)).toString().equals(candidato)) {
                 combo.setSelectedIndex(index);
-                encontrado = true;
+                return index;
             }
             index++;
         }
-        return encontrado ? index : -1;
+        return -1;
     }
 
     /**
@@ -882,9 +881,18 @@ public abstract class UTIL {
         int index = 0;
         while (index < combo.getItemCount()) {
             Object object = combo.getItemAt(index);
-            if (combo.getItemAt(index) instanceof ComboBoxWrapper) {
+            if (object instanceof ComboBoxWrapper) {
                 object = ((ComboBoxWrapper) object).getEntity();
-            } else if (combo.getItemAt(index) instanceof EntityWrapper) {
+            } else if (object instanceof EntityWrapper) {
+                /**
+                 * Cuando candidato es EntityWrapper y MUY probablemente no tenga seteado el
+                 * EntityWrapper#entity es null, es porque se quiere comparar los atributos id nomas
+                 * y no usar el método equals() del objeto wrappeado ..wakatta?
+                 */
+                if (candidato instanceof EntityWrapper && object.equals(candidato)) {
+                    combo.setSelectedIndex(index);
+                    return index;
+                }
                 object = ((EntityWrapper) object).getEntity();
             }
             if (object.equals(candidato)) {
@@ -1048,7 +1056,7 @@ public abstract class UTIL {
     }
 
     /**
-     * Agrega "0" a la DERECHA de <code>cadena</code> hasta que esta tenga la longitudMaxima
+     * Agrega "0" a la IZQUIERDA de <code>cadena</code> hasta que esta tenga la longitudMaxima
      *
      * @param cadena If == <code>null</code> will do nothing!
      * @param longitudMaxima agrega "0" hasta que <code>cadena</code> tenga la longitud deseada
@@ -1326,15 +1334,10 @@ public abstract class UTIL {
         if (birthDate.after(today)) {
             throw new IllegalArgumentException("Can't be born in the future");
         }
-        int age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
-        // If birth date is > todays date (after 2 days adjustment of leap year) then decrement age one year   
-        if ((birthDate.get(Calendar.DAY_OF_YEAR) - today.get(Calendar.DAY_OF_YEAR) > 3)
-                || (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH))) {
-            age--;
-
-        } else if ((birthDate.get(Calendar.MONTH) == today.get(Calendar.MONTH))
-                && (birthDate.get(Calendar.DAY_OF_MONTH) > today.get(Calendar.DAY_OF_MONTH))) {
-            age--;
+        int age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR) - 1;
+        if ((today.get(Calendar.MONTH) >= birthDate.get(Calendar.MONTH))
+                && (today.get(Calendar.DAY_OF_MONTH) >= birthDate.get(Calendar.DAY_OF_MONTH))) {
+            age++;
         }
         return age;
     }
