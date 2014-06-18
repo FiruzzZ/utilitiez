@@ -29,6 +29,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * Export the data from a JTAble (not from the tableModel) to a File
+ *
  * @author FiruzzZ
  * @version 1
  * @since 01/06/2013 (ma o meno)
@@ -61,7 +62,7 @@ public class TableExcelExporter {
         if (table.getRowCount() < 1) {
             throw new IllegalArgumentException("Tabla no contiene fila para ser exportadas");
         }
-        if(file == null) {
+        if (file == null) {
             throw new IllegalArgumentException("Archivo de destino de exportación no válido");
         }
         this.table = table;
@@ -118,8 +119,10 @@ public class TableExcelExporter {
     }
 
     private void addData() {
+        int rowExcelIdx = skipColumnHeaders ? 0 : 1;
         for (int rowIdx = 0; rowIdx < table.getRowCount(); rowIdx++) {
-            HSSFRow row = sheet.createRow(rowIdx);
+            HSSFRow row = sheet.createRow(rowExcelIdx);
+            rowExcelIdx++;
             for (int columnIdx = 0; columnIdx < table.getColumnCount(); columnIdx++) {
                 if (columnIdxToSkip.contains(columnIdx)) {
                     continue;
