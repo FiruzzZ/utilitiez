@@ -520,21 +520,21 @@ public abstract class UTIL {
     }
 
     /**
-     * Crea un java.util.Date con los parámetros de fecha mandados y TimeZone a GTM-3 (no toma del
-     * SO ni nada).
+     * Crea un java.util.Date con los parámetros.
      *
-     * @param year el año del Date
+     * @param year >=1900
      * @param month 0=enero and so on...
      * @param day if == NULL.. will be setted to 1, si == -1 al último día de
      * <b>month</b>
      * @return java.util.Date inicializado con la fecha.
-     * @throws Exception si month < 0 || month > 11
+     * @throws Exception si month &lt 0 || month > 11
      */
     public static Date customDate(int year, int month, Integer day) {
         if (month < 0 || month > 11) {
             throw new IllegalArgumentException("Mes (month) no válido, must be >= 0 AND <= 11");
         }
-        Calendar c = Calendar.getInstance(TimeZone.getTimeZone(TIME_ZONE));
+        Calendar c = Calendar.getInstance();
+        c.clear();
         if (day == null) {
             c.set(year, month, 1);
         } else if (day == -1) {
@@ -1334,7 +1334,10 @@ public abstract class UTIL {
         if (birthDate.after(today)) {
             throw new IllegalArgumentException("Can't be born in the future");
         }
-        int age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR) - 1;
+        int age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+        if (age > 0) {
+            age--;
+        }
         if ((today.get(Calendar.MONTH) >= birthDate.get(Calendar.MONTH))
                 && (today.get(Calendar.DAY_OF_MONTH) >= birthDate.get(Calendar.DAY_OF_MONTH))) {
             age++;
