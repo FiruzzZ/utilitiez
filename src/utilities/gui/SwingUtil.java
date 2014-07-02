@@ -164,8 +164,8 @@ public class SwingUtil {
     }
 
     /**
-     * Return a {@code KeyListener}, which inputs typed are validated by the
-     * RegEx ({@link KeyListener#keyTyped(java.awt.event.KeyEvent) })
+     * Return a {@code KeyListener}, which inputs typed are validated by the RegEx
+     * ({@link KeyListener#keyTyped(java.awt.event.KeyEvent)})
      *
      * @param regEx \s[a-zA-Z0-9]{3,5}
      * @return an instance of this implementation
@@ -188,11 +188,11 @@ public class SwingUtil {
     }
 
     /**
-     * 
+     *
      * @param textField
      * @param allowPeriod
      * @param maxLenght numbers of digits (the count also include the period)
-     * @see #checkInputDigit(java.awt.event.KeyEvent, boolean, java.lang.Integer) 
+     * @see #checkInputDigit(java.awt.event.KeyEvent, boolean, java.lang.Integer)
      */
     public static void addDigitsInputListener(JTextField textField, final boolean allowPeriod, final Integer maxLenght) {
         textField.addKeyListener(new KeyAdapter() {
@@ -202,8 +202,20 @@ public class SwingUtil {
                 checkInputDigit(e, allowPeriod, maxLenght);
             }
 
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_DELETE
+                        || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    super.keyPressed(e);
+                }
+            }
+
         });
 
+    }
+
+    public static void addDigitsInputListener(JComboBox<?> combo, Integer maxLenght) {
+        addDigitsInputListener((JTextField) combo.getEditor().getEditorComponent(), maxLenght);
     }
 
     public static void addDigitsInputListener(JTextField textField, Integer maxLenght) {
@@ -214,22 +226,20 @@ public class SwingUtil {
     /**
      *
      * @param textField
-     * @see #checkInputDigit(java.awt.event.KeyEvent, boolean,
-     * java.lang.Integer)
+     * @see #checkInputDigit(java.awt.event.KeyEvent, boolean, java.lang.Integer)
      */
     public static void addDigitsInputListener(JTextField textField) {
         addDigitsInputListener(textField, false, null);
     }
 
     /**
-     * Verifica que el caracter que se intenta ingresar es un dígido y que la
-     * longitud de caracteres ingresados no supere el limite. If not >
+     * Verifica que el caracter que se intenta ingresar es un dígido y que la longitud de caracteres
+     * ingresados en el componente no supere el limite. If not >
      * {@link java.awt.event.InputEvent#consume()}
      *
      * @param keyTypedEvent Must be a instance of
-     * {@link KeyListener#keyTyped(java.awt.event.KeyEvent)} and
-     * {@link KeyEvent#getSource()} must be <code>instanceof</code>
-     * {@link JTextField}
+     * {@link KeyListener#keyTyped(java.awt.event.KeyEvent)} and {@link KeyEvent#getSource()} must
+     * be <code>instanceof</code> {@link JTextField}
      * @param maxLength a positive value
      */
     public static void checkInputDigit(KeyEvent keyTypedEvent, int maxLength) {
@@ -243,8 +253,7 @@ public class SwingUtil {
     /**
      * Verifica que el caracter que se intenta ingresar es un dígido.
      *
-     * @param typedEvent Must be a instance of
-     * {@link KeyListener#keyTyped(java.awt.event.KeyEvent)}
+     * @param typedEvent Must be a instance of {@link KeyListener#keyTyped(java.awt.event.KeyEvent)}
      */
     public static void checkInputDigit(KeyEvent typedEvent) {
         if (!Character.isDigit(typedEvent.getKeyChar())) {
@@ -253,34 +262,30 @@ public class SwingUtil {
     }
 
     /**
-     * Se obtiene el String del JTextField que disparó el evento y controla que
-     * la tecla presionada sea un caracter numérico o un PUNTO '.'
-     * ({@link KeyEvent#VK_PERIOD}).
+     * Se obtiene el String del JTextField que disparó el evento y controla que la tecla presionada
+     * sea un caracter numérico o un PUNTO '.' ({@link KeyEvent#VK_PERIOD}).
      *
      * @param keyTypedEvent The KeyEvent must come from a {@link JTextField}
      * @param allowOnePeriod if allow one period as a valid input key.
-     * @throws ClassCastException if the source of the event doesn't come from a
-     * JTextField.
+     * @throws ClassCastException if the source of the event doesn't come from a JTextField.
      */
     public static void checkInputDigit(KeyEvent keyTypedEvent, boolean allowOnePeriod) {
         checkInputDigit(keyTypedEvent, allowOnePeriod, null);
     }
 
     /**
-     * Se obtiene el String del JTextField que disparó el evento y controla que
-     * la tecla presionada sea un caracter numérico o un PUNTO "."
-     * ({@link KeyEvent#VK_PERIOD}).
+     * Se obtiene el String del JTextField que disparó el evento y controla que la tecla presionada
+     * sea un caracter numérico o un PUNTO "." ({@link KeyEvent#VK_PERIOD}).
      *
      * @param keyTypedEvent The KeyEvent must come from a {@link JTextField}
      * @param allowOnePeriod if allow one period as a valid input key.
      * @param maxLength limiate
-     * @throws ClassCastException if the source of the event doesn't come from a
-     * JTextField.
+     * @throws ClassCastException if the source of the event doesn't come from a JTextField.
      */
     public static void checkInputDigit(KeyEvent keyTypedEvent, boolean allowOnePeriod, Integer maxLength) {
         JTextField tf = (JTextField) keyTypedEvent.getSource();
         String cadena = tf.getText();
-        if (allowOnePeriod && ((int) keyTypedEvent.getKeyChar()) == KeyEvent.VK_PERIOD) {
+        if (allowOnePeriod && keyTypedEvent.getKeyChar() == KeyEvent.VK_PERIOD) {
             if (cadena.contains(".")) {
                 keyTypedEvent.consume();
             }
@@ -294,8 +299,7 @@ public class SwingUtil {
     }
 
     /**
-     * Cuenta la cantidad de veces que está presente el char candidate tiene la
-     * cadena
+     * Cuenta la cantidad de veces que está presente el char candidate tiene la cadena
      *
      * @param cadena String to analize, can not be <code>null</code>
      * @param candidate
@@ -324,17 +328,15 @@ public class SwingUtil {
     }
 
     /**
-     * Settea {@link Component#enabled} de los componentes en el
-     * {@link Container} (y sus sub {@link Container} que puedan haber, buclea
-     * recursivo). Se pueden especificar que tipo de componentes serán excluidos
-     * de este proceso ({@code exceptionsComponents})
+     * Settea {@link Component#enabled} de los componentes en el {@link Container} (y sus sub
+     * {@link Container} que puedan haber, buclea recursivo). Se pueden especificar que tipo de
+     * componentes serán excluidos de este proceso ({@code exceptionsComponents})
      *
      * @param components
      * @param enable used to set {@link Component#setEnabled(boolean)}
      * @param applyDefaultsExceptionComponents
      * ({@link JScrollPane}, {@link JLabel}, {@link JSeparator})
-     * @param exceptionsComponents componentes a los cuales no se les setteara
-     * na!
+     * @param exceptionsComponents componentes a los cuales no se les setteara na!
      *
      */
     public static void setComponentsEnabled(Component[] components, boolean enable, boolean applyDefaultsExceptionComponents, Class<? extends Component>... exceptionsComponents) {
@@ -368,15 +370,27 @@ public class SwingUtil {
     /**
      * Resetea algunos componentes: <br> {@link JTextComponent#setText(java.lang.String)
      * } == null <br> {@link JCheckBox#setSelected(boolean) } == false <br> {@link JComboBox#setSelectedIndex(int)
-     * } == 0 <br> {@link JTable} and
-     * {@link JTable#getModel() } {@code instance of} {@link DefaultTableModel}
-     * do {@link DefaultTableModel#setRowCount(int) } to zero <br> AND using
-     * reflection to set from JCalendar > JDaceChooser.setDate(null)
+     * } == 0 <br> {@link JTable} and {@link JTable#getModel() } {@code instance of}
+     * {@link DefaultTableModel} do {@link DefaultTableModel#setRowCount(int) } to zero <br> AND
+     * using reflection to set from JCalendar > JDaceChooser.setDate(null)
      *
      * @param components
+     * @param expections
      */
-    public static void resetJComponets(Component[] components) {
+    public static void resetJComponets(Component[] components, Class<? extends Component>... expections) {
         for (Component component : components) {
+            if (expections != null) {
+                boolean skip = false;
+                for (Class<? extends Component> classToSkip : expections) {
+                    if (component.getClass().equals(classToSkip)) {
+                        skip = true;
+                        break;
+                    }
+                }
+                if (skip) {
+                    continue;
+                }
+            }
             if (component instanceof JTextComponent) {
                 JTextComponent c = (JTextComponent) component;
                 c.setText(null);
@@ -401,21 +415,25 @@ public class SwingUtil {
                 }
             } else if (component instanceof JComponent) {
                 JComponent subPanel = (JComponent) component;
-                resetJComponets(subPanel.getComponents());
+                resetJComponets(subPanel.getComponents(), expections);
             }
         }
+
+    }
+
+    public static void resetJComponets(Component[] components) {
+        resetJComponets(components, (Class<? extends Component>[]) null);
     }
 
     /**
      * On focusGained does:
      * <p>
      * {@link UTIL#parseToDouble(java.lang.String)} and
-     * {@link #setSelectedAll(javax.swing.text.JTextComponent)} <br>On focusLost
-     * does:
+     * {@link #setSelectedAll(javax.swing.text.JTextComponent)} <br>On focusLost does:
      * <p>
      * format the text with {@code df = new DecimalFormat("#,##0.00")}. if
-     * {@link DecimalFormat#format(java.lang.Object)} fails, the backGround is
-     * setted to {@link Color#RED} otherwise sets(keeps) the default color.
+     * {@link DecimalFormat#format(java.lang.Object)} fails, the backGround is setted to
+     * {@link Color#RED} otherwise sets(keeps) the default color.
      *
      * @return
      */
