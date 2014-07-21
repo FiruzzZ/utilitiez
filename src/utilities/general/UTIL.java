@@ -756,33 +756,6 @@ public abstract class UTIL {
         return null;
     }
 
-//    /**
-//     * Ctrla que sea un caracter numérico el apretado
-//     * @param KeyEvent evt!!
-//     * @return true si es un caracter numérico [1234567890], otherwise will return false.
-//     */
-//    public static boolean soloNumeros(java.awt.event.KeyEvent evt) {
-//        int k = evt.getKeyChar();
-//        if(k<48 || k>57) return false;
-//        return true;
-//    }
-    public static String TO_UPPER_CASE(String unString) {
-        if (unString != null) {
-            return unString.toUpperCase();
-        }
-        throw new NullPointerException("El String para mayusculizar es NULL!");
-    }
-
-    /**
-     * Pasa el caracter a mayuscula y retorna.
-     *
-     * @param letra a mayusculizar.
-     * @return el character mayusculizado.
-     */
-    public static char TO_UPPER_CASE(char letra) {
-        return (String.valueOf(letra).toUpperCase()).charAt(0);
-    }
-
     /**
      * Remueve de la ColumnModel las columnas que se le indique, deja de ser visible para el usuario
      * pero sigue siendo accesible desde el TableModel
@@ -1328,7 +1301,19 @@ public abstract class UTIL {
      * @return edad {@code >= 0}
      */
     public static int getAge(Date dateOfBirth) {
+        return getAge(dateOfBirth, Calendar.getInstance().getTime());
+    }
+
+    /**
+     *
+     * @param dateOfBirth
+     * @param dateToday
+     * @return
+     */
+    public static int getAge(Date dateOfBirth, Date dateToday) {
         Calendar today = Calendar.getInstance();
+        today.clear();
+        today.setTime(dateToday);
         Calendar birthDate = Calendar.getInstance();
         birthDate.setTime(dateOfBirth);
         if (birthDate.after(today)) {
@@ -1338,10 +1323,16 @@ public abstract class UTIL {
         if (age > 0) {
             age--;
         }
-        if ((today.get(Calendar.MONTH) >= birthDate.get(Calendar.MONTH))
-                && (today.get(Calendar.DAY_OF_MONTH) >= birthDate.get(Calendar.DAY_OF_MONTH))) {
-            age++;
+
+        if (today.get(Calendar.YEAR) > birthDate.get(Calendar.YEAR)) {
+            if (today.get(Calendar.MONTH) > birthDate.get(Calendar.MONTH)) {
+                age++;
+            } else if (today.get(Calendar.MONTH) == birthDate.get(Calendar.MONTH)
+                    && today.get(Calendar.DAY_OF_MONTH) >= birthDate.get(Calendar.DAY_OF_MONTH)) {
+                age++;
+            }
         }
         return age;
+
     }
 }
