@@ -359,7 +359,9 @@ public class SwingUtil {
         }
         if (exceptionsComponents != null) {
             for (Class<? extends Component> exceptionType : exceptionsComponents) {
-                if (component.getClass().equals(exceptionType.getClass())) {
+                System.out.println(component.getClass() + " == " + exceptionType);
+                if (component.getClass().equals(exceptionType)) {
+                    System.out.println("!!"+exceptionType);
                     return;
                 }
             }

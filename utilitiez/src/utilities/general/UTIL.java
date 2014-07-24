@@ -819,19 +819,40 @@ public abstract class UTIL {
     }
 
     /**
-     * Setea como selected al item del comboBox que coincida con el <code>candidato</code>.
+     * Setea como selected al item del comboBox que coincida con el <code>candidate</code>.
      * <p>
-     * Este método utiliza {@code equals} para la comparación, SO THE CLASS MUST OVERRIDE {@link Object#equals(java.lang.Object)
-     * }
+     * Este método utiliza {@code equals} para la comparación, SO THE CLASS MUST OVERRIDE
+     * {@link Object#equals(java.lang.Object)}
      *
-     * @param combo El cual podría contener el item {@code candidato}
-     * @param candidato Can not be null.
+     * @param combo El cual podría contener el item {@code candidate}
+     * @param candidate Can not be null.
      * @return an index of the selectedItem, or -1 if 1 > combo.getItemCount() || if
      * {@code candidato} does not match any item
      */
-    public static int setSelectedItem(JComboBox combo, Object candidato) {
-        if (candidato == null) {
-            throw new IllegalArgumentException("El Objeto candidato can't be null");
+    public static int setSelectedItem(JComboBox combo, Object candidate) {
+        return setSelectedItem(combo, candidate, false);
+    }
+
+    /**
+     * Setea como selected al item del comboBox que coincida con <code>candidate</code>.
+     * <p>
+     * Este método utiliza {@code equals} para la comparación, SO THE CLASS MUST OVERRIDE
+     * {@link Object#equals(java.lang.Object)}
+     *
+     * @param combo El cual podría contener el item {@code candidate}
+     * @param candidate Can not be null.
+     * @param allowNullCandidate
+     * @return an index of the selectedItem, or -1 if 1 > combo.getItemCount() || if
+     * {@code candidato} does not match any item
+     */
+    public static int setSelectedItem(JComboBox combo, Object candidate, boolean allowNullCandidate) {
+        if (candidate == null) {
+            if (allowNullCandidate) {
+                combo.setSelectedIndex(-1);
+                return -1;
+            } else {
+                throw new IllegalArgumentException("El Objeto candidato can't be null");
+            }
         }
         if (combo == null) {
             throw new IllegalArgumentException("JComboBox combo can't be null");
@@ -840,10 +861,10 @@ public abstract class UTIL {
             return -1;
         }
         try {
-            Class<?> declaringClass = candidato.getClass().getMethod("equals", Object.class).getDeclaringClass();
-            if (!declaringClass.equals(candidato.getClass()) && !candidato.getClass().isEnum()) {
+            Class<?> declaringClass = candidate.getClass().getMethod("equals", Object.class).getDeclaringClass();
+            if (!declaringClass.equals(candidate.getClass()) && !candidate.getClass().isEnum()) {
                 Logger.getLogger(UTIL.class.getName()).log(Level.WARNING,
-                        "The " + candidato.getClass() + " must override the method equals(Object o)");
+                        "The " + candidate.getClass() + " must override the method equals(Object o)");
                 return -1;
             }
         } catch (NoSuchMethodException ex) {
@@ -862,13 +883,13 @@ public abstract class UTIL {
                  * EntityWrapper#entity es null, es porque se quiere comparar los atributos id nomas
                  * y no usar el método equals() del objeto wrappeado ..wakatta?
                  */
-                if (candidato instanceof EntityWrapper && object.equals(candidato)) {
+                if (candidate instanceof EntityWrapper && object.equals(candidate)) {
                     combo.setSelectedIndex(index);
                     return index;
                 }
                 object = ((EntityWrapper) object).getEntity();
             }
-            if (object.equals(candidato)) {
+            if (object.equals(candidate)) {
                 combo.setSelectedIndex(index);
                 return index;
             }
