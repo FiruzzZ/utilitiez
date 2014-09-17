@@ -6,16 +6,15 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- * Mediante la implementación del método {@link #condicion(java.lang.Object, int, int)
- * } se puede especificar un foreground color para la fila.
+ * Mediante la implementación del método {@link #condicionByRow(int)} se puede especificar un
+ * foreground color para la fila.
  *
  * @author FiruzzZ
  */
 public abstract class RowColorRender extends DefaultTableCellRenderer {
 
     /**
-     * Para evaluar solo una vez la fila y no por cada valor de cada columna de
-     * la fila.
+     * Para evaluar solo una vez la fila y no por cada valor de cada columna de la fila.
      */
     private int lastRowEvaluated = -1;
     private Color fg = null;
