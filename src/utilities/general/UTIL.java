@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
@@ -310,6 +311,28 @@ public abstract class UTIL {
         long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
         //using BigDecimal to avoid Android's problem rounding 1.99 days
         return BigDecimal.valueOf((to.getTime() - from.getTime()) / DAY_IN_MILLIS).setScale(0, RoundingMode.DOWN).intValue();
+    }
+
+    /**
+     * Genera una coleccion con los "periodos" (año/mes) entre ambas fechas (inclusive from y to).
+     *
+     * @param from
+     * @param to
+     * @return empty if {@code from} is after {@code to}
+     */
+    public static List<Date> generateMonthSeries(Date from, Date to) {
+        Calendar desde = GregorianCalendar.getInstance();
+        desde.setTime(from);
+        desde.set(Calendar.DAY_OF_MONTH, 1);
+        Calendar hasta = GregorianCalendar.getInstance();
+        hasta.setTime(to);
+        hasta.set(Calendar.DAY_OF_MONTH, 1);
+        List<Date> series = new ArrayList<>();
+        while (desde.compareTo(hasta) < 1) {
+            series.add(desde.getTime());
+            desde.add(Calendar.MONTH, 1);
+        }
+        return series;
     }
 
     public static File imageToFile(byte[] img, String pathFile, String extension) throws IOException {
@@ -1076,7 +1099,7 @@ public abstract class UTIL {
      *
      * @param monto sobre el cual se calcula el %
      * @param porcentaje debe ser >=0
-     * @return El porcentaje (%) del monto, being      <code>0 >= monto</conde> or  0 >=
+     * @return El porcentaje (%) del monto, being      <code>0 >= monto</conde> or 0 >=
      * <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static Double getPorcentaje(double monto, double porcentaje) {
@@ -1088,7 +1111,7 @@ public abstract class UTIL {
      *
      * @param monto sobre el cual se calcula el %
      * @param porcentaje debe ser >=0
-     * @return El porcentaje (%) del monto, being      <code>0 >= monto</conde> or  0 >=
+     * @return El porcentaje (%) del monto, being      <code>0 >= monto</conde> or 0 >=
      * <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static BigDecimal getPorcentaje(BigDecimal monto, BigDecimal porcentaje) {
