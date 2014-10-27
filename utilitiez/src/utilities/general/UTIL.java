@@ -1163,18 +1163,34 @@ public abstract class UTIL {
      * Cuando la tabla tiene algún tipo de {@link TableRowSorter} o
      * {@link JTable#setAutoCreateRowSorter(boolean)}
      *
-     * @param jTable
+     * @param table
      * @param modelColumnIndex
      * @return <code>null</code> if {@link JTable#getSelectedRow()} == -1
      */
-    public static Object getSelectedValueFromModel(JTable jTable, int modelColumnIndex) {
-        if (jTable.getSelectedRow() != -1) {
-            int modelRoxIndex = jTable.convertRowIndexToModel(jTable.getSelectedRow());
-            return jTable.getModel().getValueAt(
+    public static Object getSelectedValueFromModel(JTable table, int modelColumnIndex) {
+        if (table.getSelectedRow() != -1) {
+            int modelRoxIndex = table.convertRowIndexToModel(table.getSelectedRow());
+            return table.getModel().getValueAt(
                     modelRoxIndex, modelColumnIndex);
         } else {
             return null;
         }
+    }
+
+    /**
+     *
+     * @param table
+     * @param modelColumnIndex
+     * @return a list, empty is nothing is selected
+     * @see #getSelectedValueFromModel(javax.swing.JTable, int)
+     */
+    public static List<?> getSelectedValuesFromModel(JTable table, int modelColumnIndex) {
+        List<Object> l = new ArrayList<>(table.getSelectedRowCount());
+        for (int rowIndex : table.getSelectedRows()) {
+            int modelRoxIndex = table.convertRowIndexToModel(rowIndex);
+            l.add(table.getModel().getValueAt(modelRoxIndex, modelColumnIndex));
+        }
+        return l;
     }
 
     /**
