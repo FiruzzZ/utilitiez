@@ -23,8 +23,10 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -341,7 +343,9 @@ public class SwingUtil {
      */
     public static void setComponentsEnabled(Component[] components, boolean enable, boolean applyDefaultsExceptionComponents, Class<? extends Component>... exceptionsComponents) {
         for (Component component : components) {
-            if (component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport) {
+            if (component instanceof JRootPane 
+                    || component instanceof JLayeredPane // <--- Java 7
+                    || component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport) {
                 JComponent subPanel = (JComponent) component;
                 setComponentsEnabled(subPanel.getComponents(), enable, applyDefaultsExceptionComponents, exceptionsComponents);
             } else {
@@ -359,9 +363,7 @@ public class SwingUtil {
         }
         if (exceptionsComponents != null) {
             for (Class<? extends Component> exceptionType : exceptionsComponents) {
-                System.out.println(component.getClass() + " == " + exceptionType);
                 if (component.getClass().equals(exceptionType)) {
-                    System.out.println("!!"+exceptionType);
                     return;
                 }
             }
@@ -423,6 +425,11 @@ public class SwingUtil {
 
     }
 
+    /**
+     *
+     * @param components
+     * @see #resetJComponets(java.awt.Component..., java.lang.Class...)
+     */
     public static void resetJComponets(Component[] components) {
         resetJComponets(components, (Class<? extends Component>[]) null);
     }
