@@ -257,8 +257,8 @@ public abstract class UTIL {
     }
 
     /**
-     * Compara los Dates (YEAR, MONTH, DAY) ignorando los campos relacionados al TIME (HOUR, MINUTE,
-     * SECOND...)
+     * Compara los Dates (YEAR, MONTH, DAY_OF_MONTH) ignorando los campos relacionados al TIME
+     * (HOUR, MINUTE, SECOND...)
      *
      * @param d1
      * @param d2
@@ -1393,6 +1393,20 @@ public abstract class UTIL {
             }
         }
         return age;
-
     }
+
+    /**
+     *
+     * @param comboBox
+     * @return if selectedIndex == -1 returns {@code null}
+     * @exception ClassCastException si el selectedItem no es una instancia de {@link EntityWrapper}
+     */
+    public static EntityWrapper<?> getEntityWrapped(JComboBox<?> comboBox) {
+        if (comboBox.getSelectedIndex() == -1) {
+            return null;
+
+        }
+        return (EntityWrapper<?>) comboBox.getSelectedItem();
+    }
+
 }
