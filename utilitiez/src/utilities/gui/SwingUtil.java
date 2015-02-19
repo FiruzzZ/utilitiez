@@ -27,6 +27,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -36,12 +37,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.JTextComponent;
 import utilities.general.UTIL;
 
 /**
  *
- * @author Administrador
+ * @author FiruzzZ
  */
 public class SwingUtil {
 
@@ -337,13 +339,13 @@ public class SwingUtil {
      * @param components
      * @param enable used to set {@link Component#setEnabled(boolean)}
      * @param applyDefaultsExceptionComponents
-     * ({@link JScrollPane}, {@link JLabel}, {@link JSeparator})
+     * ({@link JScrollPane}, {@link JScrollBar}, {@link JTableHeader}, {@link JLabel}, {@link JSeparator})
      * @param exceptionsComponents componentes a los cuales no se les setteara na!
      *
      */
     public static void setComponentsEnabled(Component[] components, boolean enable, boolean applyDefaultsExceptionComponents, Class<? extends Component>... exceptionsComponents) {
         for (Component component : components) {
-            if (component instanceof JRootPane 
+            if (component instanceof JRootPane
                     || component instanceof JLayeredPane // <--- Java 7
                     || component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport) {
                 JComponent subPanel = (JComponent) component;
@@ -356,9 +358,11 @@ public class SwingUtil {
 
     private static void setEnableDependingOfType(Component component, boolean enable, boolean applyDefaults, Class<? extends Component>... exceptionsComponents) {
         if (applyDefaults
-                && ((component instanceof JScrollPane)
-                || (component instanceof JLabel)
-                || (component instanceof JSeparator))) {
+                && (component instanceof JScrollPane
+                || component instanceof JLabel
+                || component instanceof JSeparator
+                || component instanceof JScrollBar
+                || component instanceof JTableHeader)) {
             return;
         }
         if (exceptionsComponents != null) {
