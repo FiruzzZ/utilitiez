@@ -1369,6 +1369,7 @@ public abstract class UTIL {
      * @param dateOfBirth
      * @param dateToday
      * @return
+     * @throws IllegalArgumentException if dateOfBirth is after dateToday
      */
     public static int getAge(Date dateOfBirth, Date dateToday) {
         Calendar today = Calendar.getInstance();
