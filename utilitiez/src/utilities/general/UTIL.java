@@ -46,6 +46,34 @@ public abstract class UTIL {
 
     private static final Logger LOG = Logger.getLogger(UTIL.class.getName());
 
+    /**
+     *
+     * @param d cannot be null
+     * @param from cannot be null
+     * @param to si es <code>null</code>, solo se compara que {@code d} sea &gt= <code>from</code>
+     * @param excluirTime disregard TIME fields {@link #clearTimeFields(java.util.Date)}
+     * @return true is between (inclusive)
+     */
+    public static boolean between(Date d, Date from, Date to, boolean excluirTime) {
+        Objects.requireNonNull(d);
+        Objects.requireNonNull(from);
+        if (excluirTime) {
+            d = clearTimeFields(d);
+            from = clearTimeFields(from);
+            if (to != null) {
+                to = clearTimeFields(to);
+            }
+        }
+        if (d.compareTo(from) >= 0) {
+            if (to == null) {
+                return true;
+            } else if (d.compareTo(to) <= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private UTIL() {
     }
 
