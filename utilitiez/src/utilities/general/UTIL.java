@@ -463,6 +463,15 @@ public abstract class UTIL {
         return tabla;
     }
 
+    public static JTable getDefaultTableModel(
+            JTable tabla, String[] columnNames, int[] columnWidths, Class[] columnClassType) {
+        return getDefaultTableModel(tabla, columnNames, columnWidths, columnClassType, null);
+    }
+
+    public static JTable getDefaultTableModel(JTable tabla, String[] columnNames, int[] columnWidths) {
+        return getDefaultTableModel(tabla, columnNames, columnWidths, null, null);
+    }
+
     /**
      * Personaliza una DefaulTableModel
      *
@@ -520,15 +529,6 @@ public abstract class UTIL {
         }
         tabla.getTableHeader().setReorderingAllowed(false);
         return tabla;
-    }
-
-    public static JTable getDefaultTableModel(
-            JTable tabla, String[] columnNames, int[] columnWidths, Class[] columnClassType) {
-        return getDefaultTableModel(tabla, columnNames, columnWidths, columnClassType, null);
-    }
-
-    public static JTable getDefaultTableModel(JTable tabla, String[] columnNames, int[] columnWidths) {
-        return getDefaultTableModel(tabla, columnNames, columnWidths, null, null);
     }
 
     /**
