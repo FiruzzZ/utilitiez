@@ -643,7 +643,7 @@ public abstract class UTIL {
     /**
      * Devuelte un Date modificada según los <code>dias</code>
      *
-     * @param fecha Date base sobre el cual se va trabajar. If <code>fecha</code> is
+     * @param fecha Date base sobre la cual se va trabajar. If <code>fecha</code> is
      * <code>null</code> will return null Date
      * @param dias cantidad de días por adicionar o restar a <code>fecha</code>
      * @return customized Date!!!...
