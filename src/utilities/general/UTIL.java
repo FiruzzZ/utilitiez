@@ -100,6 +100,17 @@ public abstract class UTIL {
             + "^[a-zA-Z]+[a-zA-Z]*$|"
             + "^[a-zA-Z]$";
     /**
+     *
+     * Regular expression para validar cadenas que: <UL> <LI>Empiece con un caracter alfanumérico.
+     * <LI>Seguidos de [0..*] caracteres alfanuméricos y/o espacios. <LI>Termine en un caracter
+     * alfanumérico. </UL> Ejemplos válidos: "a", "jose luis", "1a", "a1 1 a",
+     * "a B cd".
+     */
+    public final static String REGEX_ALFANUMERIC_WITH_WHITE
+            = "^[\\w&&[^\\_]][a-zA-Z0-9\\s]*[a-zA-Z0-9]$|"
+            + "^[\\w&&[^\\_]]+[a-zA-Z0-9]*$|"
+            + "^[\\w&&[^\\_]]$";
+    /**
      * [a-zA-Z]?
      */
     public final static Pattern azAZ = Pattern.compile("[a-zA-Z]?");
