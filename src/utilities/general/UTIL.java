@@ -103,8 +103,7 @@ public abstract class UTIL {
      *
      * Regular expression para validar cadenas que: <UL> <LI>Empiece con un caracter alfanumérico.
      * <LI>Seguidos de [0..*] caracteres alfanuméricos y/o espacios. <LI>Termine en un caracter
-     * alfanumérico. </UL> Ejemplos válidos: "a", "jose luis", "1a", "a1 1 a",
-     * "a B cd".
+     * alfanumérico. </UL> Ejemplos válidos: "a", "jose luis", "1a", "a1 1 a", "a B cd".
      */
     public final static String REGEX_ALFANUMERIC_WITH_WHITE
             = "^[\\w&&[^\\_]][a-zA-Z0-9\\s]*[a-zA-Z0-9]$|"
@@ -1088,20 +1087,15 @@ public abstract class UTIL {
                         Comparable comparableValue2 = (Comparable) value2;
                         if (ascending) {
                             return comparableValue.compareTo(comparableValue2);
-                        } else {
-                            if (comparableValue.compareTo(comparableValue2) == 1) {
-                                return -1;
-                            } else {
-                                return 1;
-                            }
-                        }
-                    } else {
-                        if (value.equals(value2)) {
-                            return 0;
+                        } else if (comparableValue.compareTo(comparableValue2) == 1) {
+                            return -1;
                         } else {
                             return 1;
                         }
-
+                    } else if (value.equals(value2)) {
+                        return 0;
+                    } else {
+                        return 1;
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -1146,26 +1140,36 @@ public abstract class UTIL {
     }
 
     /**
+     * Devuelte el % del monto. default scale = 2, {@link RoundingMode.HALF_UP}
+     *
+     * @param monto sobre el cual se calcula el %
+     * @param porcentaje debe ser >=0
+     * @return El porcentaje (%) del monto, being      <code>0 >= monto</code> or 0 >=
+     * <code>porcentaje</code>, otherwise will return 0.0!
+     */
+    public static BigDecimal getPorcentaje(BigDecimal monto, BigDecimal porcentaje) {
+        return getPorcentaje(monto, porcentaje, 2, RoundingMode.HALF_UP);
+    }
+
+    /**
      * Devuelte el % del monto
      *
      * @param monto sobre el cual se calcula el %
      * @param porcentaje debe ser >=0
-     * @return El porcentaje (%) del monto, being      <code>0 >= monto</conde> or 0 >=
+     * @param scale
+     * @param rounding
+     * @return El porcentaje (%) del monto, being      <code>0 >= monto</code> or 0 >=
      * <code>porcentaje</code>, otherwise will return 0.0!
      */
-    public static BigDecimal getPorcentaje(BigDecimal monto, BigDecimal porcentaje) {
+    public static BigDecimal getPorcentaje(BigDecimal monto, BigDecimal porcentaje, int scale, RoundingMode rounding) {
         if (porcentaje.intValue() < 0) {
             throw new IllegalArgumentException("Parameter \"porcentaje\" can not be negative.");
         }
         if (monto.compareTo(BigDecimal.ZERO) == -1) {
             return BigDecimal.ZERO;
         }
-        try {
-            return porcentaje.multiply(monto.divide(new BigDecimal("100"))).setScale(2, RoundingMode.HALF_EVEN);
-        } catch (ArithmeticException e) {
-            Logger.getLogger(UTIL.class.getSimpleName()).log(Level.INFO, "Error trying to apply RoudingMode.HALF_EVEN (with scale = 2) on getPorcentaje({0}, {1})", new Object[]{monto, porcentaje});
-            return porcentaje.multiply(monto.divide(new BigDecimal("100")));
-        }
+        porcentaje = porcentaje.divide(new BigDecimal("100"));
+        return porcentaje.multiply(monto).setScale(scale, rounding);
     }
 
     /**
