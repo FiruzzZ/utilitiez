@@ -77,6 +77,11 @@ public abstract class UTIL {
     private UTIL() {
     }
 
+    /**
+     * Removes every backslash (\), single quote (') and double quote (")
+     * @param text
+     * @return a less hazardous string to use on queries
+     */
     public static String removeEscapesChars(String text) {
         if (text == null || text.isEmpty()) {
             return "";
