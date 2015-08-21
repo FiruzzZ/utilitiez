@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
@@ -430,7 +429,7 @@ public abstract class UTIL {
      * ningún tipo. Si el dígito identificador (el último) no se corresponde al cálculo.
      * @throws NumberFormatException if can not be castable to a Long type.
      */
-    public static void VALIDAR_CUIL(String cuil) throws IllegalArgumentException, NumberFormatException {
+    public static void VALIDAR_CUIL(String cuil) throws IllegalArgumentException {
         String c = cuil.trim();
         if (c.length() != 11) {
             throw new IllegalArgumentException("Longitud de la CUIT/CUIL no es correcta (" + c.length() + ")");
