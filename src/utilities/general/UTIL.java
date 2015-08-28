@@ -78,6 +78,7 @@ public abstract class UTIL {
 
     /**
      * Removes every backslash (\), single quote (') and double quote (")
+     *
      * @param text
      * @return a less hazardous string to use on queries
      */
@@ -454,12 +455,9 @@ public abstract class UTIL {
             suma += digito * codigo[index];
         }
         int xxx = (suma % 11);
-        xxx = 11 - xxx;
-        if (xxx == 11) {
-            xxx = 0;
-        }
+        xxx = xxx == 0 ? 0 : xxx == 1 ? 9 : 11 - xxx;
         if (Integer.parseInt(cuil.substring(10)) != xxx) {
-            throw new IllegalArgumentException("El dígito verificador de la CUIT/CUIL no es correcto (" + Integer.parseInt(cuil.substring(10)) + " > " + xxx);
+            throw new IllegalArgumentException("El dígito verificador de la CUIT/CUIL no es correcto " + Integer.parseInt(cuil.substring(10)) + " > " + xxx);
         }
     }
 
