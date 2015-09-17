@@ -1413,8 +1413,7 @@ public abstract class UTIL {
      *
      * @param dateOfBirth
      * @param dateToday
-     * @return
-     * @throws IllegalArgumentException if dateOfBirth is after dateToday
+     * @return if dateOfBirth if after today, -1 will be returned
      */
     public static int getAge(Date dateOfBirth, Date dateToday) {
         Calendar today = Calendar.getInstance();
@@ -1423,7 +1422,7 @@ public abstract class UTIL {
         Calendar birthDate = Calendar.getInstance();
         birthDate.setTime(dateOfBirth);
         if (birthDate.after(today)) {
-            throw new IllegalArgumentException("Can't be born in the future");
+            return -1;
         }
         int age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
         if (age > 0) {
