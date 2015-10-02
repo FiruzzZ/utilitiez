@@ -358,8 +358,7 @@ public class SwingUtil {
 
     private static void setEnableDependingOfType(Component component, boolean enable, boolean applyDefaults, Class<? extends Component>... exceptionsComponents) {
         if (applyDefaults
-                && (component instanceof JScrollPane
-                || component instanceof JLabel
+                && (component instanceof JLabel
                 || component instanceof JSeparator
                 || component instanceof JScrollBar
                 || component instanceof JTableHeader)) {
