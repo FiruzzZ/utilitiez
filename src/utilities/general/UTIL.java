@@ -101,8 +101,8 @@ public abstract class UTIL {
      * "a B cd".
      */
     public final static String REGEX_ALFA_TEXT_WITH_WHITE
-            = "^[a-zA-Z][a-zA-Z\\s]*[a-zA-Z]$|"
-            + "^[a-zA-Z]+[a-zA-Z]*$|"
+            = "^[ña-zÑA-Z][ña-zÑA-Z\\s]*[a-zA-Z]$|"
+            + "^[ña-zÑA-Z]+[a-zA-Z]*$|"
             + "^[a-zA-Z]$";
     /**
      *
