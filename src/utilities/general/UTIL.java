@@ -943,8 +943,9 @@ public abstract class UTIL {
             } else if (object instanceof EntityWrapper) {
                 /**
                  * Cuando candidato es EntityWrapper y MUY probablemente no tenga seteado el
-                 * EntityWrapper#entity es null, es porque se quiere comparar los atributos id nomas
-                 * y no usar el método equals() del objeto wrappeado ..wakatta?
+                 * atributo EntityWrapper#entity (es null), es porque se quiere comparar los
+                 * atributos id (EntityWrapper#id) nomas y no usar el método equals() del objeto
+                 * wrappeado ..wakatta?
                  */
                 if (candidate instanceof EntityWrapper && object.equals(candidate)) {
                     combo.setSelectedIndex(index);
