@@ -348,7 +348,7 @@ public abstract class UTIL {
      *
      * @param from
      * @param to
-     * @return
+     * @return if {@code to} is after {@code from} returns a positive, if they are equals a 0, or a negative. Igual que cualquier {@link Comparable#compareTo(java.lang.Object) }
      */
     public static int getDaysBetween(Date from, Date to) {
         long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
