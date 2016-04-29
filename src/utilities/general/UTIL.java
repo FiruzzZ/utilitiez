@@ -35,7 +35,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import utilities.swing.components.ComboBoxWrapper;
 
 /**
  *
@@ -938,9 +937,7 @@ public abstract class UTIL {
         int index = 0;
         while (index < combo.getItemCount()) {
             Object object = combo.getItemAt(index);
-            if (object instanceof ComboBoxWrapper) {
-                object = ((ComboBoxWrapper) object).getEntity();
-            } else if (object instanceof EntityWrapper) {
+            if (object instanceof EntityWrapper) {
                 /**
                  * Cuando candidato es EntityWrapper y MUY probablemente no tenga seteado el
                  * atributo EntityWrapper#entity (es null), es porque se quiere comparar los
