@@ -1,5 +1,6 @@
 package utilities.general;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
@@ -70,6 +71,28 @@ public abstract class UTIL {
             }
         }
         return false;
+    }
+
+    /**
+     * Retorna la fecha elegida <b>SI ES VÁLIDA</b>:
+     * <ul>
+     * <li>{@link JDateChooser#getDate()} &gt={@link JDateChooser#getMinSelectableDate()}
+     * <li>{@link JDateChooser#getDate()} &lt={@link JDateChooser#getMaxSelectableDate()}
+     * </ul>
+     * <br>Este método utiliza {@link #clearTimeFields(java.util.Date) } antes de realizar las
+     * comparaciones
+     *
+     * @param jdc
+     * @return a valid specified date or null
+     */
+    public static Date getDate(JDateChooser jdc) {
+        Date d = clearTimeFields(jdc.getDate());
+        if (d == null
+                || clearTimeFields(jdc.getMinSelectableDate()).compareTo(d) > 0
+                || clearTimeFields(jdc.getMaxSelectableDate()).compareTo(d) < 0) {
+            return null;
+        }
+        return d;
     }
 
     private UTIL() {
@@ -347,7 +370,8 @@ public abstract class UTIL {
      *
      * @param from
      * @param to
-     * @return if {@code to} is after {@code from} returns a positive, if they are equals a 0, or a negative. Igual que cualquier {@link Comparable#compareTo(java.lang.Object) }
+     * @return if {@code to} is after {@code from} returns a positive, if they are equals a 0, or a
+     * negative. Igual que cualquier {@link Comparable#compareTo(java.lang.Object) }
      */
     public static int getDaysBetween(Date from, Date to) {
         long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
