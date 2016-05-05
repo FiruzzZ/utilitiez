@@ -86,9 +86,11 @@ public abstract class UTIL {
      * @return a valid specified date or null
      */
     public static Date getDate(JDateChooser jdc) {
+        if (jdc.getDate() == null) {
+            return null;
+        }
         Date d = clearTimeFields(jdc.getDate());
-        if (d == null
-                || clearTimeFields(jdc.getMinSelectableDate()).compareTo(d) > 0
+        if (clearTimeFields(jdc.getMinSelectableDate()).compareTo(d) > 0
                 || clearTimeFields(jdc.getMaxSelectableDate()).compareTo(d) < 0) {
             return null;
         }
