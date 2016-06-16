@@ -97,6 +97,54 @@ public abstract class UTIL {
         return d;
     }
 
+    /**
+     * Suma o resta la cantidad especificada
+     *
+     * @param date
+     * @param cant de días
+     * @return
+     */
+    public static Date addDays(Date date, int cant) {
+        return add(date, Calendar.DAY_OF_MONTH, cant);
+    }
+
+    /**
+     * Suma o resta la cantidad especificada
+     *
+     * @param date
+     * @param cant de meses
+     * @return
+     */
+    public static Date addMonths(Date date, int cant) {
+        return add(date, Calendar.MONTH, cant);
+    }
+
+    /**
+     * Suma o resta la cantidad especificada
+     *
+     * @param date
+     * @param cant de años
+     * @return
+     */
+    public static Date addYears(Date date, int cant) {
+        return add(date, Calendar.YEAR, cant);
+    }
+
+    /**
+     * Suma o resta la cantidad especificada
+     *
+     * @param date
+     * @param field
+     * @param cant de días
+     * @return
+     */
+    private static Date add(Date date, int field, int cant) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(field, cant);
+        return c.getTime();
+    }
+
     private UTIL() {
     }
 
