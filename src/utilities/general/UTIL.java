@@ -49,7 +49,7 @@ public abstract class UTIL {
      *
      * @param d cannot be null
      * @param from cannot be null
-     * @param to si es <code>null</code>, solo se compara que {@code d} sea &gt= <code>from</code>
+     * @param to si es <code>null</code>, solo se compara que {@code d} sea &gt;= <code>from</code>
      * @param excluirTime disregard TIME fields {@link #clearTimeFields(java.util.Date)}
      * @return true is between (inclusive)
      */
@@ -76,13 +76,13 @@ public abstract class UTIL {
     /**
      * Retorna la fecha elegida <b>SI ES VÁLIDA</b>:
      * <ul>
-     * <li>{@link JDateChooser#getDate()} &gt={@link JDateChooser#getMinSelectableDate()}
-     * <li>{@link JDateChooser#getDate()} &lt={@link JDateChooser#getMaxSelectableDate()}
+     * <li>{@link JDateChooser#getDate()} &gt;={@link JDateChooser#getMinSelectableDate()}
+     * <li>{@link JDateChooser#getDate()} &lt;={@link JDateChooser#getMaxSelectableDate()}
      * </ul>
      * <br>Este método utiliza {@link #clearTimeFields(java.util.Date) } antes de realizar las
      * comparaciones
      *
-     * @param jdc
+     * @param jdc ..
      * @return a valid specified date or null
      */
     public static Date getDate(JDateChooser jdc) {
@@ -102,7 +102,8 @@ public abstract class UTIL {
      *
      * @param date
      * @param cant de días
-     * @return
+     * @return ..
+     * @see Calendar#add(int, int)
      */
     public static Date addDays(Date date, int cant) {
         return add(date, Calendar.DAY_OF_MONTH, cant);
@@ -113,7 +114,8 @@ public abstract class UTIL {
      *
      * @param date
      * @param cant de meses
-     * @return
+     * @return ..
+     * @see Calendar#add(int, int)
      */
     public static Date addMonths(Date date, int cant) {
         return add(date, Calendar.MONTH, cant);
@@ -124,7 +126,8 @@ public abstract class UTIL {
      *
      * @param date
      * @param cant de años
-     * @return
+     * @return ..
+     * @see Calendar#add(int, int)
      */
     public static Date addYears(Date date, int cant) {
         return add(date, Calendar.YEAR, cant);
@@ -136,7 +139,8 @@ public abstract class UTIL {
      * @param date
      * @param field
      * @param cant de días
-     * @return
+     * @return ..
+     * @see Calendar#add(int, int)
      */
     private static Date add(Date date, int field, int cant) {
         Calendar c = Calendar.getInstance();
@@ -212,7 +216,7 @@ public abstract class UTIL {
      */
     public final static SimpleDateFormat DATE_FORMAT;
     /**
-     * formato de salida del Time -> String HH:mm:ss
+     * formato de salida del Time HH:mm:ss
      */
     public final static SimpleDateFormat TIME_FORMAT;
     /**
@@ -220,7 +224,7 @@ public abstract class UTIL {
      */
     public final static SimpleDateFormat TIMESTAMP_FORMAT;
     /**
-     * formato de salida del <code>double</code> -> #,###.00 Con separador de millares y COMA de
+     * formato de salida del <code>double</code> = #,###.00 Con separador de millares y COMA de
      * separador decimal (formato no casteable a double/Double).
      */
     public final static DecimalFormat DECIMAL_FORMAT;
@@ -481,7 +485,7 @@ public abstract class UTIL {
      * Return true si la extesión es tiff/tif/gif/jpg/jpeg/png/bmp
      *
      * @param imageFile
-     * @return si la extesión del archivo es de algún tipo de imagen.
+     * @return si la extensión del archivo es de algún tipo de imagen.
      */
     public static boolean isImagenExtension(File imageFile) {
         String extension = UTIL.getExtensionFile(imageFile.getName());
@@ -565,8 +569,8 @@ public abstract class UTIL {
      * @param columnNames Nombre de las HeaderColumns
      * @param columnWidths Ancho de columnas
      * @param columnClassType Tipo de datos que va contener cada columna
-     * @param editableColumns Index de las columnas las cuales podrán ser editables ( > -1 &&
-     * cantidadColumnas >= columnsCount)
+     * @param editableColumns Index de las columnas las cuales podrán ser editables ( &gt; -1
+     * &amp;&amp; cantidadColumnas &gt;= columnsCount)
      * @return una JTable con el modelo
      */
     public static JTable getDefaultTableModel(JTable tabla,
@@ -658,12 +662,12 @@ public abstract class UTIL {
     /**
      * Crea un java.util.Date con los parámetros.
      *
-     * @param year >=1900
+     * @param year &gt;=1900
      * @param month 0=enero and so on...
      * @param day if == NULL.. will be setted to 1, si == -1 al último día de
      * <b>month</b>
      * @return java.util.Date inicializado con la fecha.
-     * @throws Exception si month &lt 0 || month > 11
+     * @throws IllegalArgumentException si month &lt; 0 || month &gt; 11
      */
     public static Date customDate(int year, int month, Integer day) {
         if (month < 0 || month > 11) {
@@ -719,7 +723,7 @@ public abstract class UTIL {
     /**
      *
      * @param date cannot be null
-     * @return return an integer representative of a period (yyyyMM), where MM >=1 and &gt=12
+     * @return return an integer representative of a period (yyyyMM), where MM &gt;=1 and &gt;=12
      */
     public static Integer getPeriodo(Date date) {
         return Integer.valueOf(new SimpleDateFormat("yyyyMM").format(date));
@@ -845,12 +849,17 @@ public abstract class UTIL {
 
     /**
      * Parse a Double formatted String like <code>DecimalFormat("#,##0.00")</code> to a Double: <br>
-     * 1234 parse to<t>
-     * 1234.00 <br>1.234 parse to<t> 1234.00 <br>12.34 parse to<t> 12.34
-     * <br>123.4 parse to<t> 123.40 <br>123.456 parse to<t> 123456.00
-     * <br>1234.56 parse to<t> 1234.56 <br>------------------------------ <br>
-     * 12.345,6 parse to<t> 12345.60 <br>123.456, parse to<t> 123456.00
-     * <br>123.456,7 parse to<t> 123456.70 <br>1.234.567 parse to<t>1234567.00
+     * 1234 parse to 1234.00
+     * <br>1.234 parse to 1234.00
+     * <br>12.34 parse to 12.34
+     * <br>123.4 parse to 123.40
+     * <br>123.456 parse to 123456.00
+     * <br>1234.56 parse to 1234.56
+     * <br>------------------------------
+     * <br>12.345,6 parse to 12345.60
+     * <br>123.456, parse to 123456.00
+     * <br>123.456,7 parse to 123456.70
+     * <br>1.234.567 parse to 1234567.00
      *
      * @param s a String formated like <code>DecimalFormat("#,##0.00")</code>
      * @return
@@ -935,7 +944,7 @@ public abstract class UTIL {
      *
      * @param combo if is null or combo<code>.getItemCount() </code> is less than 1, no selectedItem
      * @param candidato if this is <code>null</code>, no habrá selectedItem
-     * @return an index of the selectedItem, or <code>-1</code> if 1 > combo.getItemCount() || if
+     * @return an index of the selectedItem, or <code>-1</code> if 1 &gt; combo.getItemCount() || if
      * <code>candidato</code> does not match any item
      */
     public static int setSelectedItem(JComboBox combo, String candidato) {
@@ -962,7 +971,7 @@ public abstract class UTIL {
      *
      * @param combo El cual podría contener el item {@code candidate}
      * @param candidate Can not be null.
-     * @return an index of the selectedItem, or -1 if 1 > combo.getItemCount() || if
+     * @return an index of the selectedItem, or -1 if 1 &gt; combo.getItemCount() || if
      * {@code candidato} does not match any item
      */
     public static int setSelectedItem(JComboBox combo, Object candidate) {
@@ -978,7 +987,7 @@ public abstract class UTIL {
      * @param combo El cual podría contener el item {@code candidate}
      * @param candidate Can not be null.
      * @param allowNullCandidate
-     * @return an index of the selectedItem, or -1 if 1 > combo.getItemCount() || if
+     * @return an index of the selectedItem, or -1 if 1 &gt; combo.getItemCount() || if
      * {@code candidato} does not match any item
      */
     public static int setSelectedItem(JComboBox combo, Object candidate, boolean allowNullCandidate) {
@@ -1108,8 +1117,8 @@ public abstract class UTIL {
 
     /**
      * Remueve todos los items, carga en el comboBox todos los objectos en objectList. Si no hay
-     * elementos para cargar ( <code>objectList == null && empty</code>) message1stItem no se
-     * agrega.
+     * elementos para cargar ( <code>objectList == null &amp;&amp; empty</code>) message1stItem no
+     * se agrega.
      *
      * @param comboBox
      * @param objectList collection la cual se va cargar
@@ -1139,8 +1148,8 @@ public abstract class UTIL {
      *
      * @param lista List to be ordered.
      * @param propiedad represent the getter signature from the property that the objects in the
-     * List must has. <br>EXAMPLE: <br>if == <code>"name"</code> ==> <b>getName</b>. <br>if ==
-     * <code>"lastNAmE"</code> ==> <b>getLastNAmE</b>.
+     * List must has. <br>EXAMPLE: <br>if == <code>"name"</code> ==&gt; <b>getName</b>. <br>if ==
+     * <code>"lastNAmE"</code> ==&gt; <b>getLastNAmE</b>.
      * @param ascending if the List be ordered ASC, if not then will be DESC.
      */
     public static void order(List lista, final String propiedad, final boolean ascending) {
@@ -1184,7 +1193,7 @@ public abstract class UTIL {
      *
      * @param cadena If == <code>null</code> will do nothing!
      * @param longitudMaxima agrega "0" hasta que <code>cadena</code> tenga la longitud deseada
-     * @return      <code>cadena<code> overclocking..
+     * @return <code>cadena</code> overclocking..
      */
     public static String AGREGAR_CEROS(String cadena, int longitudMaxima) {
         if (cadena == null) {
@@ -1205,8 +1214,8 @@ public abstract class UTIL {
      * Devuelte el % del monto
      *
      * @param monto sobre el cual se calcula el %
-     * @param porcentaje debe ser >=0
-     * @return El porcentaje (%) del monto, being      <code>0 >= monto</conde> or 0 >=
+     * @param porcentaje debe ser &gt;=0
+     * @return El porcentaje (%) del monto, being <code>0 &gt;= monto</code> or 0 &gt;=
      * <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static Double getPorcentaje(double monto, double porcentaje) {
@@ -1214,11 +1223,11 @@ public abstract class UTIL {
     }
 
     /**
-     * Devuelte el % del monto. default scale = 2, {@link RoundingMode.HALF_UP}
+     * Devuelte el % del monto. default scale = 2
      *
      * @param monto sobre el cual se calcula el %
-     * @param porcentaje debe ser >=0
-     * @return El porcentaje (%) del monto, being      <code>0 >= monto</code> or 0 >=
+     * @param porcentaje debe ser &gt;=0
+     * @return El porcentaje (%) del monto, being <code>0 &gt;= monto</code> or 0 &gt;=
      * <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static BigDecimal getPorcentaje(BigDecimal monto, BigDecimal porcentaje) {
@@ -1229,10 +1238,10 @@ public abstract class UTIL {
      * Devuelte el % del monto
      *
      * @param monto sobre el cual se calcula el %
-     * @param porcentaje debe ser >=0
+     * @param porcentaje debe ser &gt;=0
      * @param scale
      * @param rounding
-     * @return El porcentaje (%) del monto, being      <code>0 >= monto</code> or 0 >=
+     * @return El porcentaje (%) del monto, being <code>0 &gt;= monto</code> or 0 &gt;=
      * <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static BigDecimal getPorcentaje(BigDecimal monto, BigDecimal porcentaje, int scale, RoundingMode rounding) {
@@ -1280,8 +1289,8 @@ public abstract class UTIL {
      * Cuando la tabla tiene algún tipo de {@link TableRowSorter} o
      * {@link JTable#setAutoCreateRowSorter(boolean)}
      *
-     * @param table
-     * @param modelColumnIndex
+     * @param table ..
+     * @param modelColumnIndex ..
      * @return <code>null</code> if {@link JTable#getSelectedRow()} == -1
      */
     public static Object getSelectedValueFromModel(JTable table, int modelColumnIndex) {
@@ -1296,8 +1305,8 @@ public abstract class UTIL {
 
     /**
      *
-     * @param table
-     * @param modelColumnIndex
+     * @param table ..
+     * @param modelColumnIndex ..
      * @return a list, empty is nothing is selected
      * @see #getSelectedValueFromModel(javax.swing.JTable, int)
      */
@@ -1342,7 +1351,7 @@ public abstract class UTIL {
      * <code>RIGHT</code>, <code>LEADING</code> (the default for text-only labels) or
      * <code>TRAILING</code>.
      *
-     * @see SwingConstants
+     * Ver SwingConstants
      * @see JLabel#getHorizontalAlignment
      */
     public static void setHorizonalAlignment(JTable jTable1, Class<?> columnClass, int alignment) {
@@ -1442,10 +1451,9 @@ public abstract class UTIL {
     /**
      * REGEX.. asi nomas
      *
-     * @param regex
-     * @param stringToEvaluate
-     * @return
-     * @throws PatternSyntaxException
+     * @param regex ..
+     * @param stringToEvaluate ..
+     * @return ..
      * @see <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">
      * http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html</a>
      */
@@ -1475,7 +1483,7 @@ public abstract class UTIL {
      * Calcula la edad según {@code dateOfBith}
      *
      * @param dateOfBirth no puede ser posterior a HOY
-     * @return edad {@code >= 0}
+     * @return edad {@code &gt;= 0}
      */
     public static int getAge(Date dateOfBirth) {
         return getAge(dateOfBirth, Calendar.getInstance().getTime());

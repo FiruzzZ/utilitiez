@@ -34,15 +34,16 @@ public class Report {
 
     /**
      * Levanta un reporte
+     *
      * @param con Conexion a la base de datos relacional
      * @param parametros Parametros del Informe
      * @param path_reporte Url del Reporte (.jasper)
      * @param fileName Nombre del Archivo a generar
-     * @param copias  Numeros de hojas que tendra el reporte
+     * @param copias Numeros de hojas que tendra el reporte
      * @param fileExtension Tipo de archivo a generar pdf,rtf,xml,txt,cvc,xls o frame.
      * @param view true si se visualiza el reporte
-     * @throws JRException
-     * @throws IOException  
+     * @throws JRException ..
+     * @throws IOException ..
      */
     public void load(Connection con, Map<String, Object> parametros,
             String path_reporte, String fileName, int copias, String fileExtension, boolean view)
@@ -76,9 +77,12 @@ public class Report {
 
     /**
      * Levanta un reporte
+     *
      * @param con Conexion a la base de datos relacional
      * @param parametros Parametros del Informe
      * @param path_reporte Url del Reporte (.jasper)
+     * @return ..
+     * @throws net.sf.jasperreports.engine.JRException
      */
     public JasperPrint load(Connection con, Map<String, Object> parametros, String path_reporte) throws JRException {
         //Obtengo la URL del Reporte
@@ -92,10 +96,13 @@ public class Report {
 
     /**
      * Levanta un reporte
+     *
      * @param con Conexion a la base de datos relacional
      * @param parametros Parametros del Informe
      * @param path_reporte Url del Reporte (.jasper)
-     * @param copias  Numeros de hojas que tendra el reporte
+     * @param copias Numeros de hojas que tendra el reporte
+     * @return ..
+     * @throws net.sf.jasperreports.engine.JRException ..
      */
     public List<JasperPrint> load(Connection con, Map<String, Object> parametros, String path_reporte, int copias) throws JRException {
         JasperPrint jasperPrint = load(con, parametros, path_reporte);
@@ -109,6 +116,7 @@ public class Report {
 
     /**
      * Convierte un report a un tipo de documento especifico
+     *
      * @param fileExtension tipo de doc.
      * @param archivo nombre del archivo a generar
      * @param reporte Lista de reportes
@@ -176,6 +184,7 @@ public class Report {
 
     /**
      * Visualiza un report en un Frame
+     *
      * @param print
      * @param titulo
      */
@@ -190,6 +199,7 @@ public class Report {
 
     /**
      * Retorna un reporte en formato Frame
+     *
      * @param jasperPrint
      * @return
      */
@@ -200,6 +210,7 @@ public class Report {
 
     /**
      * Imprime un documento JasperReport en la impresora indicada
+     *
      * @param jasperPrint Reporte compilado
      * @param impresora Nombre de la Impresora instalada en el S.O
      * @param copias Numero de copias
@@ -213,9 +224,11 @@ public class Report {
 
     /**
      * Imprime el JasperReport en la impresora indicada
-     * @param jasperPrint Reporte compilado
+     *
+     * @param jasperPrintList
      * @param impresora Nombre de la Impresora instalada en el S.O
      * @param copias Numero de copias
+     * @throws net.sf.jasperreports.engine.JRException
      */
     public void print(List<JasperPrint> jasperPrintList, String impresora, int copias) throws JRException {
         //Obtengo las impresoras instaladas en el Sistema Operativo
@@ -245,6 +258,7 @@ public class Report {
 
     /**
      * Levanta un archivo y lo visualiza con el programa asociado en el Sistema operativo
+     *
      * @param f
      * @throws java.io.IOException
      */

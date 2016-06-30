@@ -23,7 +23,7 @@ public class ExcelAdapter implements ActionListener {
      * The Excel Adapter is constructed with a JTable on which it enables
      * Copy-Paste and acts as a Clipboard listener.
      *
-     * @param jTable
+     * @param jTable table
      */
     public ExcelAdapter(JTable jTable) {
         jTable1 = jTable;
@@ -41,7 +41,7 @@ public class ExcelAdapter implements ActionListener {
     /**
      * Public Accessor methods for the Table on which this adapter acts.
      *
-     * @return
+     * @return table
      */
     public JTable getJTable() {
         return jTable1;
@@ -59,7 +59,7 @@ public class ExcelAdapter implements ActionListener {
      * left corner of the selection with the 1st element in the current
      * selection of the JTable.
      *
-     * @param e
+     * @param e copy/paste action
      */
     @Override
     public void actionPerformed(ActionEvent e) {

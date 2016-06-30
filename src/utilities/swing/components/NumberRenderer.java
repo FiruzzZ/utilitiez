@@ -27,7 +27,7 @@ public class NumberRenderer extends FormatRenderer {
     /**
      * Use the default currency formatter for the default locale
      *
-     * @return
+     * @return ..
      */
     public static NumberRenderer getCurrencyRenderer() {
         return new NumberRenderer(NumberFormat.getCurrencyInstance());
@@ -36,7 +36,7 @@ public class NumberRenderer extends FormatRenderer {
     /**
      * Use the default integer formatter for the default locale
      *
-     * @return
+     * @return ..
      */
     public static NumberRenderer getIntegerRenderer() {
         return new NumberRenderer(NumberFormat.getIntegerInstance());

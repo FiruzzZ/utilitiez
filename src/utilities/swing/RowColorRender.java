@@ -25,9 +25,7 @@ public abstract class RowColorRender extends DefaultTableCellRenderer {
 
     /**
      *
-     * @param value the value for the cell of the <b>Model</b>!!
      * @param rowIndexModel row index of model
-     * @param column column index of model
      * @return this value will be used to set {@link #fg}
      */
     public abstract Color condicionByRow(int rowIndexModel);

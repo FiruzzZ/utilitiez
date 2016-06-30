@@ -30,9 +30,9 @@ public abstract class ComboBoxColorRenderer extends DefaultListCellRenderer {
 
     /**
      * Es llamado por cada item contenido en el JList del combobox
-     * <i>Ojo! si el 1er item es el típico &lt Elegir&gt</i>
+     * <i>Ojo! si el 1er item es el típico &lt;Elegir&gt;</i>
      *
-     * @param index
+     * @param index ..
      * @param value item del combo
      * @return algún {@link Color} o null
      */

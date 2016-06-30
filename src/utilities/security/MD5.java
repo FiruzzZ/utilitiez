@@ -13,10 +13,10 @@ public class MD5 {
 
     /**
      *
-     * @param filename
-     * @return
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @param filename ..
+     * @return ..
+     * @throws FileNotFoundException ..
+     * @throws IOException ..
      * @see #createChecksum(java.io.File)
      */
     public static byte[] createChecksum(String filename) throws FileNotFoundException, IOException {
@@ -25,10 +25,10 @@ public class MD5 {
 
     /**
      *
-     * @param file
+     * @param file ..
      * @return the array of bytes for the resulting hash value.
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @throws FileNotFoundException  ..
+     * @throws IOException ..
      */
     public static byte[] createChecksum(File file) throws FileNotFoundException, IOException {
         InputStream is = new FileInputStream(file);
@@ -54,10 +54,10 @@ public class MD5 {
 
     /**
      *
-     * @param filename
-     * @return
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @param filename ..
+     * @return ..
+     * @throws FileNotFoundException ..
+     * @throws IOException ..
      * @see #getMD5Checksum(java.io.File)
      */
     public static String getMD5Checksum(String filename) throws FileNotFoundException, IOException {

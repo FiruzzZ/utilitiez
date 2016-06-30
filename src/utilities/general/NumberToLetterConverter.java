@@ -36,10 +36,10 @@ public abstract class NumberToLetterConverter {
 
     /**
      *
-     * @param number
-     * @param centavosEscritos
-     * @return
-     * @see #convertNumberToLetter(double)
+     * @param number ..
+     * @param centavosEscritos ..
+     * @return ..
+     * @see #convertNumberToLetter(double, boolean)
      * @since 1.1
      */
     public static String convertNumberToLetter(BigDecimal number, boolean centavosEscritos) {

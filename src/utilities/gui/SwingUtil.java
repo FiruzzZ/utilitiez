@@ -98,7 +98,7 @@ public class SwingUtil {
     /**
      * Sets selected all the text in the TextComponent.
      *
-     * @param textComponent
+     * @param textComponent ..
      */
     public static void setSelectedAll(JTextComponent textComponent) {
         textComponent.setSelectionStart(0);
@@ -109,7 +109,7 @@ public class SwingUtil {
      * Return a {@code KeyListener}, which just allow to type letters
      *  ({@link KeyListener#keyTyped(java.awt.event.KeyEvent) })
      *
-     * @param allowSpaceChars
+     * @param allowSpaceChars ..
      * @return an instance of this implementation
      * @see Character#isLetter(char)
      * @see Character#isSpaceChar(char)
@@ -193,8 +193,8 @@ public class SwingUtil {
 
     /**
      *
-     * @param textField
-     * @param allowPeriod
+     * @param textField ..
+     * @param allowPeriod ..
      * @param maxLenght numbers of digits (the count also include the period)
      * @see #checkInputDigit(java.awt.event.KeyEvent, boolean, java.lang.Integer)
      */
@@ -229,7 +229,7 @@ public class SwingUtil {
 
     /**
      *
-     * @param textField
+     * @param textField ..
      * @see #checkInputDigit(java.awt.event.KeyEvent, boolean, java.lang.Integer)
      */
     public static void addDigitsInputListener(JTextField textField) {
@@ -238,7 +238,7 @@ public class SwingUtil {
 
     /**
      * Verifica que el caracter que se intenta ingresar es un dígido y que la longitud de caracteres
-     * ingresados en el componente no supere el limite. If not >
+     * ingresados en el componente no supere el limite. If not &lt;
      * {@link java.awt.event.InputEvent#consume()}
      *
      * @param keyTypedEvent Must be a instance of
@@ -293,12 +293,10 @@ public class SwingUtil {
             if (cadena.contains(".")) {
                 keyTypedEvent.consume();
             }
+        } else if (maxLength != null) {
+            checkInputDigit(keyTypedEvent, maxLength);
         } else {
-            if (maxLength != null) {
-                checkInputDigit(keyTypedEvent, maxLength);
-            } else {
-                checkInputDigit(keyTypedEvent);
-            }
+            checkInputDigit(keyTypedEvent);
         }
     }
 
@@ -306,7 +304,7 @@ public class SwingUtil {
      * Cuenta la cantidad de veces que está presente el char candidate tiene la cadena
      *
      * @param cadena String to analize, can not be <code>null</code>
-     * @param candidate
+     * @param candidate char to count
      * @return la cantidad de veces que se encontró al candidato
      */
     public static int countCharOccurrences(final String cadena, char candidate) {
@@ -336,7 +334,7 @@ public class SwingUtil {
      * {@link Container} que puedan haber, buclea recursivo). Se pueden especificar que tipo de
      * componentes serán excluidos de este proceso ({@code exceptionsComponents})
      *
-     * @param components
+     * @param components ..
      * @param enable used to set {@link Component#setEnabled(boolean)}
      * @param applyDefaultsExceptionComponents
      * ({@link JScrollPane}, {@link JScrollBar}, {@link JTableHeader}, {@link JLabel}, {@link JSeparator})
@@ -375,14 +373,15 @@ public class SwingUtil {
     }
 
     /**
-     * Resetea algunos componentes: <br> {@link JTextComponent#setText(java.lang.String)
-     * } == null <br> {@link JCheckBox#setSelected(boolean) } == false <br> {@link JComboBox#setSelectedIndex(int)
-     * } == 0 <br> {@link JTable} and {@link JTable#getModel() } {@code instance of}
-     * {@link DefaultTableModel} do {@link DefaultTableModel#setRowCount(int) } to zero <br> AND
-     * using reflection to set from JCalendar > JDaceChooser.setDate(null)
+     * Resetea algunos componentes: <br> {@link JTextComponent#setText(java.lang.String)} == null
+     * <br> {@link JCheckBox#setSelected(boolean) } == false <br>
+     * {@link JComboBox#setSelectedIndex(int)} == 0 <br> {@link JTable} and
+     * {@link JTable#getModel() } {@code instance of} {@link DefaultTableModel} do
+     * {@link DefaultTableModel#setRowCount(int)} to zero <br> AND using reflection to set from
+     * JCalendar &gt; JDaceChooser.setDate(null)
      *
-     * @param components
-     * @param expections
+     * @param components ..
+     * @param expections ..
      */
     public static void resetJComponets(Component[] components, Class<? extends Component>... expections) {
         for (Component component : components) {
@@ -430,8 +429,7 @@ public class SwingUtil {
 
     /**
      *
-     * @param components
-     * @see #resetJComponets(java.awt.Component..., java.lang.Class...)
+     * @param components ..
      */
     public static void resetJComponets(Component[] components) {
         resetJComponets(components, (Class<? extends Component>[]) null);
@@ -447,7 +445,7 @@ public class SwingUtil {
      * {@link DecimalFormat#format(java.lang.Object)} fails, the backGround is setted to
      * {@link Color#RED} otherwise sets(keeps) the default color.
      *
-     * @return
+     * @return ..
      */
     public static FocusListener getCurrencyFormatterFocusListener() {
         FocusListener fl = new FocusListener() {

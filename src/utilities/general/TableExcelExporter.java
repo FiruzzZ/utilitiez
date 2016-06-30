@@ -54,7 +54,7 @@ public class TableExcelExporter {
 
     /**
      *
-     * @param file
+     * @param file ..
      * @param table where the values are taken (NOT FROM THE MODEL!!"#$%@)
      * @throws IllegalArgumentException if the table does not contain rows
      */
@@ -177,8 +177,8 @@ public class TableExcelExporter {
     /**
      * set style to numeric cell
      *
-     * @param cell
-     * @param isFormula
+     * @param cell ..
+     * @param isFormula ..
      */
     private void setNumericStyle(Cell cell, boolean isFormula) {
         double value = isFormula ? getFormulaCellValue(cell) : cell.getNumericCellValue();
@@ -192,8 +192,8 @@ public class TableExcelExporter {
     /**
      * Evaluate formula cell value
      *
-     * @param cell
-     * @return
+     * @param cell ..
+     * @return ..
      */
     private double getFormulaCellValue(Cell cell) {
         EVALUATOR_STYLE.evaluateFormulaCell(cell);
@@ -203,7 +203,7 @@ public class TableExcelExporter {
     /**
      * adjust column width
      *
-     * @param sheet
+     * @param sheet ..
      */
     private void autosizeColumns(Sheet sheet) {
         // auto size not work with date
@@ -221,9 +221,9 @@ public class TableExcelExporter {
 
     /**
      *
-     * @param formulaRow
+     * @param formulaRow ..
      * @param formula ejemplo: "SUM(desde:hasta)"
-     * @param colum
+     * @param colum ..
      */
     private void setFormula(Row formulaRow, String formula, int colum) {
         Cell gtb = formulaRow.createCell(colum);

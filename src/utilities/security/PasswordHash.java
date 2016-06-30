@@ -15,9 +15,9 @@ public class PasswordHash {
 
     /**
      * 
-     * @param password
-     * @param iterations higher than 75.000 ( > 100.000 for server side!)
-     * @param salt
+     * @param password ..
+     * @param iterations higher than 75.000 ( &gt; 100.000 for server side!)
+     * @param salt ..
      * @param keyLength in <b>bits</b> long
      * @return byte produced by SecretKeyRandomFactory
      * @throws NoSuchAlgorithmException
@@ -33,9 +33,9 @@ public class PasswordHash {
 
     /**
      * Genera un salt aleatorio
-     * @param saltByteSize
+     * @param saltByteSize ..
      * @return byte of random generated salt
-     * @throws NoSuchAlgorithmException 
+     * @throws NoSuchAlgorithmException  ..
      */
     public static byte[] getSalt(int saltByteSize) throws NoSuchAlgorithmException {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
