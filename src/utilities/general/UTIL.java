@@ -513,13 +513,6 @@ public abstract class UTIL {
         } catch (NumberFormatException e) {
             throw new NumberFormatException("La CUIT/CUIL no es válida (ingrese solo números)");
         }
-        //ctrl de los 1ros 2 dígitos...//
-//        String x = c.substring(0, 2);
-//        int xx = Integer.parseInt(x);
-//        if ((xx != 20) && (xx != 23) && (xx != 24) && (xx != 27) && (xx != 28) && (xx != 30) && (xx != 33) && (xx != 34)) {
-//            throw new IllegalArgumentException("Los primeros 2 dígitos de la CUIT/CUIL no corresponden a ningún tipo."
-//                    + "\nHombres: 20, 23, 24; Mujeres: 27, 28; Empresas: 30, 33, 34");
-//        }
         //ctrl del verificador...//
         int digito, suma = 0;
         int[] codigo = {5, 4, 3, 2, 7, 6, 5, 4, 3, 2};
