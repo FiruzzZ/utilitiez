@@ -294,55 +294,51 @@ public abstract class UTIL {
         return bytes;
     }
 
+    /**
+     *
+     * @param label
+     * @param imageInByte
+     * @exception java.io.IOException si no puede leer el <code>imageFile</code>
+     * @see #setImageAsIconLabel(javax.swing.JLabel, java.awt.image.BufferedImage)
+     */
     public static void setImageAsIconLabel(JLabel label, byte[] imageInByte) throws IOException {
-        ByteArrayInputStream bais = new ByteArrayInputStream(imageInByte);
-        BufferedImage bufferedImage = ImageIO.read(bais);
-        int labelWidth = label.getWidth();
-        int labelHeight = label.getHeight();
-        // Get a transform...
-        AffineTransform trans = AffineTransform.getScaleInstance(
-                (double) labelWidth / bufferedImage.getWidth(), (double) labelHeight / bufferedImage.getHeight());
-        Graphics2D g = (Graphics2D) label.getGraphics();
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        GraphicsConfiguration cg = gd.getDefaultConfiguration();
-        int transparency = bufferedImage.getColorModel().getTransparency();
-        BufferedImage dest = cg.createCompatibleImage(labelWidth, labelHeight, transparency);
-        g = dest.createGraphics();
-        g.drawRenderedImage(bufferedImage, trans);
-        g.dispose();
-        label.setIcon(new ImageIcon(dest)); // <-- si hace resize()
-        label.setText(null);
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(imageInByte)) {
+            setImageAsIconLabel(label, ImageIO.read(bais));
+        }
+    }
+
+    /**
+     *
+     * @param label
+     * @param imageFile
+     * @return
+     * @exception java.io.IOException si no puede leer el <code>imageFile</code>
+     * @see #setImageAsIconLabel(javax.swing.JLabel, java.awt.image.BufferedImage)
+     */
+    public static JLabel setImageAsIconLabel(JLabel label, File imageFile) throws IOException {
+        return setImageAsIconLabel(label, ImageIO.read(imageFile));
     }
 
     /**
      * Ajusta la imagen al size de la jLabel, también deja <code>null</code> el texto de la label
      *
      * @param label
-     * @param imageFile File de una imagen, la cual se va ajustar al tamaño de la jLabel.
+     * @param bufferedImage la cual se va ajustar al tamaño de la jLabel.
      * @return el jLabel con la imagen ajustada..
-     * @exception java.io.IOException si no puede leer el <code>imageFile</code>
      */
-    public static JLabel setImageAsIconLabel(JLabel label, File imageFile)
-            throws IOException {
-        BufferedImage bufferedImage = ImageIO.read(imageFile);
+    public static JLabel setImageAsIconLabel(JLabel label, BufferedImage bufferedImage) {
         int labelWidth = label.getWidth();
         int labelHeight = label.getHeight();
         // Get a transform...
         AffineTransform trans = AffineTransform.getScaleInstance(
                 (double) labelWidth / bufferedImage.getWidth(), (double) labelHeight / bufferedImage.getHeight());
 
-        Graphics2D g;
-//        g = (Graphics2D) label.getGraphics();
-//        g.drawRenderedImage(src, trans);
-//        jLabel.setIcon(new ImageIcon(src)); // <-- no resizea la img en la label
-        //----------------------------
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
         GraphicsConfiguration cg = gd.getDefaultConfiguration();
         int transparency = bufferedImage.getColorModel().getTransparency();
         BufferedImage dest = cg.createCompatibleImage(labelWidth, labelHeight, transparency);
-        g = dest.createGraphics();
+        Graphics2D g = dest.createGraphics();
         g.drawRenderedImage(bufferedImage, trans);
         g.dispose();
         label.setIcon(new ImageIcon(dest)); // <-- si hace resize()
