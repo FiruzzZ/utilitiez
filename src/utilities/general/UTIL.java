@@ -809,14 +809,14 @@ public abstract class UTIL {
     /**
      * Controla que la tecla presionada sea un caracter numérico o un PUNTO '.' y que este no
      * aparezca en la cadena (si este ya aparece en la cadena, el evento se consume al igual que si
-     * fuera no fuera un numérico).
+     * no fuera un numérico).
      *
      * @param cadena
      * @param e
      */
     public static void solo_numeros_y_un_punto(final String cadena, KeyEvent e) {
         // si es != de '.'
-        if ((int) e.getKeyChar() != 46) {
+        if (e.getKeyChar() != 46) {
             soloNumeros(e);
         } else if (countChacarter(cadena, '.') > 0) {
             e.consume();
@@ -1212,7 +1212,7 @@ public abstract class UTIL {
     }
 
     /**
-     * Devuelte el % del monto. default scale = 2
+     * Devuelte el % del monto. default rounding {@link RoundingMode#HALF_UP}
      *
      * @param monto sobre el cual se calcula el %
      * @param porcentaje debe ser &gt;=0
@@ -1234,14 +1234,13 @@ public abstract class UTIL {
      * <code>porcentaje</code>, otherwise will return 0.0!
      */
     public static BigDecimal getPorcentaje(BigDecimal monto, BigDecimal porcentaje, int scale, RoundingMode rounding) {
-        if (porcentaje.intValue() < 0) {
+        if (porcentaje.compareTo(BigDecimal.ZERO) == -1) {
             throw new IllegalArgumentException("Parameter \"porcentaje\" can not be negative.");
         }
         if (monto.compareTo(BigDecimal.ZERO) == -1) {
             return BigDecimal.ZERO;
         }
-        porcentaje = porcentaje.divide(new BigDecimal("100"));
-        return porcentaje.multiply(monto).setScale(scale, rounding);
+        return porcentaje.divide(new BigDecimal("100")).multiply(monto).setScale(scale, rounding);
     }
 
     /**
