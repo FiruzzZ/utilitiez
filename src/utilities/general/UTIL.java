@@ -527,6 +527,52 @@ public abstract class UTIL {
         }
     }
 
+    /**
+     * Validador de CBU
+     *
+     * @param cbu .. formato del String ##################### (21)
+     * @throws IllegalArgumentException si la length != 21. Si el dígito validador de la info del banco no coincide.
+     * Si el digito validador de a infode la cuenta no coincide
+     * @throws NumberFormatException if can not be castable to a Long type.
+     */
+    public static void VALIDAR_CBU(String cbu) throws IllegalArgumentException {
+        String c = cbu.trim();
+        if (c.length() != 22) {
+            throw new IllegalArgumentException("Longitud de la CBU no es correcta (" + c.length() + ")");
+        }
+        try {
+            for (int index = 0; index < 22; index++) {
+                Integer.parseInt(cbu.substring(index, index + 1));
+            }
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("La CBU no es válida (ingrese solo números)");
+        }
+        //ctrl del verificador...//
+        int digito, suma = 0;
+                      //2  8  5  0  5  9  0 - 9
+        int[] codigo = {7, 1, 3, 9, 7, 1, 3};
+        for (int index = 0; index < 7; index++) {
+            digito = Integer.parseInt(cbu.substring(index, index + 1));
+            suma += digito * codigo[index];
+        }
+        int valid = 10 - Integer.parseInt(("" + suma).substring(("" + suma).length() - 1, ("" + suma).length()));
+        if (Integer.parseInt(cbu.substring(7, 8)) != valid) {
+            throw new IllegalArgumentException("La CBU no es válida dígito validador del primer cuerpo");
+        }
+
+        suma = 0;
+                       //4  0  0  9  0  4  1  8  1  3  5  2  0 - 1
+        int[] codigo2 = {3, 9, 7, 1, 3, 9, 7, 1, 3, 9, 7, 1, 3};
+        for (int index = 8; index < 21; index++) {
+            digito = Integer.parseInt(cbu.substring(index, index + 1));
+            suma += digito * codigo2[index - 8];
+        }
+        valid = 10 - Integer.parseInt(("" + suma).substring(("" + suma).length() - 1, ("" + suma).length()));
+        if (Integer.parseInt(cbu.substring(21, 22)) != valid) {
+            throw new IllegalArgumentException("La CBU no es válida dígito validador del segundo cuerpo");
+        }
+    }
+
     public static DefaultTableModel getDtm(JTable jtable) {
         return (DefaultTableModel) jtable.getModel();
     }
