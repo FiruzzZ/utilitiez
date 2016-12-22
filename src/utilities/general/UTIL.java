@@ -530,8 +530,8 @@ public abstract class UTIL {
     /**
      * Validador de CBU
      *
-     * @param cbu .. formato del String ##################### (21)
-     * @throws IllegalArgumentException si la length != 21. Si el dígito validador de la info del banco no coincide.
+     * @param cbu .. formato del String ##################### (2)
+     * @throws IllegalArgumentException si la length != 22. Si el dígito validador de la info del banco no coincide.
      * Si el digito validador de a infode la cuenta no coincide
      * @throws NumberFormatException if can not be castable to a Long type.
      */
@@ -557,7 +557,7 @@ public abstract class UTIL {
         }
         int valid = 10 - Integer.parseInt(("" + suma).substring(("" + suma).length() - 1, ("" + suma).length()));
         if (Integer.parseInt(cbu.substring(7, 8)) != valid) {
-            throw new IllegalArgumentException("La CBU no es válida dígito validador del primer cuerpo");
+            throw new IllegalArgumentException("La CBU no es válida, dígito validador del primer cuerpo");
         }
 
         suma = 0;
