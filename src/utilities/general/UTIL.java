@@ -555,7 +555,7 @@ public abstract class UTIL {
             digito = Integer.parseInt(cbu.substring(index, index + 1));
             suma += digito * codigo[index];
         }
-        int valid = 10 - Integer.parseInt(("" + suma).substring(("" + suma).length() - 1, ("" + suma).length()));
+        int valid = 10 - ((suma % 10) == 0 ? 10 : (suma % 10));//Integer.parseInt(("" + suma).substring(("" + suma).length() - 1, ("" + suma).length()));
         if (Integer.parseInt(cbu.substring(7, 8)) != valid) {
             throw new IllegalArgumentException("La CBU no es válida dígito validador del primer cuerpo");
         }
@@ -567,7 +567,7 @@ public abstract class UTIL {
             digito = Integer.parseInt(cbu.substring(index, index + 1));
             suma += digito * codigo2[index - 8];
         }
-        valid = 10 - Integer.parseInt(("" + suma).substring(("" + suma).length() - 1, ("" + suma).length()));
+        valid = 10 - ((suma % 10) == 0 ? 10 : (suma % 10));//Integer.parseInt(("" + suma).substring(("" + suma).length() - 1, ("" + suma).length()));
         if (Integer.parseInt(cbu.substring(21, 22)) != valid) {
             throw new IllegalArgumentException("La CBU no es válida dígito validador del segundo cuerpo");
         }
