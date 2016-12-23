@@ -149,6 +149,57 @@ public abstract class UTIL {
         return c.getTime();
     }
 
+    /**
+     *
+     * @param tfPuntoVenta
+     * @param tfNumero
+     * @return
+     * @see #getNumeroComprobante(java.lang.String, java.lang.String)
+     */
+    public static Long getNumeroComprobante(JTextField tfPuntoVenta, JTextField tfNumero) {
+        return getNumeroComprobante(tfPuntoVenta.getText(), tfNumero.getText());
+    }
+
+    /**
+     * Combine both strings ({@code puntoVenta} + {@code numero}) into a Long.
+     * <p>Examples:
+     * <br>puntoVenta="1", numero="99" =&gt; 100000099
+     * <br>puntoVenta="10", numero="12345678" =&gt; 1012345678
+     *
+     * @param puntoVenta must be casteable to a number between 1 - 99999
+     * @param numero must be casteable to a number between 1 - 999999999
+     * @return a long!
+     * @exception NumberFormatException si puntoVenta o numero no son válidos
+     */
+    public static Long getNumeroComprobante(String puntoVenta, String numero) throws NumberFormatException {
+        Integer pv;
+        try {
+            if (puntoVenta == null) {
+                throw new NumberFormatException("Punto de venta no válido");
+            }
+            pv = Integer.valueOf(puntoVenta.trim());
+            if (pv < 1 || pv > 9999) {
+                throw new NumberFormatException("Punto de venta no válido (1 - 9999)");
+            }
+        } catch (NumberFormatException ex) {
+            throw new NumberFormatException("Punto de venta no válido");
+        }
+
+        Integer n;
+        try {
+            if (numero == null) {
+                throw new NumberFormatException("N° de comprobante no válido");
+            }
+            n = Integer.valueOf(numero.trim());
+            if (n < 1 || pv > 9999_9999) {
+                throw new NumberFormatException("N° de comprobante no válido (1 - 99999999)");
+            }
+        } catch (NumberFormatException ex) {
+            throw new NumberFormatException("N° de comprobante no válido");
+        }
+        return Long.valueOf(pv + AGREGAR_CEROS(n, 8));
+    }
+
     private UTIL() {
     }
 
@@ -531,8 +582,8 @@ public abstract class UTIL {
      * Validador de CBU
      *
      * @param cbu .. formato del String ##################### (2)
-     * @throws IllegalArgumentException si la length != 22. Si el dígito validador de la info del banco no coincide.
-     * Si el digito validador de a infode la cuenta no coincide
+     * @throws IllegalArgumentException si la length != 22. Si el dígito validador de la info del
+     * banco no coincide. Si el digito validador de a infode la cuenta no coincide
      * @throws NumberFormatException if can not be castable to a Long type.
      */
     public static void VALIDAR_CBU(String cbu) throws IllegalArgumentException {
@@ -549,7 +600,7 @@ public abstract class UTIL {
         }
         //ctrl del verificador...//
         int digito, suma = 0;
-                      //2  8  5  0  5  9  0 - 9
+        //2  8  5  0  5  9  0 - 9
         int[] codigo = {7, 1, 3, 9, 7, 1, 3};
         for (int index = 0; index < 7; index++) {
             digito = Integer.parseInt(cbu.substring(index, index + 1));
@@ -561,7 +612,7 @@ public abstract class UTIL {
         }
 
         suma = 0;
-                       //4  0  0  9  0  4  1  8  1  3  5  2  0 - 1
+        //4  0  0  9  0  4  1  8  1  3  5  2  0 - 1
         int[] codigo2 = {3, 9, 7, 1, 3, 9, 7, 1, 3, 9, 7, 1, 3};
         for (int index = 8; index < 21; index++) {
             digito = Integer.parseInt(cbu.substring(index, index + 1));
