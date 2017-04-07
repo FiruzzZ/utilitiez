@@ -764,7 +764,8 @@ public abstract class UTIL {
         if (day == null) {
             c.set(year, month, 1);
         } else if (day == -1) {
-            c.set(year, month + 1, -1);
+            c.set(year, month + 1, 1);
+            c.add(Calendar.DAY_OF_MONTH, -1);
         } else {
             c.set(year, month, day);
         }
