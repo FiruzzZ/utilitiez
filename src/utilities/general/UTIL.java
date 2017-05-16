@@ -1275,6 +1275,17 @@ public abstract class UTIL {
         });
     }
 
+    public static String AGREGAR_CARACTERES(String cadena, char c, int longitudMaxima) {
+        if (cadena == null) {
+            throw new NullPointerException("El parámetro cadena es NULL!!!");
+        }
+        StringBuilder newCadena = new StringBuilder(cadena);
+        for (int i = newCadena.toString().length(); i < longitudMaxima; i++) {
+            newCadena.insert(0, c);
+        }
+        return newCadena.toString();
+    }
+    
     /**
      * Agrega "0" a la IZQUIERDA de <code>cadena</code> hasta que esta tenga la longitudMaxima
      *
@@ -1283,14 +1294,7 @@ public abstract class UTIL {
      * @return <code>cadena</code> overclocking..
      */
     public static String AGREGAR_CEROS(String cadena, int longitudMaxima) {
-        if (cadena == null) {
-            throw new NullPointerException("El parámetro cadena es NULL!!!");
-        }
-        StringBuilder newCadena = new StringBuilder(cadena);
-        for (int i = newCadena.toString().length(); i < longitudMaxima; i++) {
-            newCadena.insert(0, "0");
-        }
-        return newCadena.toString();
+        return AGREGAR_CARACTERES(cadena, '0', longitudMaxima);
     }
 
     public static String AGREGAR_CEROS(long numero, int longitudMaxima) {
