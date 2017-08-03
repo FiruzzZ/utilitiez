@@ -162,7 +162,8 @@ public abstract class UTIL {
 
     /**
      * Combine both strings ({@code puntoVenta} + {@code numero}) into a Long.
-     * <p>Examples:
+     * <p>
+     * Examples:
      * <br>puntoVenta="1", numero="99" =&gt; 100000099
      * <br>puntoVenta="10", numero="12345678" =&gt; 1012345678
      *
@@ -1285,7 +1286,7 @@ public abstract class UTIL {
         }
         return newCadena.toString();
     }
-    
+
     /**
      * Agrega "0" a la IZQUIERDA de <code>cadena</code> hasta que esta tenga la longitudMaxima
      *
@@ -1589,6 +1590,10 @@ public abstract class UTIL {
         Calendar today = Calendar.getInstance();
         today.clear();
         today.setTime(dateToday);
+        return getAge(dateOfBirth, today);
+    }
+
+    public static int getAge(Date dateOfBirth, Calendar today) {
         Calendar birthDate = Calendar.getInstance();
         birthDate.setTime(dateOfBirth);
         if (birthDate.after(today)) {
