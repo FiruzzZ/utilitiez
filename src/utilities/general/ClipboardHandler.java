@@ -7,6 +7,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public final class ClipboardHandler {
         if (t != null) {
             return (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
         }
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     /**
