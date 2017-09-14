@@ -27,7 +27,11 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -1649,6 +1653,62 @@ public abstract class UTIL {
             bGr.drawImage(img, 0, 0, null);
             bGr.dispose();
             return bimage;
+        }
+
+        public static boolean reduceImageQuality(int sizeThreshold, String srcImg, String destImg) throws IOException {
+            File fileIn = new File(srcImg);
+            File fileOut = new File(destImg);
+            return reduceImageQuality(sizeThreshold, fileIn, fileOut);
+        }
+
+        /**
+         * Reduce the quality of the picture until reach the <code>threshold</code> desired.
+         *
+         * @param sizeThreshold
+         * @param fileIn
+         * @param fileOut this file may will be delete and recreated many times
+         * @return <code>true</code> if at least one time reduction quality was applied,
+         * <code>false</code> if <code>fileIn</code> size is already beneath the
+         * <code>threshold</code> specified.
+         */
+        public static boolean reduceImageQuality(int sizeThreshold, File fileIn, File fileOut) throws IOException {
+            float quality = 1.0f;
+            long fileSize = fileIn.length();
+            if (fileSize <= sizeThreshold) {
+                return false;
+            }
+            Iterator iter = ImageIO.getImageWritersByFormatName("jpeg");
+            ImageWriter writer = (ImageWriter) iter.next();
+            ImageWriteParam iwp = writer.getDefaultWriteParam();
+            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            FileInputStream inputStream = new FileInputStream(fileIn);
+            BufferedImage originalImage = ImageIO.read(inputStream);
+            IIOImage image = new IIOImage(originalImage, null, null);
+            float percent = 0.1f;   // 10% of 1  
+            while (fileSize > sizeThreshold) {
+                if (percent >= quality) {
+                    percent *= 0.1f;
+                }
+                quality -= percent;
+                if (fileOut.exists()) {
+                    fileOut.delete();
+                }
+                FileImageOutputStream output = new FileImageOutputStream(fileOut);
+                writer.setOutput(output);
+                iwp.setCompressionQuality(quality);
+                writer.write(null, image, iwp);
+                File fileOut2 = new File(fileOut.getPath());
+                long newFileSize = fileOut2.length();
+                if (newFileSize == fileSize) {
+                    // cannot reduce more, return  
+                    break;
+                } else {
+                    fileSize = newFileSize;
+                }
+                output.close();
+            }
+            writer.dispose();
+            return true;
         }
 
         private Image() {
