@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,8 @@ public class TableExcelExporter {
     private HSSFSheet sheet;
     // the style for Date column
     private CellStyle DATE_CELL_STYLE;
+    // the style for Date (with Time) column
+    private CellStyle TIMESTAMP_CELL_STYLE;
     // the style for Money cells
     private CellStyle MONEY_CELL_STYLE;
     // the style for Money cells with negative value
@@ -119,6 +122,7 @@ public class TableExcelExporter {
     }
 
     private void addData() {
+        Calendar c = Calendar.getInstance();
         int rowExcelIdx = skipColumnHeaders ? 0 : 1;
         for (int rowIdx = 0; rowIdx < table.getRowCount(); rowIdx++) {
             HSSFRow row = sheet.createRow(rowExcelIdx);
@@ -131,8 +135,14 @@ public class TableExcelExporter {
                 if (table.getValueAt(rowIdx, columnIdx) != null) {
                     Object value = table.getValueAt(rowIdx, columnIdx);
                     if (value instanceof Date) {
-                        cell.setCellValue((Date) value);
-                        cell.setCellStyle(DATE_CELL_STYLE);
+                        Date d = (Date) value;
+                        c.setTime(d);
+                        cell.setCellValue(d);
+                        if ((c.get(Calendar.HOUR_OF_DAY) + c.get(Calendar.MINUTE) + c.get(Calendar.SECOND)) > 0) {
+                            cell.setCellStyle(TIMESTAMP_CELL_STYLE);
+                        } else {
+                            cell.setCellStyle(DATE_CELL_STYLE);
+                        }
                     } else if (value instanceof BigDecimal) {
                         cell.setCellValue(((BigDecimal) value).doubleValue());
                     } else if (value instanceof Double) {
@@ -156,8 +166,9 @@ public class TableExcelExporter {
         // CreationHelper for create CellStyle
         CreationHelper createHelper = wb.getCreationHelper();
         DATE_CELL_STYLE = wb.createCellStyle();
-        // add date format
         DATE_CELL_STYLE.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy"));
+        TIMESTAMP_CELL_STYLE = wb.createCellStyle();
+        TIMESTAMP_CELL_STYLE.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy HH:mm:ss"));
         // vertical align top
 //        _dateCellStyle.setVerticalAlignment(CellStyle.VERTICAL_TOP);
 
