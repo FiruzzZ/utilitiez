@@ -232,36 +232,14 @@ public abstract class UTIL {
      * alfabético. </UL> Útil para validar Nombres y Apellidos Ejemplos válidos: "a", "jose luis",
      * "a B cd".
      */
-    public final static String REGEX_ALFA_TEXT_WITH_WHITE
-            = "^[ña-zÑA-Z][ña-zÑA-Z\\s]*[a-zA-Z]$|"
-            + "^[ña-zÑA-Z]+[a-zA-Z]*$|"
-            + "^[a-zA-Z]$";
+    public final static String REGEX_ALFA_TEXT_WITH_WHITE = "[ñáéíóúÑÁÉÍÓÚa-zA-Z]+((\\s)?[ñáéíóúÑÁÉÍÓÚa-zA-Z]+)*";
     /**
      *
      * Regular expression para validar cadenas que: <UL> <LI>Empiece con un caracter alfanumérico.
      * <LI>Seguidos de [0..*] caracteres alfanuméricos y/o espacios. <LI>Termine en un caracter
      * alfanumérico. </UL> Ejemplos válidos: "a", "jose luis", "1a", "a1 1 a", "a B cd".
      */
-    public final static String REGEX_ALFANUMERIC_WITH_WHITE
-            = "^[\\w&&[^\\_]][a-zA-Z0-9\\s]*[a-zA-Z0-9]$|"
-            + "^[\\w&&[^\\_]]+[a-zA-Z0-9]*$|"
-            + "^[\\w&&[^\\_]]$";
-    /**
-     * [a-zA-Z]?
-     */
-    public final static Pattern azAZ = Pattern.compile("[a-zA-Z]?");
-    /**
-     * [0-9]?
-     */
-    public final static Pattern _09 = Pattern.compile("[0-9]?");
-    /**
-     * [a-zA-Z_0-9]?
-     */
-    public final static Pattern azAZ09 = Pattern.compile("[a-zA-Z_0-9]?");
-    /**
-     * Límite de filas que se cargan en una Tabla
-     */
-    public final static int ROW_LIMIT = 1000;
+    public final static String REGEX_ALFANUMERIC_WITH_WHITE = "[ñáéíóúÑÁÉÍÓÚa-zA-Z0-9]+((\\s)?[ñáéíóúÑÁÉÍÓÚa-zA-Z0-9]+)*";
     public final static String TIME_ZONE = "GMT-03:00";
     /**
      * Porque a la poronga de MySql solo le gusta así yyyy/MM/dd
@@ -293,10 +271,6 @@ public abstract class UTIL {
      * Extensiones de imagenes permitidas: "jpeg", "jpg", "gif", "tiff", "tif", "png", "bmp"
      */
     public final static String[] IMAGEN_EXTENSION = {"jpeg", "jpg", "gif", "tiff", "tif", "png", "bmp"};
-    /**
-     * Tamaño máximo de las imagenes que se puede guardar: 1.048.576 bytes
-     */
-    public final static int MAX_IMAGEN_FILE_SIZE = 1048576; // en bytes (1Mb/1024Kb/...)
 
     static {
         DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
@@ -326,10 +300,7 @@ public abstract class UTIL {
      */
     public static byte[] getBytesFromFile(File file) throws IOException {
         BufferedInputStream is = new BufferedInputStream(new FileInputStream(file));
-//      InputStream is = new BufferedInputStream(new FileInputStream(file));
         long length = file.length();
-        controlSizeFile(file, MAX_IMAGEN_FILE_SIZE);
-
         // Create the byte array to hold the data
         byte[] bytes = new byte[(int) length];
         // Read in the bytes
