@@ -243,7 +243,7 @@ public abstract class UTIL {
     /**
      * adminte puntos intermedios y guión medio, pero debe finalizar con alfa numérico
      */
-    public final static String REGEX_ALFANUMERIC_PLUS = "[ñáéíóúÑÁÉÍÓÚa-zA-Z0-9]+((\\s)?[\\.\\-ñáéíóúÑÁÉÍÓÚa-zA-Z0-9])*";
+    public final static String REGEX_ALFANUMERIC_PLUS = "[ñáéíóúÑÁÉÍÓÚa-zA-Z0-9]+(\\s?[\\.\\-ñáéíóúÑÁÉÍÓÚa-zA-Z0-9]+)*(?<![\\s.-])$";
     public final static String TIME_ZONE = "GMT-03:00";
     /**
      * Porque a la poronga de MySql solo le gusta así yyyy/MM/dd
