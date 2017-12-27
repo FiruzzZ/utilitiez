@@ -1714,6 +1714,6 @@ public abstract class UTIL {
                 .replace("gdor", "gobernador")
                 .replace("pto", "puerto")
                 .replace("col ", "colonia ");
-        return s.toUpperCase();
+        return s.trim().toUpperCase();
     }
 }
