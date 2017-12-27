@@ -1689,4 +1689,31 @@ public abstract class UTIL {
         private Image() {
         }
     }
+
+    /**
+     * Quita todas las:
+     * <br>Artículos: el/lo/las/los al principio "^" o intermedios
+     * <br>Acentos: á/é/í/ó/ú/ü
+     * <br>Abreviaciones: (Convierte las siguientes)
+     * <br>gral -&gt; general, gdor -&gt; gobernador, pto -&gt; puerto
+     *
+     * @param candidate
+     * @return a clear, trimmed, uppercased string
+     */
+    public static String quitarAAAs(String candidate) {
+        String s = candidate.toLowerCase().replaceAll("á", "a").replaceAll("é", "e").replaceAll("í", "i").replaceAll("ó", "o")
+                .replaceAll("ü", "u")
+                .replaceAll("ú", "u")
+                .replaceAll("\\.", "")
+                .replaceAll("¥", "ñ")
+                //que empiezan con los artículos 
+                .replaceAll("^el ", "").replaceAll("^la ", "").replaceAll("^las ", "").replaceAll("^los ", "")
+                //que contiene artículos intermedios
+                .replaceAll(" el ", "").replaceAll(" la ", "").replaceAll(" las ", "").replaceAll(" los ", "")
+                .replace("gral", "general")
+                .replace("gdor", "gobernador")
+                .replace("pto", "puerto")
+                .replace("col ", "colonia ");
+        return s.toUpperCase();
+    }
 }
