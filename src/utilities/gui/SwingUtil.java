@@ -30,6 +30,7 @@ import javax.swing.JRootPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
@@ -345,7 +346,8 @@ public class SwingUtil {
         for (Component component : components) {
             if (component instanceof JRootPane
                     || component instanceof JLayeredPane // <--- Java 7
-                    || component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport) {
+                    || component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport
+                    || component instanceof JTabbedPane) {
                 JComponent subPanel = (JComponent) component;
                 setComponentsEnabled(subPanel.getComponents(), enable, applyDefaultsExceptionComponents, exceptionsComponents);
             } else {
