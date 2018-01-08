@@ -3,6 +3,7 @@ package utilities.general;
 /**
  * Clase usada para enviar como dataSource a los reportes, cada atributo representa un dato de una
  * columna y desde los jasperreport se los llama por reflexión
+ *
  * @author FiruzzZ
  */
 public class GenericBean {
@@ -24,6 +25,9 @@ public class GenericBean {
     private Object o15;
     private Object o16;
     private Object o17;
+    private Object o18;
+    private Object o19;
+    private Object o20;
 
     public GenericBean(Object... o) {
         if (o.length >0) o1 = o[0];
@@ -43,6 +47,9 @@ public class GenericBean {
         if (o.length >14) o15 = o[14];
         if (o.length >15) o16 = o[15];
         if (o.length >16) o17 = o[16];
+        if (o.length >17) o18 = o[17];
+        if (o.length >18) o19 = o[18];
+        if (o.length >19) o20 = o[19];
     }
 
     public Object getO1() {
@@ -181,6 +188,30 @@ public class GenericBean {
         this.o17 = o17;
     }
 
+    public Object getO18() {
+        return o18;
+    }
+
+    public void setO18(Object o18) {
+        this.o18 = o18;
+    }
+
+    public Object getO19() {
+        return o19;
+    }
+
+    public void setO19(Object o19) {
+        this.o19 = o19;
+    }
+
+    public Object getO20() {
+        return o20;
+    }
+
+    public void setO20(Object o20) {
+        this.o20 = o20;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -205,7 +236,8 @@ public class GenericBean {
 
     @Override
     public String toString() {
-        return "GenericBeanCollection{" + "o1=" + o1 + ", o2=" + o2 + ", o3=" + o3 + ", o4=" + o4 + ", o5=" + o5 + ", o6=" + o6 + ", o7=" + o7 + ", o8=" + o8 + ", o9=" + o9 + ", o10=" + o10 + ", o11=" + o11 + ", o12=" + o12 + ", o13=" + o13 + ", o14=" + o14 + ", o15=" + o15 + ", o16=" + o16 + ", o17=" + o17 + '}';
+        return "GenericBean{" + "o1=" + o1 + ", o2=" + o2 + ", o3=" + o3 + ", o4=" + o4 + ", o5=" + o5 + ", o6=" + o6 + ", o7=" + o7 + ", o8=" + o8 + ", o9=" + o9 + ", o10=" + o10 + ", o11=" + o11 + ", o12=" + o12 + ", o13=" + o13 + ", o14=" + o14 + ", o15=" + o15 + ", o16=" + o16 + ", o17=" + o17 + ", o18=" + o18 + ", o19=" + o19 + ", o20=" + o20 + '}';
     }
+
 
 }
