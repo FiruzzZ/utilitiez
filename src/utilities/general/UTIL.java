@@ -78,6 +78,18 @@ public abstract class UTIL {
     }
 
     /**
+     * Compare if {@code candidate} is between (inclusive) {@code from} y {@code to}
+     *
+     * @param candidate
+     * @param from
+     * @param to
+     * @return true is between (inclusive)
+     */
+    public static boolean between(long candidate, long from, long to) {
+        return from <= candidate && candidate <= to;
+    }
+
+    /**
      * Retorna la fecha elegida <b>SI ES VÁLIDA</b>:
      * <ul>
      * <li>{@link JDateChooser#getDate()} &gt;={@link JDateChooser#getMinSelectableDate()}
