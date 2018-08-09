@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -1727,5 +1728,17 @@ public abstract class UTIL {
                 .replace("pto", "puerto")
                 .replace("col ", "colonia ");
         return s.trim().toUpperCase();
+    }
+
+    /**
+     * Returns the 1st not null
+     *
+     * @param <T>
+     * @param o
+     * @return the 1st not null value
+     * @throws NoSuchElementException if all values are null
+     */
+    public static <T> T coalesce(T... o) {
+        return Stream.of(o).filter(Objects::nonNull).findFirst().get();
     }
 }
