@@ -520,10 +520,10 @@ public class SwingUtil {
     }
 
     /**
-     * Abre un FileChooser con 2 tipos de archivos permitido: XLS, XLSX
+     * Abre un JFileChooser con 2 tipos de archivos permitido: XLS, XLSX
      *
      * @param parent
-     * @param fileDir the directory to point to
+     * @param fileDir the directory to point to, is also set as "suggested file name"
      * @return
      * @throws IOException
      */
@@ -538,7 +538,7 @@ public class SwingUtil {
      *
      * @param parent
      * @param description
-     * @param fileDir the directory to point to
+     * @param fileDir the directory to point to, is also set as "suggested file name"
      * @param fileExtension
      * @return
      * @throws IOException
@@ -550,9 +550,10 @@ public class SwingUtil {
     }
 
     /**
+     * Abre un JFileChooser
      *
      * @param parent
-     * @param fileDir the directory to point to
+     * @param fileDir the directory to point to, is also set as "suggested file name"
      * @param fileExtensionAllowed map&lt;Extension, Descripcion&gt; permitidas ej: xls, "Excel
      * 97-2003"
      * @return
@@ -560,13 +561,16 @@ public class SwingUtil {
      */
     public static File showSaveDialogFileChooser(Component parent, File fileDir, Map<String, String> fileExtensionAllowed) throws IOException {
         JFileChooser fileChooser = new JFileChooser();
-        File file = null;
         for (Map.Entry<String, String> ext : fileExtensionAllowed.entrySet()) {
             FileNameExtensionFilter filter = new FileNameExtensionFilter(ext.getValue(), ext.getKey());
             fileChooser.setFileFilter(filter);
             fileChooser.addChoosableFileFilter(filter);
         }
         fileChooser.setCurrentDirectory(fileDir);
+        if (fileDir != null) {
+            fileChooser.setSelectedFile(fileDir);
+        }
+        File file = null;
         int stateFileChoosed = fileChooser.showSaveDialog(parent);
         if (stateFileChoosed == JFileChooser.APPROVE_OPTION) {
             file = fileChooser.getSelectedFile();
