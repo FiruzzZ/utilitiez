@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -517,11 +519,50 @@ public class SwingUtil {
         return file;
     }
 
+    /**
+     * Abre un FileChooser con 2 tipos de archivos permitido: XLS, XLSX
+     *
+     * @param parent
+     * @param fileDir the directory to point to
+     * @return
+     * @throws IOException
+     */
+    public static File showSaveDialogExcelFileChooser(Component parent, File fileDir) throws IOException {
+        Map<String, String> exts = new HashMap<>(1);
+        exts.put("xls", "Excel 97-2003");
+        exts.put("xlsx", "Excel");
+        return showSaveDialogFileChooser(parent, fileDir, exts);
+    }
+
+    /**
+     *
+     * @param parent
+     * @param description
+     * @param fileDir the directory to point to
+     * @param fileExtension
+     * @return
+     * @throws IOException
+     */
     public static File showSaveDialogFileChooser(Component parent, String description, File fileDir, String fileExtension) throws IOException {
+        Map<String, String> exts = new HashMap<>(1);
+        exts.put(fileExtension, description);
+        return showSaveDialogFileChooser(parent, fileDir, exts);
+    }
+
+    /**
+     *
+     * @param parent
+     * @param fileDir the directory to point to
+     * @param fileExtensionAllowed map&lt;Extension, Descripcion&gt; permitidas ej: xls, "Excel
+     * 97-2003"
+     * @return
+     * @throws IOException
+     */
+    public static File showSaveDialogFileChooser(Component parent, File fileDir, Map<String, String> fileExtensionAllowed) throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         File file = null;
-        if (fileExtension != null) {
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(description, fileExtension);
+        for (Map.Entry<String, String> ext : fileExtensionAllowed.entrySet()) {
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(ext.getValue(), ext.getKey());
             fileChooser.setFileFilter(filter);
             fileChooser.addChoosableFileFilter(filter);
         }
@@ -529,8 +570,23 @@ public class SwingUtil {
         int stateFileChoosed = fileChooser.showSaveDialog(parent);
         if (stateFileChoosed == JFileChooser.APPROVE_OPTION) {
             file = fileChooser.getSelectedFile();
-            if (fileExtension != null && !file.getName().endsWith("." + fileExtension)) {
-                file = new File(file.getPath() + "." + fileExtension);
+            String extension = null;
+            for (Map.Entry<String, String> ext : fileExtensionAllowed.entrySet()) {
+                if (ext.getValue().equals(fileChooser.getFileFilter().getDescription())) {
+                    extension = "." + ext.getKey();
+                    break;
+                }
+            }
+            final int lastIndexOf = file.getName().lastIndexOf('.');
+            if (lastIndexOf > -1) {
+                String fileExtension = file.getName().substring(lastIndexOf);
+                if (fileExtension != null && !file.getName().endsWith("." + fileExtension)) {
+                    //trim porque el Chooser permite crear archivos con espacios iniciales, pero Windows no
+                    file = new File(file.getPath().trim() + extension);
+                }
+            } else {
+                //trim porque el Chooser permite crear archivos con espacios iniciales, pero Windows no
+                file = new File(file.getPath().trim() + extension);
             }
             if (file.exists() && JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(parent, "Ya existe el archivo " + file.getName() + ", ¿Desea reemplazarlo?", null, JOptionPane.YES_NO_OPTION)) {
                 return null;
