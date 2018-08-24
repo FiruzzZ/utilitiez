@@ -27,9 +27,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- * Export the data from a JTAble (not from the tableModel) to a File
+ * Export the data from a JTAble (not from the tableModel) to a Excel File (xls, xlsx)
  *
  * @author FiruzzZ
  * @version 1
@@ -41,7 +42,7 @@ public class TableExcelExporter {
     private List<Integer> columnIdxToSkip;
     private File file;
     private boolean skipColumnHeaders = false;
-    private HSSFSheet sheet;
+    private Sheet sheet;
     // the style for Date column
     private CellStyle DATE_CELL_STYLE;
     // the style for Date (with Time) column
@@ -53,11 +54,11 @@ public class TableExcelExporter {
     // evaluator to evaluate formula cell
     private FormulaEvaluator EVALUATOR_STYLE;
     private HashMap<Integer, CellStyle> cellStylePerColumn;
-    private HSSFWorkbook workBook;
+    private Workbook workBook;
 
     /**
      *
-     * @param file ..
+     * @param file fileName must contain the extension: xls or xlsx
      * @param table where the values are taken (NOT FROM THE MODEL!!"#$%@)
      * @throws IllegalArgumentException if the table does not contain rows
      */
@@ -72,7 +73,8 @@ public class TableExcelExporter {
         this.file = file;
         columnIdxToSkip = new ArrayList<>();
         cellStylePerColumn = new HashMap<>();
-        workBook = new HSSFWorkbook();
+        workBook = file.getName().substring(file.getName().lastIndexOf('.') + 1).equalsIgnoreCase("xlsx")
+                ? new XSSFWorkbook() : new HSSFWorkbook();
         sheet = workBook.createSheet();
     }
 
@@ -98,7 +100,7 @@ public class TableExcelExporter {
         addData();
         // adjust column width
 //        autosizeColumns(sheet);
-        // save workbook as .xls file
+        // save workbook as Excel file
         saveFile(workBook);
     }
 
@@ -107,16 +109,16 @@ public class TableExcelExporter {
     }
 
     private void addTitleFromColumnHeaders() {
-        HSSFRow titleRow = sheet.createRow(0);
+        Row titleRow = sheet.createRow(0);
 
-        HSSFFont font = workBook.createFont();
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        HSSFCellStyle style = workBook.createCellStyle();
+        Font font = workBook.createFont();
+        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        CellStyle style = workBook.createCellStyle();
         style.setFont(font);
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
         for (int columnIdx = 0; columnIdx < table.getColumnCount(); columnIdx++) {
-            HSSFCell celda = titleRow.createCell(columnIdx);
-            celda.setCellValue(new HSSFRichTextString(table.getColumnModel().getColumn(columnIdx).getHeaderValue().toString()));
+            Cell celda = titleRow.createCell(columnIdx);
+            celda.setCellValue(table.getColumnModel().getColumn(columnIdx).getHeaderValue().toString());
             celda.setCellStyle(style);
         }
     }
@@ -125,13 +127,13 @@ public class TableExcelExporter {
         Calendar c = Calendar.getInstance();
         int rowExcelIdx = skipColumnHeaders ? 0 : 1;
         for (int rowIdx = 0; rowIdx < table.getRowCount(); rowIdx++) {
-            HSSFRow row = sheet.createRow(rowExcelIdx);
+            Row row = sheet.createRow(rowExcelIdx);
             rowExcelIdx++;
             for (int columnIdx = 0; columnIdx < table.getColumnCount(); columnIdx++) {
                 if (columnIdxToSkip.contains(columnIdx)) {
                     continue;
                 }
-                HSSFCell cell = row.createCell(columnIdx);
+                Cell cell = row.createCell(columnIdx);
                 if (table.getValueAt(rowIdx, columnIdx) != null) {
                     Object value = table.getValueAt(rowIdx, columnIdx);
                     if (value instanceof Date) {
@@ -152,7 +154,8 @@ public class TableExcelExporter {
                     } else if (value instanceof Number) {
                         cell.setCellValue(Double.valueOf(value.toString()));
                     } else {
-                        cell.setCellValue(new HSSFRichTextString(value.toString()));
+//                        cell.setCellValue(new HSSFRichTextString(value.toString()));
+                        cell.setCellValue(value.toString());
                     }
                     if (cellStylePerColumn.containsKey(columnIdx)) {
                         cell.setCellStyle(cellStylePerColumn.get(columnIdx));
