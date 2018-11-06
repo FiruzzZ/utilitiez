@@ -159,7 +159,7 @@ public abstract class UTIL {
      * @return ..
      * @see Calendar#add(int, int)
      */
-    private static Date add(Date date, int field, int cant) {
+    public static Date add(Date date, int field, int cant) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(field, cant);
