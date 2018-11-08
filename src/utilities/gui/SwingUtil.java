@@ -358,6 +358,29 @@ public class SwingUtil {
         }
     }
 
+    public static void setComponentsEnabled(Component[] components, boolean enable, Component... exceptionsComponents) {
+        for (Component component : components) {
+            if (component instanceof JRootPane
+                    || component instanceof JLayeredPane // <--- Java 7
+                    || component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport
+                    || component instanceof JTabbedPane) {
+                JComponent subPanel = (JComponent) component;
+                setComponentsEnabled(subPanel.getComponents(), enable, exceptionsComponents);
+            } else {
+                boolean found = false;
+                for (Component ec : exceptionsComponents) {
+                    if (component.equals(ec)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    setEnableDependingOfType(component, enable, true);
+                }
+            }
+        }
+    }
+
     private static void setEnableDependingOfType(Component component, boolean enable, boolean applyDefaults, Class<? extends Component>... exceptionsComponents) {
         if (applyDefaults
                 && (component instanceof JLabel
