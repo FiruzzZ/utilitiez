@@ -1714,9 +1714,7 @@ public abstract class UTIL {
      * @return a clear, trimmed, uppercased string
      */
     public static String quitarAAAs(String candidate) {
-        String s = candidate.toLowerCase().replaceAll("á", "a").replaceAll("é", "e").replaceAll("í", "i").replaceAll("ó", "o")
-                .replaceAll("ü", "u")
-                .replaceAll("ú", "u")
+        String s = quitarAcentos(candidate.toLowerCase())
                 .replaceAll("\\.", "")
                 .replaceAll("¥", "ñ")
                 //que empiezan con los artículos 
@@ -1728,6 +1726,18 @@ public abstract class UTIL {
                 .replace("pto", "puerto")
                 .replace("col ", "colonia ");
         return s.trim().toUpperCase();
+    }
+
+    /**
+     * Replace áéíóúüÁÉÍÓÚÜ for aeiouAEIOU
+     * @param candidate
+     * @return
+     */
+    public static String quitarAcentos(String candidate) {
+        return candidate.replaceAll("á", "a").replaceAll("é", "e").replaceAll("í", "i").replaceAll("ó", "o")
+                .replaceAll("ü", "u").replaceAll("ú", "u")
+                .replaceAll("Á", "A").replaceAll("É", "E").replaceAll("Í", "I").replaceAll("Ó", "O")
+                .replaceAll("Ü", "U").replaceAll("Ú", "U");
     }
 
     /**
