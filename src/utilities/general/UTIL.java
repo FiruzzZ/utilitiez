@@ -1730,6 +1730,7 @@ public abstract class UTIL {
 
     /**
      * Replace áéíóúüÁÉÍÓÚÜ for aeiouAEIOU
+     *
      * @param candidate
      * @return
      */
@@ -1750,5 +1751,33 @@ public abstract class UTIL {
      */
     public static <T> T coalesce(T... o) {
         return Stream.of(o).filter(Objects::nonNull).findFirst().get();
+    }
+
+    /**
+     * Métodos utilitarios para {@link BigDecimal}
+     */
+    public static class BigDecimals {
+
+        /**
+         * Create an instance of BigDecimal from a string. If the string is null or empty (after
+         * trimmed) will return null
+         *
+         * @param str can be null or empty
+         * @return BigDecimal instance or null if <code>str is null or empty</code>
+         */
+        public static BigDecimal toNull(String str) {
+            return (str == null || str.trim().isEmpty()) ? null : new BigDecimal(str);
+        }
+
+        /**
+         * Create an instance of BigDecimal from a string. If the string is null or empty (after
+         * trimmed) will return {@link BigDecimal#ZERO}
+         *
+         * @param str can be null or empty
+         * @return BigDecimal instance or {@link BigDecimal#ZERO} if <code>str is null or empty</code>
+         */
+        public static BigDecimal toZero(String str) {
+            return (str == null || str.trim().isEmpty()) ? BigDecimal.ZERO : new BigDecimal(str);
+        }
     }
 }
