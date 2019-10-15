@@ -1707,8 +1707,9 @@ public abstract class UTIL {
      * Quita todas las:
      * <br>Artículos: el/lo/las/los al principio "^" o intermedios
      * <br>Acentos: á/é/í/ó/ú/ü
-     * <br>Abreviaciones: (Convierte las siguientes)
-     * <br>gral -&gt; general, gdor -&gt; gobernador, pto -&gt; puerto
+     * <br>Abreviaciones: (Convierte las siguientes):
+     * <br>{@code gral -> general}, {@code gdor -> gobernador}, {@code ^pto -> puerto},
+     * {@code col -> colonia}
      *
      * @param candidate
      * @return a clear, trimmed, uppercased string
@@ -1723,7 +1724,7 @@ public abstract class UTIL {
                 .replaceAll(" el ", "").replaceAll(" la ", "").replaceAll(" las ", "").replaceAll(" los ", "")
                 .replace("gral", "general")
                 .replace("gdor", "gobernador")
-                .replace("pto", "puerto")
+                .replace("^pto ", "puerto").replace(" pto", "puerto") //fix con palabra prescriPTOr
                 .replace("col ", "colonia ");
         return s.trim().toUpperCase();
     }
@@ -1774,7 +1775,8 @@ public abstract class UTIL {
          * trimmed) will return {@link BigDecimal#ZERO}
          *
          * @param str can be null or empty
-         * @return BigDecimal instance or {@link BigDecimal#ZERO} if <code>str is null or empty</code>
+         * @return BigDecimal instance or {@link BigDecimal#ZERO} if
+         * <code>str is null or empty</code>
          */
         public static BigDecimal toZero(String str) {
             return (str == null || str.trim().isEmpty()) ? BigDecimal.ZERO : new BigDecimal(str);
