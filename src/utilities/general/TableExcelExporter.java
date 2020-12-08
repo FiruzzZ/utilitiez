@@ -20,9 +20,11 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -112,10 +114,10 @@ public class TableExcelExporter {
         Row titleRow = sheet.createRow(0);
 
         Font font = workBook.createFont();
-        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+        font.setBold(true);
         CellStyle style = workBook.createCellStyle();
         style.setFont(font);
-        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
         for (int columnIdx = 0; columnIdx < table.getColumnCount(); columnIdx++) {
             Cell celda = titleRow.createCell(columnIdx);
             celda.setCellValue(table.getColumnModel().getColumn(columnIdx).getHeaderValue().toString());
@@ -241,7 +243,7 @@ public class TableExcelExporter {
      */
     private void setFormula(Row formulaRow, String formula, int colum) {
         Cell gtb = formulaRow.createCell(colum);
-        gtb.setCellType(HSSFCell.CELL_TYPE_FORMULA);
+        gtb.setCellType(CellType.FORMULA);
         gtb.setCellFormula(formula);
         setNumericStyle(gtb, true);
     }

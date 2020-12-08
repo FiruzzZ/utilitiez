@@ -23,6 +23,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -763,6 +764,10 @@ public abstract class UTIL {
             c.set(year, month, day);
         }
         return c.getTime();
+    }
+
+    public static Date customDate(int year, Month month, Integer day) {
+        return customDate(year, month.getValue() - 1, day);
     }
 
     /**
