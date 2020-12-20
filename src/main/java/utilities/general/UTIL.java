@@ -47,7 +47,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author FiruzzZ
  */
-public abstract class UTIL {
+public final class UTIL {
 
     private static final Logger LOG = Logger.getLogger(UTIL.class.getName());
 
@@ -705,7 +705,7 @@ public abstract class UTIL {
      *
      * @param dtm if == null a new instance of a PRIVATE implementation of will be created.
      * @param columnNames los nombres de las respectivas columns que va tener la tabla.
-     * @return a DefaultTableModel with column names setted.
+     * @return a DefaultTableModel with column names set.
      * @exception NullPointerException if columnNames is null.
      */
     public static DefaultTableModel setColumnNames(DefaultTableModel dtm, String[] columnNames) {
@@ -720,31 +720,12 @@ public abstract class UTIL {
         return dtm;
     }
 
-    public static boolean hasta2Decimales(String monto) {
-        if (monto != null && monto.length() > 0) {
-            monto = monto.trim();
-            char[] ja = monto.toCharArray();
-            for (int i = 0; i < monto.length(); i++) {
-                if (ja[i] == '.') {
-                    if (i + 3 >= monto.length()) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-        } else {
-            return false;
-        }
-        return true; // si no encontró ningún '.'
-    }
-
     /**
      * Crea un java.util.Date con los parámetros.
      *
      * @param year &gt;=1900
      * @param month 0=enero and so on...
-     * @param day if == NULL.. will be setted to 1, si == -1 al último día de
+     * @param day if == NULL.. will be set to 1, si == -1 al último día de
      * <b>month</b>
      * @return java.util.Date inicializado con la fecha.
      * @throws IllegalArgumentException si month &lt; 0 || month &gt; 11
@@ -766,6 +747,16 @@ public abstract class UTIL {
         return c.getTime();
     }
 
+    /**
+     * Crea un java.util.Date con los parámetros.
+     *
+     * @param year &gt;=1900
+     * @param month
+     * @param day if == NULL.. will be set to 1, si == -1 al último día de
+     * <b>month</b>
+     * @return java.util.Date inicializado con la fecha.
+     * @see #customDate(int, int, java.lang.Integer)
+     */
     public static Date customDate(int year, Month month, Integer day) {
         return customDate(year, month.getValue() - 1, day);
     }
