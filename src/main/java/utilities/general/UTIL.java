@@ -732,7 +732,7 @@ public final class UTIL {
      */
     public static Date customDate(int year, int month, Integer day) {
         if (month < 0 || month > 11) {
-            throw new IllegalArgumentException("Mes (month) no válido, must be >= 0 AND <= 11");
+            throw new IllegalArgumentException("Mes (month) no válido, must be >= 0 AND <= 11: " + month);
         }
         Calendar c = Calendar.getInstance();
         c.clear();
@@ -780,23 +780,6 @@ public final class UTIL {
     }
 
     /**
-     * Set all fields related to time (like HOUR_OF_DAY, MINUTE, SECOND, MILLISECND) to 0. This
-     * allow compare Dates, disregarding fields related to time. NOTE: beware with the TIME_ZONE!
-     *
-     * @param fecha
-     * @return a {@code Date}
-     */
-    public static Date getDateYYYYMMDD(Date fecha) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(fecha);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTime();
-    }
-
-    /**
      *
      * @param date cannot be null
      * @return return an integer representative of a period (yyyyMM), where MM &gt;=1 and &gt;=12
@@ -820,6 +803,12 @@ public final class UTIL {
         return c.getTime();
     }
 
+    /**
+     * Search the last dot and returns the string after, if there is none, returns empty
+     *
+     * @param fileName
+     * @return
+     */
     public static String getExtensionFile(String fileName) {
         return (fileName.lastIndexOf(".") == -1) ? ""
                 : fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
@@ -1530,11 +1519,9 @@ public final class UTIL {
     /**
      * REGEX.. asi nomas
      *
-     * @param regex ..
-     * @param stringToEvaluate ..
-     * @return ..
-     * @see <a href="http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">
-     * http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html</a>
+     * @param regex for pattern compile
+     * @param stringToEvaluate to match
+     * @return if matches the expression 
      */
     public static boolean VALIDAR_REGEX(String regex, String stringToEvaluate) {
         return Pattern.compile(regex).matcher(stringToEvaluate).matches();
