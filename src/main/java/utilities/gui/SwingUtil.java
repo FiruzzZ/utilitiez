@@ -352,6 +352,18 @@ public class SwingUtil {
                     || component instanceof JToolBar
                     || component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport
                     || component instanceof JTabbedPane) {
+                boolean found = false;
+                if (exceptionsComponents != null) {
+                    for (Class<? extends Component> exceptionType : exceptionsComponents) {
+                        if (component.getClass().equals(exceptionType)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    continue;
+                }
                 JComponent subPanel = (JComponent) component;
                 setComponentsEnabled(subPanel.getComponents(), enable, applyDefaultsExceptionComponents, exceptionsComponents);
             } else {
@@ -367,6 +379,16 @@ public class SwingUtil {
                     || component instanceof JPanel || component instanceof JScrollPane || component instanceof JViewport
                     || component instanceof JTabbedPane) {
                 JComponent subPanel = (JComponent) component;
+                boolean found = false;
+                for (Component ec : exceptionsComponents) {
+                    if (component.equals(ec)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    continue;
+                }
                 setComponentsEnabled(subPanel.getComponents(), enable, exceptionsComponents);
             } else {
                 boolean found = false;
