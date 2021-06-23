@@ -92,7 +92,8 @@ public final class UTIL {
     }
 
     /**
-     * Retorna la fecha elegida <b>SI ES VÁLIDA</b>:
+     * Retorna la fecha elegida si están dentro de rango de valores mínimo y máximo. Solo compara
+     * hasta días
      * <ul>
      * <li>{@link JDateChooser#getDate()} &gt;={@link JDateChooser#getMinSelectableDate()}
      * <li>{@link JDateChooser#getDate()} &lt;={@link JDateChooser#getMaxSelectableDate()}
@@ -225,7 +226,7 @@ public final class UTIL {
     /**
      * Removes every backslash (\), single quote (') and double quote (")
      *
-     * @param text
+     * @param text if it is empty/null will return empty
      * @return a less hazardous string to use on queries
      */
     public static String removeEscapesChars(String text) {
@@ -1521,7 +1522,7 @@ public final class UTIL {
      *
      * @param regex for pattern compile
      * @param stringToEvaluate to match
-     * @return if matches the expression 
+     * @return if matches the expression
      */
     public static boolean VALIDAR_REGEX(String regex, String stringToEvaluate) {
         return Pattern.compile(regex).matcher(stringToEvaluate).matches();
