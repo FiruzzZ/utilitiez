@@ -1,2 +1,6 @@
 /nbproject/private/
 /target/
+
+#IntelliJ IDE
+.idea/
+*.iml
