@@ -23,7 +23,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -156,8 +158,8 @@ public final class UTIL {
      * Suma o resta la cantidad especificada
      *
      * @param date
-     * @param field
-     * @param cant de días
+     * @param calendar field (example: {@link Calendar#SECOND})
+     * @param Adds or subtracts the specified amount of time to the given date
      * @return ..
      * @see Calendar#add(int, int)
      */
@@ -802,6 +804,10 @@ public final class UTIL {
         c.setTime(fecha);
         c.add(Calendar.DAY_OF_MONTH, dias);
         return c.getTime();
+    }
+
+    public static Date getDateFromLocal(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
     /**
@@ -1766,4 +1772,5 @@ public final class UTIL {
             return (str == null || str.trim().isEmpty()) ? BigDecimal.ZERO : new BigDecimal(str);
         }
     }
+
 }
