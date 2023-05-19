@@ -25,6 +25,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Period;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.logging.Level;
@@ -1560,6 +1561,19 @@ public final class UTIL {
      */
     public static int getAge(Date dateOfBirth) {
         return getAge(dateOfBirth, Calendar.getInstance().getTime());
+    }
+
+    /**
+     * Calcula la edad actual, según {@code dob}
+     *
+     * @param dob no puede ser posterior a HOY
+     * @return edad {@code &gt;= 0}
+     */
+    public static int getAge(LocalDate dob) {
+        if (dob.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException();
+        }
+        return Period.between(dob, LocalDate.now()).getYears();
     }
 
     /**
