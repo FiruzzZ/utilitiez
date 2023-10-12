@@ -1728,7 +1728,7 @@ public final class UTIL {
                 .replaceAll(" el ", "").replaceAll(" la ", "").replaceAll(" las ", "").replaceAll(" los ", "")
                 .replace("gral", "general")
                 .replace("gdor", "gobernador")
-                .replace("^pto ", "puerto").replace(" pto", "puerto") //fix con palabra prescriPTOr
+                .replaceAll("^pto ", "puerto ").replace(" pto", "puerto") //fix con palabra prescriPTOr
                 .replace("col ", "colonia ");
         return s.trim().toUpperCase();
     }
